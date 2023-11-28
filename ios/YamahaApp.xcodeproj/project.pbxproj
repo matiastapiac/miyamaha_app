@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* YamahaAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* YamahaAppTests.m */; };
+		0290CE17C4B54CE3922E6ABC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 271B9F024DAE445A8FE83F73 /* OpenSans-Bold.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-YamahaApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-YamahaApp.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		3E93D6E3F37A4EA8B0D84CEF /* FjallaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A516EACD897C490681CE64BB /* FjallaOne-Regular.ttf */; };
+		680502A1EE5741C986C408A3 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB063B6F87F447469BC25A51 /* OpenSans-SemiBold.ttf */; };
+		6D24164C352B4826A120F32A /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EEAD255A27754C508C53EE9A /* OpenSans-Regular.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-YamahaApp-YamahaAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-YamahaApp-YamahaAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		F8ED3AFDE9C6453FA0535FA3 /* OpenSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3C514CFEB44EFE9DB71D4F /* OpenSans-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,13 +42,18 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = YamahaApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = YamahaApp/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-YamahaApp-YamahaAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YamahaApp-YamahaAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		271B9F024DAE445A8FE83F73 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../app/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		2B3C514CFEB44EFE9DB71D4F /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Medium.ttf"; path = "../app/assets/fonts/OpenSans-Medium.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-YamahaApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YamahaApp.debug.xcconfig"; path = "Target Support Files/Pods-YamahaApp/Pods-YamahaApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-YamahaApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YamahaApp.release.xcconfig"; path = "Target Support Files/Pods-YamahaApp/Pods-YamahaApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-YamahaApp-YamahaAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YamahaApp-YamahaAppTests.debug.xcconfig"; path = "Target Support Files/Pods-YamahaApp-YamahaAppTests/Pods-YamahaApp-YamahaAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-YamahaApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YamahaApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = YamahaApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-YamahaApp-YamahaAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YamahaApp-YamahaAppTests.release.xcconfig"; path = "Target Support Files/Pods-YamahaApp-YamahaAppTests/Pods-YamahaApp-YamahaAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		A516EACD897C490681CE64BB /* FjallaOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "FjallaOne-Regular.ttf"; path = "../app/assets/fonts/FjallaOne-Regular.ttf"; sourceTree = "<group>"; };
+		BB063B6F87F447469BC25A51 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../app/assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		EEAD255A27754C508C53EE9A /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../app/assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +132,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				F2081D4DCE914FE9B086702F /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -146,6 +157,19 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-YamahaApp-YamahaAppTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		F2081D4DCE914FE9B086702F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				271B9F024DAE445A8FE83F73 /* OpenSans-Bold.ttf */,
+				2B3C514CFEB44EFE9DB71D4F /* OpenSans-Medium.ttf */,
+				EEAD255A27754C508C53EE9A /* OpenSans-Regular.ttf */,
+				BB063B6F87F447469BC25A51 /* OpenSans-SemiBold.ttf */,
+				A516EACD897C490681CE64BB /* FjallaOne-Regular.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +268,11 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				0290CE17C4B54CE3922E6ABC /* OpenSans-Bold.ttf in Resources */,
+				F8ED3AFDE9C6453FA0535FA3 /* OpenSans-Medium.ttf in Resources */,
+				6D24164C352B4826A120F32A /* OpenSans-Regular.ttf in Resources */,
+				680502A1EE5741C986C408A3 /* OpenSans-SemiBold.ttf in Resources */,
+				3E93D6E3F37A4EA8B0D84CEF /* FjallaOne-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
