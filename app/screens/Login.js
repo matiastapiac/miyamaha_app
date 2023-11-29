@@ -14,8 +14,17 @@ import {screen} from '../common/utils';
 
 export default class Login extends Component {
   handleLogin = () => {
+    this.props.navigation.push(screen.DashBoard);
+  };
+
+  handleRegister = () => {
     this.props.navigation.push(screen.Registration);
   };
+
+  handleForgotPassword = () => {
+    this.props.navigation.push(screen.ForgotPassword);
+  };
+
   render() {
     return (
       <ImageBackground
@@ -30,6 +39,7 @@ export default class Login extends Component {
             title={'Olvide mi contraseña'}
             font={FONTS.OpenSansMedium}
             position={'flex-end'}
+            onPress={this.handleForgotPassword}
           />
           <AuthButton
             title={'Iniciar sesión'}
@@ -38,7 +48,11 @@ export default class Login extends Component {
           />
           <View>
             <Text style={styles.text}>¿No tienes una cuenta?</Text>
-            <TextButton title={'Regístrate aquí'} position={'center'} />
+            <TextButton
+              title={'Regístrate aquí'}
+              position={'center'}
+              onPress={this.handleRegister}
+            />
           </View>
         </View>
       </ImageBackground>
