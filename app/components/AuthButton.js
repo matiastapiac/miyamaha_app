@@ -7,9 +7,12 @@ import {
   widthPercentageToDP as hp,
 } from '../common/dimensions';
 
-export default function AuthButton({title, style, onPress}) {
+export default function AuthButton({title, style, onPress, disabled}) {
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+      disabled={disabled}>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );

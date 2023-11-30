@@ -9,13 +9,16 @@ import {
 import AuthButton from './AuthButton';
 import {FONTS} from '../common/fonts';
 
-export default function Alert({visible, title, subTitle, onSubmit}) {
+export default function Alert({visible, title, subTitle, btnTitle, onSubmit}) {
   return (
     <Modal isVisible={visible}>
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subTitle}>{subTitle}</Text>
-        <AuthButton title={'Aceptar'} onPress={onSubmit} />
+        <AuthButton
+          title={btnTitle ? btnTitle : 'Aceptar'}
+          onPress={onSubmit}
+        />
       </View>
     </Modal>
   );

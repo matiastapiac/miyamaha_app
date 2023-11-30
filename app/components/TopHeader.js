@@ -4,58 +4,99 @@ import {useNavigation} from '@react-navigation/native';
 import {images} from '../common/images';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
+import {screen} from '../common/utils';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from '../common/dimensions';
 
-const TopHeader = ({
+export default function TopHeader({
   label,
+  bgColor,
+  iColor,
+  paddingH,
+  font,
   onLeftPress,
-  onRightPress,
-  leftIcon = images.leftarrow,
-  rightIcon,
-  style,
-}) => {
+}) {
   const navigation = useNavigation();
-
-  const handleBack = () => {
-    onLeftPress ? onLeftPress() : navigation.goBack();
-  };
-
   const iconSize = label ? hp(2.5) : hp(4);
 
-  return (
-    <View style={[styles.container, style, {borderBottomWidth: label ? 1 : 0}]}>
+  const handleBack = () => {
+    onLeftPress
+      ? onLeftPress()
+      : label
+      ? navigation.goBack()
+      : navigation.push(screen.Profile);
+  };
+
+  const handleRightPress = () => {
+    navigation.push(screen.Notification);
+  };
+
+  const renderLeftIcon = () => {
+    return (
       <TouchableOpacity onPress={handleBack}>
         <Image
-          source={leftIcon}
+          source={label ? images.leftarrow : images.profile}
+          style={{height: iconSize, width: iconSize, tintColor: iColor}}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  const renderMiddleContent = () => {
+    if (label) {
+      return (
+        <Text
+          style={[
+            styles.label,
+            {
+              color: iColor || colors.red,
+              fontFamily: font || FONTS.FjallaOneRegular,
+            },
+          ]}>
+          {label}
+        </Text>
+      );
+    } else {
+      return (
+        <Image source={images.logo} resizeMode="contain" style={styles.logo} />
+      );
+    }
+  };
+
+  const renderRightIcon = () => {
+    return label ? (
+      <View style={{height: iconSize, width: iconSize}}></View>
+    ) : (
+      <TouchableOpacity onPress={handleRightPress}>
+        <Image
+          source={images.bell}
           style={{height: iconSize, width: iconSize}}
           resizeMode="contain"
         />
       </TouchableOpacity>
-      {label ? (
-        <Text style={styles.label}>{label}</Text>
-      ) : (
-        <Image source={images.logo} resizeMode="contain" style={styles.logo} />
-      )}
-      <TouchableOpacity onPress={onRightPress}>
-        {rightIcon && (
-          <Image
-            source={rightIcon}
-            style={{height: iconSize, width: iconSize}}
-            resizeMode="contain"
-          />
-        )}
-      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          borderBottomWidth: label ? 1 : 0,
+          marginHorizontal: label ? 0 : 10,
+          paddingHorizontal: paddingH,
+          backgroundColor: bgColor,
+        },
+      ]}>
+      {renderLeftIcon()}
+      {renderMiddleContent()}
+      {renderRightIcon()}
     </View>
   );
-};
-
-TopHeader.defaultProps = {
-  leftIcon: images.leftarrow,
-  rightIcon: null,
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -75,5 +116,3 @@ const styles = StyleSheet.create({
     width: hp(18),
   },
 });
-
-export default TopHeader;

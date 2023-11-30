@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {gstyles} from '../common/gstyles';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -57,7 +58,7 @@ export default class Registration extends Component {
         <AuthButton
           title={'Siguiente'}
           onPress={this.handleRegister}
-          style={{bottom: 0, position: 'absolute'}}
+          style={gstyles.bottomBtn}
         />
         <Alert
           visible={isSuccess}

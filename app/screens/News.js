@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {
-  Text,
   StyleSheet,
   View,
   ScrollView,
   FlatList,
   Image,
   TouchableOpacity,
+  LogBox,
 } from 'react-native';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
@@ -25,14 +25,14 @@ export default class News extends Component {
       data: [images.img4, images.img5, images.img4, images.img5],
     };
   }
+
+  componentDidMount() {
+    LogBox.ignoreAllLogs();
+  }
   render() {
     return (
       <Container>
-        <TopHeader
-          leftIcon={images.profile}
-          rightIcon={images.bell}
-          style={{marginHorizontal: 10}}
-        />
+        <TopHeader />
 
         <View style={{flex: 1}}>
           <ScrollView style={{flex: 1, paddingBottom: hp(20)}}>

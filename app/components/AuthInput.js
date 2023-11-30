@@ -14,17 +14,30 @@ export default function AuthInput({
   onChangeText,
   style,
   label,
+  textarea,
 }) {
   return label ? (
     <View style={styles.labelContain}>
       <Text style={styles.labelText}>{label}</Text>
-      <TextInput
-        placeholderTextColor={colors.grey1}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        style={styles.labelInput}
-      />
+      {textarea ? (
+        <TextInput
+          multiline
+          numberOfLines={4}
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          placeholderTextColor={colors.grey1}
+          style={styles.textArea}
+        />
+      ) : (
+        <TextInput
+          placeholderTextColor={colors.grey1}
+          placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          style={styles.labelInput}
+        />
+      )}
     </View>
   ) : (
     <View style={[styles.container, style]}>
@@ -50,7 +63,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.OpenSansSemiBold,
   },
   labelInput: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: colors.border,
     color: colors.grey1,
     borderRadius: 5,
@@ -82,5 +95,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(212, 212, 212, 0.5)',
     paddingVertical: Platform.OS == 'ios' ? 12 : 0,
+  },
+  textArea: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: 10,
+    borderRadius: 5,
+    minHeight: 150, 
+    backgroundColor: colors.grey2,
+    fontFamily: FONTS.OpenSansRegular,
+    color: colors.grey1,
+    textAlignVertical: 'top',
   },
 });
