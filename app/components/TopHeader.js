@@ -5,10 +5,7 @@ import {images} from '../common/images';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {screen} from '../common/utils';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from '../common/dimensions';
+import {heightPercentageToDP as hp} from '../common/dimensions';
 
 export default function TopHeader({
   label,

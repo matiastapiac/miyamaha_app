@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
-import {data} from '../common/utils';
+import {data, screen} from '../common/utils';
+import {gstyles} from '../common/gstyles';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import PickerInput from '../components/PickerInput';
-import {gstyles} from '../common/gstyles';
 import AuthButton from '../components/AuthButton';
 
 export default class Dealers extends Component {
@@ -26,6 +26,10 @@ export default class Dealers extends Component {
   };
   setCommon = e => {
     this.setState({common: e});
+  };
+
+  handleSubmit = () => {
+    this.props.navigation.push(screen.SerachDealers);
   };
 
   render() {
@@ -57,7 +61,11 @@ export default class Dealers extends Component {
               Selected={this.setCommon}
             />
           </ScrollView>
-          <AuthButton title={'Siguiente'} style={gstyles.bottomBtn} />
+          <AuthButton
+            title={'Siguiente'}
+            style={gstyles.bottomBtn}
+            onPress={this.handleSubmit}
+          />
         </View>
       </Container>
     );

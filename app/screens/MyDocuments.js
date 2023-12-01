@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, Image, Pressable} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {gstyles} from '../common/gstyles';
 import {myDocuments, screen} from '../common/utils';
 import {colors} from '../common/colors';
@@ -8,12 +8,24 @@ import {images} from '../common/images';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import DocCard from '../components/DocCard';
+import FloatingActionButton from '../components/FloatingButton';
+import DocAlert from '../components/DocAlert';
 
 export default class MyDocuments extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isCreateFolder: false,
+    };
+  }
   handleEvent(item) {
     item.type == 'folder' &&
       this.props.navigation.push(screen.DocumentList, {item});
   }
+
+  handleCreateFolder = () => {
+    this.setState({isCreateFolder: !this.state.isCreateFolder});
+  };
 
   renderItem = ({item}) => (
     <DocCard
@@ -24,6 +36,7 @@ export default class MyDocuments extends Component {
   );
 
   render() {
+    const {isCreateFolder} = this.state;
     return (
       <Container>
         <TopHeader
@@ -33,16 +46,20 @@ export default class MyDocuments extends Component {
           paddingH={10}
           font={FONTS.OpenSansBold}
         />
-        <FlatList
-          data={myDocuments}
-          keyExtractor={item => item.id}
-          renderItem={this.renderItem}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={gstyles.docContent}
+        <View style={gstyles.docContent}>
+          <FlatList
+            data={myDocuments}
+            keyExtractor={item => item.id}
+            renderItem={this.renderItem}
+            showsVerticalScrollIndicator={false}
+          />
+          <FloatingActionButton onLeftPress={this.handleCreateFolder} />
+        </View>
+        <DocAlert
+          visible={isCreateFolder}
+          title={'CREAR UNA CARPETA'}
+          onCancel={this.handleCreateFolder}
         />
-        <Pressable style={gstyles.plusBtn}>
-          <Image source={images.plus} style={gstyles.plusIcon} />
-        </Pressable>
       </Container>
     );
   }

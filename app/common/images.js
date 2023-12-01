@@ -26,4 +26,10 @@ export const images = {
   arrow: require('../assets/images/arrow.png'),
   book: require('../assets/images/book.png'),
   plus: require('../assets/images/plus.png'),
+  marker: require('../assets/images/marker.png'),
+  calendar: require('../assets/images/calendar.png'),
+  phone: require('../assets/images/phone.png'),
+  mail: require('../assets/images/mail.png'),
+  bike: require('../assets/images/bike.png'),
+  close: require('../assets/images/close.png'),
 };

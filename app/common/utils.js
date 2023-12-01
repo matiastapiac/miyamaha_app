@@ -22,6 +22,8 @@ export const screen = {
   DocumentRequest: 'DocumentRequest',
   Manuals: 'Manuals',
   DocumentList: 'DocumentList',
+  SerachDealers: 'SerachDealers',
+  EditProfile: 'EditProfile',
 };
 
 export const bottomStack = [
@@ -176,4 +178,43 @@ export const myDocuments = [
   {id: 3, name: 'Tracer', type: 'folder'},
   {id: 4, name: 'Mapa Argentina.pdf', type: 'pdf'},
   {id: 5, name: 'Copia carnet conducir.jpg', type: 'pdf'},
+];
+
+export const dealers = [
+  {
+    id: 1,
+    name: 'Yamaha Motos',
+    address: 'Av. las Condes 8326, Las  Condes.',
+    time: [
+      {day: 'Lunes a viernes', timing: '10:00-19:00'},
+      {day: 'Sábados', timing: '10:00-14:00'},
+      {day: 'Domingo', timing: 'Cerrado'},
+    ],
+    phone: '(2) 2299 1000',
+    email: 'contacto@yamaimport.cl',
+  },
+  {
+    id: 2,
+    name: 'MotoXstore',
+    address: 'Av. Manquehue Sur 576, Las Condes',
+    time: [
+      {day: 'Lunes a viernes', timing: '10:00-19:00'},
+      {day: 'Sábados', timing: '10:00-14:00'},
+      {day: 'Domingo', timing: 'Cerrado'},
+    ],
+    phone: '(2) 2299 1000',
+    email: 'contacto@yamaimport.cl',
+  },
+  {
+    id: 3,
+    name: 'YAMAHA CICLOMOTO',
+    address: ' Av. Francisco Bilbao 205, Providencia',
+    time: [
+      {day: 'Lunes a viernes', timing: '10:00-19:00'},
+      {day: 'Sábados', timing: '10:00-14:00'},
+      {day: 'Domingo', timing: 'Cerrado'},
+    ],
+    phone: '(2) 2299 1000',
+    email: 'contacto@yamaimport.cl',
+  },
 ];

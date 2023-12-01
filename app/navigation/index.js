@@ -13,6 +13,8 @@ import MyDocuments from '../screens/MyDocuments';
 import DocumentRequest from '../screens/DocumentRequest';
 import Manuals from '../screens/Manuals';
 import DocumentList from '../screens/DocumentList';
+import SerachDealers from '../screens/SerachDealers';
+import EditProfile from '../screens/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +31,7 @@ export default function Navigation() {
           component={Profile}
           options={{
             gestureDirection: 'vertical',
+            animationTypeForReplace:'pop'
           }}
         />
         <Stack.Screen
@@ -67,6 +70,14 @@ export default function Navigation() {
           }}
         />
         <Stack.Screen name={screen.DocumentList} component={DocumentList} />
+        <Stack.Screen
+          name={screen.SerachDealers}
+          component={SerachDealers}
+          options={{
+            gestureDirection: 'vertical',
+          }}
+        />
+        <Stack.Screen name={screen.EditProfile} component={EditProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

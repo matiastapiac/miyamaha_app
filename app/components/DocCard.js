@@ -1,20 +1,20 @@
 import React from 'react';
 import {Image, Pressable, StyleSheet, Text} from 'react-native';
-import {
-  heightPercentageToDP as wp,
-  widthPercentageToDP as hp,
-} from '../common/dimensions';
+import {heightPercentageToDP as hp} from '../common/dimensions';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 
-export default function DocCard({icon, title, onPress}) {
+const DocCard = ({icon, title, onPress}) => {
   return (
-    <Pressable style={styles.container} onPress={onPress}>
-      <Image source={icon} style={styles.icon} />
+    <Pressable
+      style={styles.container}
+      onPress={onPress}
+      accessibilityRole="button">
+      <Image source={icon} style={styles.icon} accessibilityLabel={title} />
       <Text style={styles.title}>{title}</Text>
     </Pressable>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    height: hp(6),
-    width: hp(6),
+    height: hp(3),
+    width: hp(3),
     resizeMode: 'contain',
   },
   title: {
@@ -36,3 +36,5 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 });
+
+export default DocCard;

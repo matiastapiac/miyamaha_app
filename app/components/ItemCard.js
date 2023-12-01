@@ -2,13 +2,10 @@ import React from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
-import {
-  heightPercentageToDP as wp,
-  widthPercentageToDP as hp,
-} from '../common/dimensions';
+import {heightPercentageToDP as hp} from '../common/dimensions';
 import {images} from '../common/images';
 
-export default function ItemCard({
+const ItemCard = ({
   icon,
   title,
   subTitle,
@@ -16,28 +13,34 @@ export default function ItemCard({
   onRadioPress,
   selected,
   leftLabel,
-}) {
+  style,
+}) => {
+  const renderIcon = () => {
+    if (icon) {
+      return <Image source={icon} style={styles.icon} />;
+    } else {
+      return (
+        <Pressable onPress={onRadioPress}>
+          <Image
+            source={selected ? images.roundfill : images.round}
+            style={styles.radioIcon}
+          />
+        </Pressable>
+      );
+    }
+  };
+
   return (
     <View>
       <Pressable
         style={[
           styles.container,
           {borderColor: selected ? colors.red : colors.border},
+          style,
         ]}
         onPress={onPress}>
-        <>
-          {icon ? (
-            <Image source={icon} style={styles.icon} />
-          ) : (
-            <Pressable onPress={onRadioPress}>
-              <Image
-                source={selected ? images.roundfill : images.round}
-                style={{height: hp(5), width: hp(5), resizeMode: 'contain'}}
-              />
-            </Pressable>
-          )}
-        </>
-        <View style={styles.rowWrapper}>
+        {renderIcon()}
+        <View style={styles.contentWrapper}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subTitle} numberOfLines={2}>
             {subTitle}
@@ -52,10 +55,10 @@ export default function ItemCard({
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  rowWrapper: {
+  contentWrapper: {
     marginLeft: 10,
   },
   subTitle: {
@@ -69,8 +72,13 @@ const styles = StyleSheet.create({
     color: colors.grey,
   },
   icon: {
-    height: hp(10),
-    width: hp(10),
+    height: hp(5),
+    width: hp(5),
+    resizeMode: 'contain',
+  },
+  radioIcon: {
+    height: hp(3),
+    width: hp(3),
     resizeMode: 'contain',
   },
   container: {
@@ -79,10 +87,12 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: colors.grey2,
-    height: hp(25),
+    backgroundColor: colors.grey3,
+    height: hp(13),
     paddingHorizontal: 10,
     marginVertical: 5,
     width: '100%',
   },
 });
+
+export default ItemCard;

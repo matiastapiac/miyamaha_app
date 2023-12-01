@@ -2,24 +2,23 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
-import {
-  heightPercentageToDP as wp,
-  widthPercentageToDP as hp,
-} from '../common/dimensions';
+import {heightPercentageToDP as hp} from '../common/dimensions';
 
-export default function AuthButton({title, style, onPress, disabled}) {
+const AuthButton = ({title, style, onPress, disabled}) => {
   return (
     <TouchableOpacity
-      style={[styles.container, style]}
+      style={[styles.button, disabled ? styles.buttonDisabled : null, style]}
       onPress={onPress}
-      disabled={disabled}>
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityState={{disabled}}>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
+  button: {
     backgroundColor: colors.red,
     paddingVertical: 15,
     alignItems: 'center',
@@ -29,9 +28,14 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
   title: {
     color: colors.white,
-    fontSize: hp(4),
+    fontSize: hp(2),
     fontFamily: FONTS.OpenSansSemiBold,
   },
 });
+
+export default AuthButton;

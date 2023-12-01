@@ -1,57 +1,59 @@
 import React from 'react';
 import {StyleSheet, Image, TextInput, View, Platform, Text} from 'react-native';
-import {
-  heightPercentageToDP as wp,
-  widthPercentageToDP as hp,
-} from '../common/dimensions';
+import {heightPercentageToDP as hp} from '../common/dimensions';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 
-export default function AuthInput({
+const AuthInput = ({
   icon,
   value,
   placeholder,
   onChangeText,
-  style,
   label,
   textarea,
-}) {
-  return label ? (
-    <View style={styles.labelContain}>
-      <Text style={styles.labelText}>{label}</Text>
-      {textarea ? (
+  editable,
+}) => {
+  const renderInputField = () => {
+    if (textarea || label) {
+      return (
         <TextInput
-          multiline
-          numberOfLines={4}
+          multiline={textarea}
+          numberOfLines={textarea ? 4 : 1}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
           placeholderTextColor={colors.grey1}
-          style={styles.textArea}
+          style={textarea ? styles.textArea : styles.labelInput}
+          accessible={true}
+          accessibilityLabel={label || placeholder}
+          editable={editable}
         />
-      ) : (
-        <TextInput
-          placeholderTextColor={colors.grey1}
-          placeholder={placeholder}
-          value={value}
-          onChangeText={onChangeText}
-          style={styles.labelInput}
-        />
-      )}
-    </View>
-  ) : (
-    <View style={[styles.container, style]}>
-      <Image source={icon} resizeMode="contain" style={styles.icon} />
-      <TextInput
-        placeholderTextColor={colors.grey1}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        style={styles.input}
-      />
+      );
+    } else {
+      return (
+        <View style={styles.iconContent}>
+          <Image source={icon} resizeMode="contain" style={styles.icon} />
+          <TextInput
+            placeholderTextColor={colors.grey1}
+            placeholder={placeholder}
+            value={value}
+            onChangeText={onChangeText}
+            style={styles.input}
+            accessible={true}
+            accessibilityLabel={placeholder}
+          />
+        </View>
+      );
+    }
+  };
+
+  return (
+    <View style={label ? styles.labelContain : styles.container}>
+      {label && <Text style={styles.labelText}>{label}</Text>}
+      {renderInputField()}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   labelContain: {
@@ -68,22 +70,22 @@ const styles = StyleSheet.create({
     color: colors.grey1,
     borderRadius: 5,
     marginTop: 5,
-    backgroundColor: colors.grey2,
+    backgroundColor: colors.grey3,
     fontFamily: FONTS.OpenSansRegular,
     paddingHorizontal: 10,
     width: '100%',
-    height: hp(15),
+    height: hp(8),
   },
   input: {
     flex: 1,
     marginLeft: 10,
     color: colors.grey,
     fontFamily: FONTS.OpenSansMedium,
-    fontSize: hp(3.5),
+    fontSize: hp(2),
   },
   icon: {
-    height: hp(5),
-    width: hp(5),
+    height: hp(3),
+    width: hp(3),
   },
   container: {
     borderColor: colors.border,
@@ -101,10 +103,15 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     padding: 10,
     borderRadius: 5,
-    minHeight: 150, 
+    minHeight: 150,
     backgroundColor: colors.grey2,
     fontFamily: FONTS.OpenSansRegular,
     color: colors.grey1,
     textAlignVertical: 'top',
   },
+  iconContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
+export default AuthInput;

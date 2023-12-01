@@ -40,15 +40,26 @@ export const gstyles = StyleSheet.create({
     bottom: 0,
     position: 'absolute',
     marginBottom: 15,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   docContent: {
-    marginTop: 10
+    flex: 1,
+    paddingVertical: 20,
+    backgroundColor: colors.white,
   },
   dealersTitle: {
-    fontFamily:FONTS.OpenSansBold,
-    color:colors.grey,
-    textAlign:'center',
-    marginVertical:10
-  }
+    fontFamily: FONTS.OpenSansBold,
+    color: colors.grey,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  listContainer: {marginBottom: '40%', backgroundColor: colors.white},
+  vehicleContent: {height: hp(10)},
+  fjallaText: {
+    color: colors.red,
+    fontFamily: FONTS.FjallaOneRegular,
+    fontSize: hp(2.5),
+    textAlign: 'center',
+    marginVertical: 10,
+  },
 });
