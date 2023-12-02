@@ -24,6 +24,7 @@ export const screen = {
   DocumentList: 'DocumentList',
   SerachDealers: 'SerachDealers',
   EditProfile: 'EditProfile',
+  ScheduleMaintenance: 'ScheduleMaintenance',
 };
 
 export const bottomStack = [
@@ -216,5 +217,75 @@ export const dealers = [
     ],
     phone: '(2) 2299 1000',
     email: 'contacto@yamaimport.cl',
+  },
+];
+
+export const devices = [
+  {
+    id: 1,
+    title: 'Agendar via web',
+    subTitle: 'Agenda de manera cómoda y simple a través de nuestro canal web.',
+    icon: images.pc,
+  },
+  {
+    id: 2,
+    title: 'Agendar via teléfono',
+    subTitle: 'Comunícate con una de nuestras operadoras para agendar tu cita.',
+    icon: images.telephone,
+  },
+  {
+    id: 3,
+    title: 'Agendar via Whatsapp',
+    subTitle: 'Chatea con una de nuestras operadoras para agendar tu cita.',
+    icon: images.whatsapp,
+  },
+];
+
+export const vehicles = [
+  {
+    id: 1,
+    image: images.yamaha1,
+    vehicle: 'R1',
+    date: '25 ABRIL 2022',
+    maintenance: [
+      {
+        dealer: 'Yamaha Motos',
+        distance: '6.000 km',
+        address: 'Av. las Condes 8326, Las Condes',
+        date: '25 ABRIL 2022',
+      },
+      {
+        dealer: 'Yamaha Ciclomoto',
+        distance: '3.000 km',
+        address: 'Av. Francisco Bilbao 205, Providencia',
+        date: '04 AGOSTO 2021',
+      },
+      {
+        dealer: 'MotoXstore',
+        distance: '1.000 km',
+        address: 'Av. Manquehue Sur 576, Las Condes',
+        date: '05 FEBRERO 2019',
+      },
+    ],
+  },
+  {
+    id: 2,
+    vehicle: 'TRACER 9 GT',
+    image: images.yamaha2,
+    date: '01 FEBRERO 2023',
+    maintenance: [
+      {
+        dealer: 'Yamaha Motos',
+        distance: '3.000 km',
+        address: 'Av. las Condes 8326, Las Condes',
+        date: '01 FEBRERO 2023',
+      },
+      {
+        dealer: 'MotoXstore',
+        distance: '1.000 km',
+        address: 'Av. Manquehue Sur 576, Las Condes',
+        date: '04 NOVIEMBRE 2022',
+      },
+    ],
   },
 ];

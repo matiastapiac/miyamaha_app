@@ -15,6 +15,7 @@ import Manuals from '../screens/Manuals';
 import DocumentList from '../screens/DocumentList';
 import SerachDealers from '../screens/SerachDealers';
 import EditProfile from '../screens/EditProfile';
+import ScheduleMaintenance from '../screens/ScheduleMaintenance';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +79,13 @@ export default function Navigation() {
           }}
         />
         <Stack.Screen name={screen.EditProfile} component={EditProfile} />
+        <Stack.Screen
+          name={screen.ScheduleMaintenance}
+          component={ScheduleMaintenance}
+          options={{
+            gestureDirection: 'vertical',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

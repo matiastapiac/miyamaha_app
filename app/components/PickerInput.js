@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: 5,
     marginTop: 5,
-    backgroundColor: colors.grey2,
+    backgroundColor: colors.grey3,
     fontFamily: FONTS.OpenSansRegular,
     paddingHorizontal: 10,
     width: '100%',

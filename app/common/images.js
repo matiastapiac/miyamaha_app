@@ -32,4 +32,8 @@ export const images = {
   mail: require('../assets/images/mail.png'),
   bike: require('../assets/images/bike.png'),
   close: require('../assets/images/close.png'),
+  pc: require('../assets/images/pc.png'),
+  telephone: require('../assets/images/telephone.png'),
+  whatsapp: require('../assets/images/whatsapp.png'),
+  km: require('../assets/images/km.png'),
 };
