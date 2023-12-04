@@ -3,17 +3,21 @@ import {StyleSheet, Text, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {colors} from '../common/colors';
 import {heightPercentageToDP as hp} from '../common/dimensions';
-import AuthButton from './AuthButton';
 import {FONTS} from '../common/fonts';
+import {strings as str} from '../common/strings';
+import AuthButton from './AuthButton';
 
 const Alert = ({
   visible,
   title,
   subTitle,
-  btnTitle = 'Aceptar',
+  btnTitle = str.accept,
   onSubmit,
   isInfo,
   rightLabel,
+  vStatus,
+  onNew,
+  onOld,
 }) => {
   return (
     <Modal isVisible={visible}>
@@ -34,13 +38,28 @@ const Alert = ({
             {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
           </View>
         )}
-        <AuthButton title={btnTitle} onPress={onSubmit} />
+        {vStatus ? (
+          <View style={styles.row}>
+            <AuthButton style={styles.sBtn} title={str.used} onPress={onOld} />
+            <AuthButton style={styles.sBtn} title={str.new} onPress={onNew} />
+          </View>
+        ) : (
+          <AuthButton title={btnTitle} onPress={onSubmit} />
+        )}
       </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  sBtn: {
+    width: '45%',
+    backgroundColor: colors.black,
+  },
   mainContainer: {
     paddingVertical: 20,
     paddingHorizontal: 20,

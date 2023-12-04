@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView} from 'react-native';
 import {gstyles} from '../common/gstyles';
 import {data} from '../common/utils';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import PickerInput from '../components/PickerInput';
@@ -36,36 +37,36 @@ export default class SalesForm extends Component {
 
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={'FORMULARIO POST VENTA'} />
+        <TopHeader label={str.postSalesForm} />
         <ScrollView>
           <PickerInput
-            placeholder={'Selecciona una razón'}
-            label={'¿Cuál es la razón de tu consulta?'}
+            placeholder={str.selectReason}
+            label={str.whatReasonForQuery}
             data={data}
             setSelected={this.setReason}
           />
           <PickerInput
-            placeholder={'Selecciona el distribuidor'}
-            label={'Selecciona un distribuidor'}
+            placeholder={str.selectADistributor}
+            label={str.selectTheDistributor}
             data={data}
             setSelected={this.setDistributor}
           />
           <AuthInput
             textarea
-            label={'Escribe tu consulta'}
-            placeholder={'Escríbenos tu consulta'}
+            label={str.writeYourQuery}
+            placeholder={str.writeUsYourQuery}
           />
         </ScrollView>
         <AuthButton
           style={gstyles.bottomBtn}
-          title={'Enviar'}
+          title={str.send}
           onPress={this.handleSumbit}
         />
         <Alert
           visible={isSubmited}
-          title={'FORMULARIO ENVIADO'}
-          subTitle={'Te enviaremos un correo respondiendo tu solicitud'}
-          btnTitle={'Cerrar'}
+          title={str.submittedForm}
+          subTitle={str.willSendYouEmailRespondingResponse}
+          btnTitle={str.close}
           onSubmit={this.handleSumbit}
         />
       </Container>

@@ -7,10 +7,11 @@ import {
 import {images} from '../common/images';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
+import {screen} from '../common/utils';
+import {strings as str} from '../common/strings';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import TextButton from '../components/TextButton';
-import {screen} from '../common/utils';
 
 export default class Login extends Component {
   handleLogin = () => {
@@ -33,23 +34,23 @@ export default class Login extends Component {
         style={styles.container}>
         <Image source={images.logo} resizeMode="contain" style={styles.logo} />
         <View style={styles.bottomContain}>
-          <AuthInput icon={images.card} placeholder={'RUT'} />
-          <AuthInput icon={images.lock} placeholder={'Contraseña'} />
+          <AuthInput icon={images.card} placeholder={str.rut} />
+          <AuthInput icon={images.lock} placeholder={str.password} />
           <TextButton
-            title={'Olvide mi contraseña'}
+            title={str.forgotPassword}
             font={FONTS.OpenSansMedium}
             position={'flex-end'}
             onPress={this.handleForgotPassword}
           />
           <AuthButton
-            title={'Iniciar sesión'}
+            title={str.login}
             style={{marginVertical: 20}}
             onPress={this.handleLogin}
           />
           <View>
-            <Text style={styles.text}>¿No tienes una cuenta?</Text>
+            <Text style={styles.text}>{str.noAccount}</Text>
             <TextButton
-              title={'Regístrate aquí'}
+              title={str.signup}
               position={'center'}
               onPress={this.handleRegister}
             />

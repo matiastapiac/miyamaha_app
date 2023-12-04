@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
 import {gstyles} from '../common/gstyles';
 import {dealers} from '../common/utils';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import SearchCard from '../components/SearchCard';
@@ -25,7 +26,7 @@ export default class SerachDealers extends Component {
   render() {
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={'RESULTADOS DE BÚSQUEDA'} />
+        <TopHeader label={str.searchResults} />
         <View style={gstyles.listContainer}>
           <FlatList
             data={dealers}
@@ -35,7 +36,7 @@ export default class SerachDealers extends Component {
           />
         </View>
         <AuthButton
-          title={'Volver'}
+          title={str.return}
           style={gstyles.bottomBtn}
           onPress={this.handleSubmit}
         />

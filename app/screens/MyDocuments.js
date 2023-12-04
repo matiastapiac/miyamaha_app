@@ -5,6 +5,7 @@ import {myDocuments, screen} from '../common/utils';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {images} from '../common/images';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import DocCard from '../components/DocCard';
@@ -40,7 +41,7 @@ export default class MyDocuments extends Component {
     return (
       <Container>
         <TopHeader
-          label={'Mis Documentos'}
+          label={str.myDocuments}
           bgColor={colors.red}
           iColor={colors.white}
           paddingH={10}
@@ -57,7 +58,7 @@ export default class MyDocuments extends Component {
         </View>
         <DocAlert
           visible={isCreateFolder}
-          title={'CREAR UNA CARPETA'}
+          title={str.createFolder}
           onCancel={this.handleCreateFolder}
         />
       </Container>

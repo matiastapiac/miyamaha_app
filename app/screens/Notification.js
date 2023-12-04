@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
 import {gstyles} from '../common/gstyles';
-import {data, notifications} from '../common/utils';
+import {notifications} from '../common/utils';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
@@ -44,7 +45,7 @@ export default class Notification extends Component {
     const {isVisible, data} = this.state;
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={'NOTIFICACIONES'} />
+        <TopHeader label={str.notifications} />
         <View style={gstyles.listContainer}>
           <FlatList
             data={notifications}
@@ -54,7 +55,7 @@ export default class Notification extends Component {
           />
         </View>
         <AuthButton
-          title={'Eliminar'}
+          title={str.eliminate}
           style={[
             gstyles.bottomBtn,
             {opacity: this.state.selected == 0 && 0.6},
@@ -64,7 +65,7 @@ export default class Notification extends Component {
         <Alert
           visible={isVisible}
           isInfo
-          btnTitle="Cerrar"
+          btnTitle={str.close}
           title={data.title}
           subTitle={data.description}
           rightLabel={data.date}

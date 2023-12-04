@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
 import {gstyles} from '../common/gstyles';
 import {devices} from '../common/utils';
+import {colors} from '../common/colors';
+import {strings as str} from '../common/strings';
 import ItemCard from '../components/ItemCard';
 import Container from '../components/Container';
 import AuthButton from '../components/AuthButton';
-import {colors} from '../common/colors';
 
 export default class ScheduleMaintenance extends Component {
   handleCancel = () => {
@@ -27,7 +28,7 @@ export default class ScheduleMaintenance extends Component {
           />
         </View>
         <AuthButton
-          title={'Volver'}
+          title={str.return}
           style={[
             gstyles.bottomBtn,
             {backgroundColor: colors.black, width: '95%'},

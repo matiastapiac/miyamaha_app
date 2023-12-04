@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {images} from '../common/images';
@@ -33,5 +33,3 @@ export default class DocumentList extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({});

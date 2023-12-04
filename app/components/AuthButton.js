@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   title: {
     color: colors.white,
     fontSize: hp(2),
-    fontFamily: FONTS.OpenSansSemiBold,
+    fontFamily: FONTS.OpenSansBold ,
   },
 });
 

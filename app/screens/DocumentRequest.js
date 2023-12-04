@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView} from 'react-native';
 import {gstyles} from '../common/gstyles';
 import {data} from '../common/utils';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -28,22 +29,22 @@ export default class DocumentRequest extends Component {
   render() {
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={'SOLICITUD DE DOCUMENTOS'} />
+        <TopHeader label={str.docRequest} />
         <ScrollView>
           <PickerInput
-            label={'Selecciona el tipo de documento'}
-            placeholder={'Seleciona el tipo de documento'}
+            label={str.selectTypeOfDoc}
+            placeholder={str.selectTypeOfDoc}
             data={data}
             setSelected={this.setDocType}
           />
           <PickerInput
-            label={'Selecciona un distribuidor'}
-            placeholder={'Selecciona el distribuidor'}
+            label={str.selectADistributor}
+            placeholder={str.selectTheDistributor}
             data={data}
             setSelected={this.setDistributor}
           />
         </ScrollView>
-        <AuthButton title={'Enviar'} style={gstyles.bottomBtn} />
+        <AuthButton title={str.send} style={gstyles.bottomBtn} />
       </Container>
     );
   }

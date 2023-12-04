@@ -1,56 +1,71 @@
 import React, {Component} from 'react';
+import {View} from 'react-native';
+import {gstyles} from '../common/gstyles';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
-import {gstyles} from '../common/gstyles';
+import Validation from '../components/Validation';
+
+const PAGES = {
+  RUT: 1,
+  CODE_VERIFICATION: 2,
+  CHANGE_PASSWORD: 3,
+};
 
 export default class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1,
+      page: PAGES.RUT,
       isVisible: false,
       isUnRegister: false,
+      status: false,
     };
   }
 
   setHeaderTitle() {
     const {page} = this.state;
-    return page == 1
-      ? 'RECUPERAR CONTRASEÑA'
-      : page == 2
-      ? 'CAMBIAR CONTRASEÑA'
-      : 'VALIDACIÓN DE CÓDIGO ';
+    switch (page) {
+      case PAGES.RUT:
+        return str.recoverPass;
+      case PAGES.CODE_VERIFICATION:
+        return str.codeValidate;
+      default:
+        return str.changePass;
+    }
   }
-
+  
   setAlertTitle() {
-    const {page, isUnRegister} = this.state;
-    return isUnRegister
-      ? 'USUARIO NO REGISTRADO'
-      : page == 3
-      ? 'REGISTRO EXISTOSO'
-      : 'CÓDIGO ENVIADO';
+    const {page, status} = this.state;
+    return page == PAGES.RUT && status
+      ? str.unRegisteredUser
+      : page == PAGES.CHANGE_PASSWORD
+      ? str.existingRegi
+      : str.codeSent;
   }
 
   setAlertSubTitle() {
-    const {page, isUnRegister} = this.state;
-    return isUnRegister
-      ? 'Verifique su número de RUT y vuelva a intentarlo'
-      : page == 3
-      ? 'Ahora puedes ingresar con tu password'
-      : 'Hemos enviado un código provisorio a tu correo electrónico.';
+    const {page, status} = this.state;
+    return page == PAGES.RUT && status
+      ? str.checkRut
+      : page == PAGES.CHANGE_PASSWORD
+      ? str.nowEnterPass
+      : str.temporaryCode;
   }
 
   handleSubmit = () => {
-    const {page, isVisible, isUnRegister} = this.state;
-    if (page == 1 && isVisible) {
-      this.setState({page: page + 1, isVisible: false});
-    } else if ((page == 3 && isVisible) || isUnRegister) {
+    const {page, isVisible, isUnRegister, status} = this.state;
+    if (page == PAGES.RUT && status) {
+      this.setState({isUnRegister: !isUnRegister});
+    } else if (page == PAGES.RUT && isVisible) {
+      this.setState({page: 2, isVisible: false});
+    } else if (page == PAGES.CODE_VERIFICATION) {
+      this.setState({page: 3});
+    } else if (page == PAGES.CHANGE_PASSWORD && isVisible) {
       this.props.navigation.pop();
-    } else if (page == 2) {
-      this.setState({page: page + 1});
     } else {
       this.setState({isVisible: true});
     }
@@ -58,40 +73,51 @@ export default class ForgotPassword extends Component {
 
   handleBack = () => {
     const {page} = this.state;
-    page == 1 ? this.props.navigation.pop() : this.setState({page: page - 1});
+    page == PAGES.RUT ? this.props.navigation.pop() : this.setState({page: 1});
+  };
+
+  renderScreens = () => {
+    const {page, status} = this.state;
+
+    switch (page) {
+      case PAGES.RUT:
+        return (
+          <View>
+            <AuthInput label={str.rut} placeholder={str.enterRut} />
+            <Validation
+              onPress={() => this.setState({status: !status})}
+              status={status}
+            />
+          </View>
+        );
+      case PAGES.CODE_VERIFICATION:
+        return <AuthInput label={str.code} placeholder={str.enterCode} />;
+      case PAGES.CHANGE_PASSWORD:
+        return (
+          <View>
+            <AuthInput label={str.password} placeholder={str.enterPass} />
+            <AuthInput
+              label={str.retypePass}
+              placeholder={str.writePassAgain}
+            />
+          </View>
+        );
+      default:
+        return null;
+    }
   };
 
   render() {
-    const {page, isVisible, isUnRegister} = this.state;
+    const {isVisible, isUnRegister} = this.state;
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader
           label={this.setHeaderTitle()}
           onLeftPress={this.handleBack}
         />
-        <>
-          {page == 1 ? (
-            <AuthInput label={'RUT'} placeholder={'Ingresa tu RUT'} />
-          ) : page == 2 ? (
-            <AuthInput
-              label={'Código'}
-              placeholder={'Ingresa el código enviado a tu correo'}
-            />
-          ) : (
-            <>
-              <AuthInput
-                label={'Contraseña'}
-                placeholder={'Ingresa una contraseña'}
-              />
-              <AuthInput
-                label={'Repetir contraseña'}
-                placeholder={'Vuelve a escribir la contraseña'}
-              />
-            </>
-          )}
-        </>
+        {this.renderScreens()}
         <AuthButton
-          title={'Siguiente'}
+          title={str.following}
           onPress={this.handleSubmit}
           style={gstyles.bottomBtn}
         />

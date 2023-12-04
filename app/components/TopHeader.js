@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     color: colors.red,
     fontFamily: FONTS.FjallaOneRegular,
     fontSize: hp(2.5),
+    textTransform: 'uppercase',
   },
   logo: {
     height: hp(18),

@@ -3,6 +3,7 @@ import {ScrollView, Text, View} from 'react-native';
 import {gstyles} from '../common/gstyles';
 import {images} from '../common/images';
 import {screen} from '../common/utils';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
@@ -38,32 +39,44 @@ export default class Profile extends Component {
     const {user} = this.state;
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={'PERFIL DE USUARIO'} />
+        <TopHeader label={str.userProfile} />
         <View style={gstyles.listContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <AuthInput label={'Nombre'} value={user.name} editable={false} />
+            <AuthInput label={str.name} value={user.name} editable={false} />
             <AuthInput
-              label={'Apellidos'}
+              label={str.surname}
               value={user.surname}
               editable={false}
             />
             <AuthInput
-              label={'Fecha nacimiento'}
+              label={str.birthDate}
               value={user.dob}
               editable={false}
             />
-            <AuthInput label={'Email'} value={user.email} editable={false} />
-            <AuthInput label={'Teléfono'} value={user.phone} editable={false} />
+            <AuthInput label={str.email} value={user.email} editable={false} />
             <AuthInput
-              label={'Dirección'}
+              label={str.telephone}
+              value={user.phone}
+              editable={false}
+            />
+            <AuthInput
+              label={str.address}
               value={user.address}
               editable={false}
             />
-            <AuthInput label={'Comuna'} value={user.common} editable={false} />
-            <AuthInput label={'Región'} value={user.region} editable={false} />
+            <AuthInput
+              label={str.commune}
+              value={user.common}
+              editable={false}
+            />
+            <AuthInput
+              label={str.region}
+              value={user.region}
+              editable={false}
+            />
             {user.vehicles.length > 0 && (
               <>
-                <Text style={gstyles.fjallaText}>VEHÍCULOS REGISTRADOS</Text>
+                <Text style={gstyles.fjallaText}>{str.registeredVehicles}</Text>
                 {user.vehicles.map(vehicle => (
                   <ItemCard
                     title={vehicle.name}
@@ -77,7 +90,7 @@ export default class Profile extends Component {
           </ScrollView>
         </View>
         <AuthButton
-          title={'Editar perfil'}
+          title={str.editProfile}
           style={gstyles.bottomBtn}
           onPress={this.handleEditProfile}
         />

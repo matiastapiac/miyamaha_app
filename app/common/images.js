@@ -36,4 +36,6 @@ export const images = {
   telephone: require('../assets/images/telephone.png'),
   whatsapp: require('../assets/images/whatsapp.png'),
   km: require('../assets/images/km.png'),
+  vGrey: require('../assets/images/vGrey.png'),
+  vRed: require('../assets/images/vRed.png'),
 };

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {ScrollView, View} from 'react-native';
 import {gstyles} from '../common/gstyles';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
@@ -27,7 +28,6 @@ export default class EditProfile extends Component {
 
   setUserData() {
     const {user} = this.props?.route?.params;
-    console.log(user);
     this.setState({
       name: user.name,
       surname: user.surname,
@@ -42,28 +42,28 @@ export default class EditProfile extends Component {
 
   handleChangeText = (label, text) => {
     switch (label) {
-      case 'Nombre':
+      case str.name:
         this.setState({name: text});
         break;
-      case 'Apellidos':
+      case str.surname:
         this.setState({surname: text});
         break;
-      case 'Fecha nacimiento':
+      case str.birthDate:
         this.setState({dob: text});
         break;
-      case 'Email':
+      case str.email:
         this.setState({email: text});
         break;
-      case 'Teléfono':
+      case str.telephone:
         this.setState({phone: text});
         break;
-      case 'Dirección':
+      case str.address:
         this.setState({address: text});
         break;
-      case 'Comuna':
+      case str.commune:
         this.setState({common: text});
         break;
-      case 'Región':
+      case str.region:
         this.setState({region: text});
         break;
       default:
@@ -76,54 +76,52 @@ export default class EditProfile extends Component {
       this.state;
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={'EDITAR PERFIL'} />
+        <TopHeader label={str.editProfile} />
         <View style={gstyles.listContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthInput
-              label={'Nombre'}
+              label={str.name}
               value={name}
-              onChangeText={text => this.handleChangeText('Nombre', text)}
+              onChangeText={text => this.handleChangeText(str.name, text)}
             />
             <AuthInput
-              label={'Apellidos'}
+              label={str.surname}
               value={surname}
-              onChangeText={text => this.handleChangeText('Apellidos', text)}
+              onChangeText={text => this.handleChangeText(str.surname, text)}
             />
             <AuthInput
-              label={'Fecha nacimiento'}
+              label={str.birthDate}
               value={dob}
-              onChangeText={text =>
-                this.handleChangeText('Fecha nacimiento', text)
-              }
+              onChangeText={text => this.handleChangeText(str.birthDate, text)}
             />
             <AuthInput
-              label={'Email'}
+              label={str.email}
               value={email}
-              onChangeText={text => this.handleChangeText('Email', text)}
+              onChangeText={text => this.handleChangeText(str.email, text)}
             />
             <AuthInput
-              label={'Teléfono'}
+              label={str.telephone}
               value={phone}
-              onChangeText={text => this.handleChangeText('Teléfono', text)}
+              onChangeText={text => this.handleChangeText(str.telephone, text)}
             />
             <AuthInput
-              label={'Dirección'}
+              label={str.address}
               value={address}
-              onChangeText={text => this.handleChangeText('Dirección', text)}
+              onChangeText={text => this.handleChangeText(str.address, text)}
             />
             <AuthInput
-              label={'Comuna'}
+              label={str.commune}
               value={common}
-              onChangeText={text => this.handleChangeText('Comuna', text)}
+              onChangeText={text => this.handleChangeText(str.commune, text)}
             />
             <AuthInput
-              label={'Región'}
+              label={str.region}
               value={region}
-              onChangeText={text => this.handleChangeText('Región', text)}
+              onChangeText={text => this.handleChangeText(str.region, text)}
             />
           </ScrollView>
         </View>
-        <AuthButton title={'Guardar'} style={gstyles.bottomBtn} />
+        <AuthButton title={str.keep} style={gstyles.bottomBtn} />
       </Container>
     );
   }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {data, screen} from '../common/utils';
 import {gstyles} from '../common/gstyles';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import PickerInput from '../components/PickerInput';
@@ -37,32 +38,32 @@ export default class Dealers extends Component {
       <Container>
         <TopHeader />
         <View style={[gstyles.itemConatiner, gstyles.notifContent]}>
-          <Text style={gstyles.dealersTitle}>Selecciona una ubicación</Text>
+          <Text style={gstyles.dealersTitle}>{str.selectLocation}</Text>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 20}}>
             <PickerInput
-              label={'Región'}
-              placeholder={'Metropolitana'}
+              label={str.region}
+              placeholder={str.metropolitan}
               data={data}
               setSelected={this.setRegion}
             />
             <PickerInput
-              label={'Ciudad'}
-              placeholder={'Santiago'}
+              label={str.city}
+              placeholder={str.santiago}
               data={data}
               setSelected={this.setCity}
             />
             <PickerInput
-              label={'Comuna'}
-              placeholder={'Las Condes'}
+              label={str.commune}
+              placeholder={str.counts}
               data={data}
               set
               Selected={this.setCommon}
             />
           </ScrollView>
           <AuthButton
-            title={'Siguiente'}
+            title={str.following}
             style={gstyles.bottomBtn}
             onPress={this.handleSubmit}
           />

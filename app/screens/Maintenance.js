@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
 import {screen, vehicles} from '../common/utils';
 import {colors} from '../common/colors';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -50,12 +51,12 @@ export default class Maintenance extends Component {
             marginHorizontal: 10,
           }}>
           <AuthButton
-            title={'Agendar mantención'}
+            title={str.scheduleMaintance}
             onPress={this.handleSchedule}
             style={{width: '48%'}}
           />
           <AuthButton
-            title={'Descargar certificado'}
+            title={str.downloadCertificare}
             style={{width: '48%', backgroundColor: colors.black}}
           />
         </View>

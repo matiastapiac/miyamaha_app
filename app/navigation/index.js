@@ -32,7 +32,6 @@ export default function Navigation() {
           component={Profile}
           options={{
             gestureDirection: 'vertical',
-            animationTypeForReplace:'pop'
           }}
         />
         <Stack.Screen

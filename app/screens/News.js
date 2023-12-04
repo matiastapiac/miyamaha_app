@@ -1,22 +1,11 @@
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  LogBox,
-} from 'react-native';
+import {View, ScrollView, Image, TouchableOpacity, LogBox} from 'react-native';
 import Container from '../components/Container';
-import TopHeader from '../components/TopHeader';
-import {images} from '../common/images';
-import ImageCarousel from '../components/ImageCarousel';
 import {curousel} from '../common/utils';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from '../common/dimensions';
+import {colors} from '../common/colors';
+import {images} from '../common/images';
+import TopHeader from '../components/TopHeader';
+import ImageCarousel from '../components/ImageCarousel';
 
 export default class News extends Component {
   constructor(props) {
@@ -29,40 +18,55 @@ export default class News extends Component {
   componentDidMount() {
     LogBox.ignoreAllLogs();
   }
+
+  renderImages = () => {
+    return this.state.data.map((item, index) => (
+      <TouchableOpacity key={index} style={styles.imageWrapper}>
+        <Image source={item} style={styles.image} />
+      </TouchableOpacity>
+    ));
+  };
+
   render() {
     return (
       <Container>
         <TopHeader />
-
-        <View style={{flex: 1}}>
-          <ScrollView style={{flex: 1, paddingBottom: hp(20)}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.container}>
+          <View style={styles.carouselContainer}>
             <ImageCarousel images={curousel} />
-            <View style={{flex: 1}}>
-              <FlatList
-                data={this.state.data}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{alignItems: 'center'}}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => (
-                  <TouchableOpacity style={{margin: 10}}>
-                    <Image
-                      source={item}
-                      style={{
-                        height: wp(45),
-                        width: wp(45),
-                        borderRadius: 10,
-                      }}
-                    />
-                  </TouchableOpacity>
-                )}
-              />
-            </View>
-          </ScrollView>
-        </View>
+          </View>
+          <View
+            style={{
+              ...styles.container,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}>
+            {this.renderImages()}
+          </View>
+        </ScrollView>
       </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = {
+  container: {
+    flexGrow: 1,
+    backgroundColor: colors.white,
+  },
+  carouselContainer: {
+    height: 400,
+    backgroundColor: colors.white,
+  },
+  imageWrapper: {
+    width: '50%',
+    padding: 10,
+  },
+  image: {
+    height: 150,
+    width: '100%',
+    borderRadius: 10,
+  },
+};

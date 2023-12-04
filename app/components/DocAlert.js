@@ -4,21 +4,22 @@ import Modal from 'react-native-modal';
 import {colors} from '../common/colors';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 import {FONTS} from '../common/fonts';
+import {strings as str} from '../common/strings';
 import AuthButton from './AuthButton';
 import AuthInput from './AuthInput';
 
-export default function DocAlert({visible, title,onCancel}) {
+export default function DocAlert({visible, title, onCancel}) {
   return (
     <Modal isVisible={visible}>
       <View style={styles.mainContainer}>
         <Text style={styles.title}>{title}</Text>
         <AuthInput
-          label={'Especifique el nombre de la carpeta'}
-          placeholder={'Nombre de la carpeta'}
+          label={str.specifyFolderName}
+          placeholder={str.folderName}
         />
-        <AuthButton title={'Crear'} disabled />
+        <AuthButton title={str.create} disabled />
         <AuthButton
-          title={'Cancelar'}
+          title={str.cancel}
           style={{backgroundColor: colors.black}}
           onPress={onCancel}
         />

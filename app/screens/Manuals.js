@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
 import {manuals} from '../common/utils';
 import {gstyles} from '../common/gstyles';
+import {strings as str} from '../common/strings';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
@@ -15,7 +16,7 @@ export default class Manuals extends Component {
   render() {
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={'MANUALES'} />
+        <TopHeader label={str.manuals} />
         <View style={{paddingTop: 20}}>
           <FlatList
             data={manuals}
@@ -25,7 +26,7 @@ export default class Manuals extends Component {
             showsVerticalScrollIndicator={false}
           />
         </View>
-        <AuthButton title={'Volver'} style={gstyles.bottomBtn} />
+        <AuthButton title={str.return} style={gstyles.bottomBtn} />
       </Container>
     );
   }
