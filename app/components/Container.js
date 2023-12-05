@@ -1,25 +1,16 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {View, SafeAreaView} from 'react-native';
 import {colors} from '../common/colors';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Container = ({children, bgColor, style}) => {
+  bgColor = bgColor ? bgColor : colors.white;
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        style,
-        {backgroundColor: bgColor ? bgColor : colors.white},
-      ]}>
-      {children}
+    <SafeAreaView style={{flex: 1, backgroundColor: bgColor}}>
+      <View style={[style, {flex: 1, backgroundColor: bgColor}]}>
+        {children}
+      </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default Container;

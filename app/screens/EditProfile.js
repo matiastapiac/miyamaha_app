@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, View} from 'react-native';
+import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
 import Container from '../components/Container';
@@ -77,50 +77,58 @@ export default class EditProfile extends Component {
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.editProfile} />
-        <View style={gstyles.listContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <AuthInput
-              label={str.name}
-              value={name}
-              onChangeText={text => this.handleChangeText(str.name, text)}
-            />
-            <AuthInput
-              label={str.surname}
-              value={surname}
-              onChangeText={text => this.handleChangeText(str.surname, text)}
-            />
-            <AuthInput
-              label={str.birthDate}
-              value={dob}
-              onChangeText={text => this.handleChangeText(str.birthDate, text)}
-            />
-            <AuthInput
-              label={str.email}
-              value={email}
-              onChangeText={text => this.handleChangeText(str.email, text)}
-            />
-            <AuthInput
-              label={str.telephone}
-              value={phone}
-              onChangeText={text => this.handleChangeText(str.telephone, text)}
-            />
-            <AuthInput
-              label={str.address}
-              value={address}
-              onChangeText={text => this.handleChangeText(str.address, text)}
-            />
-            <AuthInput
-              label={str.commune}
-              value={common}
-              onChangeText={text => this.handleChangeText(str.commune, text)}
-            />
-            <AuthInput
-              label={str.region}
-              value={region}
-              onChangeText={text => this.handleChangeText(str.region, text)}
-            />
-          </ScrollView>
-        </View>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <View style={gstyles.listContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <AuthInput
+                label={str.name}
+                value={name}
+                onChangeText={text => this.handleChangeText(str.name, text)}
+              />
+              <AuthInput
+                label={str.surname}
+                value={surname}
+                onChangeText={text => this.handleChangeText(str.surname, text)}
+              />
+              <AuthInput
+                label={str.birthDate}
+                value={dob}
+                onChangeText={text =>
+                  this.handleChangeText(str.birthDate, text)
+                }
+              />
+              <AuthInput
+                label={str.email}
+                value={email}
+                onChangeText={text => this.handleChangeText(str.email, text)}
+              />
+              <AuthInput
+                label={str.telephone}
+                value={phone}
+                onChangeText={text =>
+                  this.handleChangeText(str.telephone, text)
+                }
+              />
+              <AuthInput
+                label={str.address}
+                value={address}
+                onChangeText={text => this.handleChangeText(str.address, text)}
+              />
+              <AuthInput
+                label={str.commune}
+                value={common}
+                onChangeText={text => this.handleChangeText(str.commune, text)}
+              />
+              <AuthInput
+                label={str.region}
+                value={region}
+                onChangeText={text => this.handleChangeText(str.region, text)}
+              />
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
         <AuthButton title={str.keep} style={gstyles.bottomBtn} />
       </Container>
     );

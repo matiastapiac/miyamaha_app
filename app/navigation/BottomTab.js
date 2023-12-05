@@ -15,6 +15,7 @@ export function BottomTab() {
       }}>
       {bottomStack.map((item, index) => (
         <Tab.Screen
+          key={index}
           name={item.name}
           component={item.component}
           options={{

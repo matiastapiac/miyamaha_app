@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Image, TouchableOpacity, LogBox} from 'react-native';
+import {View, ScrollView, Image, LogBox, Pressable} from 'react-native';
 import Container from '../components/Container';
 import {curousel} from '../common/utils';
 import {colors} from '../common/colors';
@@ -21,9 +21,9 @@ export default class News extends Component {
 
   renderImages = () => {
     return this.state.data.map((item, index) => (
-      <TouchableOpacity key={index} style={styles.imageWrapper}>
+      <Pressable key={index} style={styles.imageWrapper}>
         <Image source={item} style={styles.image} />
-      </TouchableOpacity>
+      </Pressable>
     ));
   };
 

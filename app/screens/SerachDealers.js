@@ -27,7 +27,7 @@ export default class SerachDealers extends Component {
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.searchResults} />
-        <View style={gstyles.listContainer}>
+        <View style={[gstyles.listContainer, {marginBottom: '40%'}]}>
           <FlatList
             data={dealers}
             keyExtractor={item => item.id}

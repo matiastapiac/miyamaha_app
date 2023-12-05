@@ -3,27 +3,37 @@ import {View, Image, Animated, StyleSheet, Pressable, Text} from 'react-native';
 import {images} from '../common/images';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 import {FONTS} from '../common/fonts';
+import {strings as str} from '../common/strings';
 
 const FloatingActionButton = ({onRightPress, onLeftPress}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const folderAnimation = useRef(new Animated.Value(0)).current;
   const fileAnimation = useRef(new Animated.Value(0)).current;
+  const mainButtonRotation = useRef(new Animated.Value(0)).current;
 
   const toggleMenu = () => {
     const toValue = isExpanded ? 0 : 1;
+    const duration = 500;
+
+    setIsExpanded(!isExpanded);
+
     Animated.parallel([
       Animated.timing(folderAnimation, {
         toValue,
-        duration: 500,
+        duration,
         useNativeDriver: false,
       }),
       Animated.timing(fileAnimation, {
         toValue,
-        duration: 500,
+        duration,
+        useNativeDriver: false,
+      }),
+      Animated.timing(mainButtonRotation, {
+        toValue: isExpanded ? 0 : 0.5,
+        duration,
         useNativeDriver: false,
       }),
     ]).start();
-    setIsExpanded(!isExpanded);
   };
 
   const folderStyle = {
@@ -48,6 +58,17 @@ const FloatingActionButton = ({onRightPress, onLeftPress}) => {
     ],
   };
 
+  const mainButtonRotationStyle = {
+    transform: [
+      {
+        rotate: mainButtonRotation.interpolate({
+          inputRange: [0, 1],
+          outputRange: ['0deg', '180deg'],
+        }),
+      },
+    ],
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.actionContainer}>
@@ -55,23 +76,21 @@ const FloatingActionButton = ({onRightPress, onLeftPress}) => {
           <Pressable onPress={onLeftPress}>
             <Image source={images.folder} style={styles.imageIcon} />
           </Pressable>
-          {isExpanded == 1 && (
-            <Text style={styles.btnTitle}>Crear carpeta</Text>
+          {isExpanded && (
+            <Text style={styles.btnTitle}>{str.createfolder}</Text>
           )}
         </Animated.View>
         <Animated.View style={[styles.actionButton, fileStyle]}>
           <Pressable onPress={onRightPress}>
             <Image source={images.file} style={styles.imageIcon} />
           </Pressable>
-          {isExpanded == 1 && (
-            <Text style={styles.btnTitle}>Subir archivo</Text>
-          )}
+          {isExpanded && <Text style={styles.btnTitle}>{str.uploadFile}</Text>}
         </Animated.View>
       </View>
       <Pressable onPress={toggleMenu} style={styles.mainButton}>
         <Animated.Image
           source={isExpanded ? images.close : images.plus}
-          style={styles.mainIcon}
+          style={[styles.mainIcon, mainButtonRotationStyle]}
         />
       </Pressable>
     </View>

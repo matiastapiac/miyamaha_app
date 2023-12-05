@@ -5,7 +5,7 @@ import {FONTS} from '../common/fonts';
 import {colors} from '../common/colors';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 
-export default function ScheduleCard({km, name, address, date, month, year}) {
+export default function ScheduleCard({km, name, address, date}) {
   const e = date.split(' ');
   return (
     <View>
@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
   lightText: {
     fontFamily: FONTS.OpenSansRegular,
     color: colors.grey,
-    fontSize:hp(1.5)
+    fontSize: hp(1.5),
   },
 });

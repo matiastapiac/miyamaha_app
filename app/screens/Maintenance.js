@@ -54,10 +54,12 @@ export default class Maintenance extends Component {
             title={str.scheduleMaintance}
             onPress={this.handleSchedule}
             style={{width: '48%'}}
+            textStyle={{fontSize: 12}}
           />
           <AuthButton
             title={str.downloadCertificare}
             style={{width: '48%', backgroundColor: colors.black}}
+            textStyle={{fontSize: 12}}
           />
         </View>
       </Container>

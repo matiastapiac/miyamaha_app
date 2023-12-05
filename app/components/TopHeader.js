@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {images} from '../common/images';
 import {colors} from '../common/colors';
@@ -32,13 +32,13 @@ export default function TopHeader({
 
   const renderLeftIcon = () => {
     return (
-      <TouchableOpacity onPress={handleBack}>
+      <Pressable onPress={handleBack}>
         <Image
           source={label ? images.leftarrow : images.profile}
           style={{height: iconSize, width: iconSize, tintColor: iColor}}
           resizeMode="contain"
         />
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
@@ -67,13 +67,14 @@ export default function TopHeader({
     return label ? (
       <View style={{height: iconSize, width: iconSize}}></View>
     ) : (
-      <TouchableOpacity onPress={handleRightPress}>
+      <Pressable onPress={handleRightPress}>
+        <Image source={images.vRed} style={styles.badge} />
         <Image
           source={images.bell}
           style={{height: iconSize, width: iconSize}}
           resizeMode="contain"
         />
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
@@ -96,6 +97,11 @@ export default function TopHeader({
 }
 
 const styles = StyleSheet.create({
+  badge: {
+    height: hp(1),
+    width: hp(1),
+    alignSelf: 'flex-end',
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',

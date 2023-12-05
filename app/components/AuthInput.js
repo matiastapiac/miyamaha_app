@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     minHeight: 150,
-    backgroundColor: colors.grey2,
+    backgroundColor: colors.grey3,
     fontFamily: FONTS.OpenSansRegular,
     color: colors.grey1,
     textAlignVertical: 'top',

@@ -19,72 +19,41 @@ import ScheduleMaintenance from '../screens/ScheduleMaintenance';
 
 const Stack = createNativeStackNavigator();
 
+const screens = [
+  {name: screen.Login, component: Login, nav: 'horizontal'},
+  {name: screen.Registration, component: Registration, nav: 'horizontal'},
+  {name: screen.ForgotPassword, component: ForgotPassword, nav: 'horizontal'},
+  {name: screen.DashBoard, component: BottomTab, nav: 'horizontal'},
+  {name: screen.Profile, component: Profile, nav: 'vertical'},
+  {name: screen.Notification, component: Notification, nav: 'vertical'},
+  {name: screen.SalesForm, component: SalesForm, nav: 'vertical'},
+  {name: screen.MyDocuments, component: MyDocuments, nav: 'vertical'},
+  {name: screen.DocumentRequest, component: DocumentRequest, nav: 'vertical'},
+  {name: screen.Manuals, component: Manuals, nav: 'vertical'},
+  {name: screen.DocumentList, component: DocumentList, nav: 'horizontal'},
+  {name: screen.SerachDealers, component: SerachDealers, nav: 'vertical'},
+  {name: screen.EditProfile, component: EditProfile, nav: 'horizontal'},
+  {
+    name: screen.ScheduleMaintenance,
+    component: ScheduleMaintenance,
+    nav: 'vertical',
+  },
+];
+
 export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name={screen.Login} component={Login} />
-        <Stack.Screen name={screen.Registration} component={Registration} />
-        <Stack.Screen name={screen.ForgotPassword} component={ForgotPassword} />
-        <Stack.Screen name={screen.DashBoard} component={BottomTab} />
-        <Stack.Screen
-          name={screen.Profile}
-          component={Profile}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
-        <Stack.Screen
-          name={screen.Notification}
-          component={Notification}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
-        <Stack.Screen
-          name={screen.SalesForm}
-          component={SalesForm}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
-        <Stack.Screen
-          name={screen.MyDocuments}
-          component={MyDocuments}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
-        <Stack.Screen
-          name={screen.DocumentRequest}
-          component={DocumentRequest}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
-        <Stack.Screen
-          name={screen.Manuals}
-          component={Manuals}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
-        <Stack.Screen name={screen.DocumentList} component={DocumentList} />
-        <Stack.Screen
-          name={screen.SerachDealers}
-          component={SerachDealers}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
-        <Stack.Screen name={screen.EditProfile} component={EditProfile} />
-        <Stack.Screen
-          name={screen.ScheduleMaintenance}
-          component={ScheduleMaintenance}
-          options={{
-            gestureDirection: 'vertical',
-          }}
-        />
+        {screens.map((item, index) => (
+          <Stack.Screen
+            key={index}
+            name={item.name}
+            component={item.component}
+            options={{
+              gestureDirection: item.nav,
+            }}
+          />
+        ))}
       </Stack.Navigator>
     </NavigationContainer>
   );

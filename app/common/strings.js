@@ -85,4 +85,6 @@ export const strings = {
   folderName: 'Nombre de la carpeta',
   create: 'Crear',
   cancel: 'Cancelar',
+  createfolder: 'Crear carpeta',
+  uploadFile: 'Subir archivo',
 };

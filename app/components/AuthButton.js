@@ -1,19 +1,34 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {Pressable, StyleSheet, Text} from 'react-native';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 
-const AuthButton = ({title, style, onPress, disabled}) => {
+const AuthButton = ({title, style, onPress, disabled, textStyle}) => {
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+
+  const handleButtonPress = () => {
+    if (isButtonDisabled) {
+      return;
+    }
+    setButtonDisabled(true);
+
+    onPress && onPress();
+
+    setTimeout(() => {
+      setButtonDisabled(false);
+    }, 2000);
+  };
+
   return (
-    <TouchableOpacity
-      style={[styles.button, disabled ? styles.buttonDisabled : null, style]}
-      onPress={onPress}
-      disabled={disabled}
+    <Pressable
+      style={[styles.button, style]}
+      onPress={handleButtonPress}
+      disabled={disabled || isButtonDisabled}
       accessibilityRole="button"
-      accessibilityState={{disabled}}>
-      <Text style={styles.title}>{title}</Text>
-    </TouchableOpacity>
+      accessibilityState={{disabled: isButtonDisabled}}>
+      <Text style={[styles.title, textStyle]}>{title}</Text>
+    </Pressable>
   );
 };
 
@@ -28,13 +43,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
   title: {
     color: colors.white,
     fontSize: hp(2),
-    fontFamily: FONTS.OpenSansBold ,
+    fontFamily: FONTS.OpenSansBold,
+    textAlign: 'center',
   },
 });
 

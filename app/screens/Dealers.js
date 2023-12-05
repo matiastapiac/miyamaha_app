@@ -58,8 +58,7 @@ export default class Dealers extends Component {
               label={str.commune}
               placeholder={str.counts}
               data={data}
-              set
-              Selected={this.setCommon}
+              setSelected={this.setCommon}
             />
           </ScrollView>
           <AuthButton

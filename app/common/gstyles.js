@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -22,8 +22,9 @@ export const gstyles = StyleSheet.create({
     borderWidth: 0,
     shadowOpacity: 0,
     elevation: 0,
-    height: hp(8),
-    paddingBottom: 10,
+    height: hp(9),
+    paddingBottom: hp(2)
+    // Platform.OS == 'ios' ? 20 : 10,
   },
   itemConatiner: {
     flex: 1,
@@ -53,7 +54,7 @@ export const gstyles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 10,
   },
-  listContainer: {marginBottom: '40%', backgroundColor: colors.white},
+  listContainer: {marginBottom: '20%', backgroundColor: colors.white},
   vehicleContent: {height: hp(10)},
   fjallaText: {
     color: colors.red,

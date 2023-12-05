@@ -40,7 +40,7 @@ export default class Profile extends Component {
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.userProfile} />
-        <View style={gstyles.listContainer}>
+        <View style={[gstyles.listContainer, {marginBottom: '40%'}]}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthInput label={str.name} value={user.name} editable={false} />
             <AuthInput
@@ -77,8 +77,9 @@ export default class Profile extends Component {
             {user.vehicles.length > 0 && (
               <>
                 <Text style={gstyles.fjallaText}>{str.registeredVehicles}</Text>
-                {user.vehicles.map(vehicle => (
+                {user.vehicles.map((vehicle, index) => (
                   <ItemCard
+                    key={index}
                     title={vehicle.name}
                     subTitle={vehicle.vin}
                     icon={images.bike}

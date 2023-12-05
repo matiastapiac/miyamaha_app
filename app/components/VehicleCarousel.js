@@ -4,14 +4,13 @@ import Carousel, {ParallaxImage, Pagination} from 'react-native-snap-carousel';
 import {FONTS} from '../common/fonts';
 import {colors} from '../common/colors';
 import {vehicles} from '../common/utils';
-import {heightPercentageToDP as hp} from '../common/dimensions';
 
 const {width: screenWidth} = Dimensions.get('window');
 
 export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
   const _renderItem = ({item, index}, parallaxProps) => {
     return (
-      <View style={styles.item}>
+      <View style={styles.item} key={index}>
         <ParallaxImage
           source={item.image}
           containerStyle={styles.imageContainer}

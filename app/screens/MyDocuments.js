@@ -16,16 +16,17 @@ export default class MyDocuments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCreateFolder: false,
+      isVisible: false,
     };
   }
+
   handleEvent(item) {
     item.type == 'folder' &&
       this.props.navigation.push(screen.DocumentList, {item});
   }
 
   handleCreateFolder = () => {
-    this.setState({isCreateFolder: !this.state.isCreateFolder});
+    this.setState({isVisible: !this.state.isVisible});
   };
 
   renderItem = ({item}) => (
@@ -37,7 +38,7 @@ export default class MyDocuments extends Component {
   );
 
   render() {
-    const {isCreateFolder} = this.state;
+    const {isVisible} = this.state;
     return (
       <Container>
         <TopHeader
@@ -57,7 +58,7 @@ export default class MyDocuments extends Component {
           <FloatingActionButton onLeftPress={this.handleCreateFolder} />
         </View>
         <DocAlert
-          visible={isCreateFolder}
+          visible={isVisible}
           title={str.createFolder}
           onCancel={this.handleCreateFolder}
         />
