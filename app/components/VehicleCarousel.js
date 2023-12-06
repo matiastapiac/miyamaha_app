@@ -4,6 +4,7 @@ import Carousel, {ParallaxImage, Pagination} from 'react-native-snap-carousel';
 import {FONTS} from '../common/fonts';
 import {colors} from '../common/colors';
 import {vehicles} from '../common/utils';
+import {strings as str} from '../common/strings';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -87,7 +88,7 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
           color: colors.grey,
           fontFamily: FONTS.OpenSansRegular,
         }}>
-        Última mantención
+        {str.lastMaintenance}
       </Text>
     </View>
   );

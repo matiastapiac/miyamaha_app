@@ -87,4 +87,5 @@ export const strings = {
   cancel: 'Cancelar',
   createfolder: 'Crear carpeta',
   uploadFile: 'Subir archivo',
+  lastMaintenance: 'Última mantención',
 };

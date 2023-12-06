@@ -8,6 +8,7 @@ import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
 import ScheduleCard from '../components/ScheduleCard';
 import VehicleCarousel from '../components/VehicleCarousel';
+import CurveCarousel from '../components/CurveCarousel';
 
 export default class Maintenance extends Component {
   constructor(props) {
@@ -25,11 +26,12 @@ export default class Maintenance extends Component {
     return (
       <Container>
         <TopHeader />
-        <VehicleCarousel
+        <CurveCarousel/>
+        {/* <VehicleCarousel
           data={vehicles}
           activeSlide={activeSlide}
           onSnapToItem={index => this.setState({activeSlide: index})}
-        />
+        /> */}
         <FlatList
           data={vehicles[activeSlide].maintenance}
           keyExtractor={item => item.id}
