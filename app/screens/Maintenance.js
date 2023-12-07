@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
-import {screen, vehicles} from '../common/utils';
+import {curousel, screen, vehicles} from '../common/utils';
 import {colors} from '../common/colors';
 import {strings as str} from '../common/strings';
 import Container from '../components/Container';
@@ -26,7 +26,7 @@ export default class Maintenance extends Component {
     return (
       <Container>
         <TopHeader />
-        <CurveCarousel/>
+        <CurveCarousel />
         {/* <VehicleCarousel
           data={vehicles}
           activeSlide={activeSlide}

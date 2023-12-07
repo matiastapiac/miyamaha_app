@@ -58,7 +58,7 @@ export default class Notification extends Component {
           title={str.eliminate}
           style={[
             gstyles.bottomBtn,
-            {opacity: this.state.selected == 0 && 0.6},
+            {opacity: this.state.selected == 0 ? 0.6 : 1},
           ]}
           disabled={this.state.selected == 0}
         />
