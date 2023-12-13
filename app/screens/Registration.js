@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {ScrollView, View} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {data} from '../common/utils';
 import {strings as str} from '../common/strings';
+import {userRegistration, registerRejected} from '../store/actions/authActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -18,7 +20,7 @@ const PAGES = {
   CONTACT: 4,
 };
 
-export default class Registration extends Component {
+class Registration extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +28,15 @@ export default class Registration extends Component {
       isSuccess: false,
       isStatusModal: false,
       status: false,
+      rut: '',
+      vin: '',
+      password: '',
+      retypePassword: '',
+      name: '',
+      surname: '',
+      birthDate: '',
+      email: '',
+      telephone: '',
     };
   }
 
@@ -88,14 +99,36 @@ export default class Registration extends Component {
   }
 
   renderScreens = () => {
-    const {page, status} = this.state;
+    const {
+      page,
+      status,
+      rut,
+      vin,
+      password,
+      retypePassword,
+      name,
+      surname,
+      birthDate,
+      email,
+      telephone,
+    } = this.state;
 
     switch (page) {
       case PAGES.RUT_VIN:
         return (
           <View>
-            <AuthInput label={str.rut} placeholder={str.enterRut} />
-            <AuthInput label={str.vin} placeholder={str.enterVin} />
+            <AuthInput
+              label={str.rut}
+              placeholder={str.enterRut}
+              value={rut}
+              onChangeText={e => this.setState({rut: e})}
+            />
+            <AuthInput
+              label={str.vin}
+              placeholder={str.enterVin}
+              value={vin}
+              onChangeText={e => this.setState({vin: e})}
+            />
             <Validation
               onPress={() => this.setState({status: !status})}
               status={status}
@@ -105,27 +138,64 @@ export default class Registration extends Component {
       case PAGES.PASSWORD:
         return (
           <View>
-            <AuthInput label={str.password} placeholder={str.enterPass} />
+            <AuthInput
+              label={str.password}
+              placeholder={str.enterPass}
+              value={password}
+              onChangeText={e => this.setState({password: e})}
+            />
             <AuthInput
               label={str.retypePass}
               placeholder={str.writePassAgain}
+              value={retypePassword}
+              onChangeText={e => this.setState({retypePassword: e})}
             />
           </View>
         );
       case PAGES.PERSONAL_INFO:
         return (
           <View>
-            <AuthInput label={str.name} placeholder={str.enterName} />
-            <AuthInput label={str.surname} placeholder={str.enterLastName} />
-            <AuthInput label={str.birthDate} placeholder={str.enterDOB} />
-            <AuthInput label={str.email} placeholder={str.enterEmail} />
-            <AuthInput label={str.telephone} placeholder={str.enterTelephone} />
+            <AuthInput
+              label={str.name}
+              placeholder={str.enterName}
+              value={name}
+              onChangeText={e => this.setState({name: e})}
+            />
+            <AuthInput
+              label={str.surname}
+              placeholder={str.enterLastName}
+              value={surname}
+              onChangeText={e => this.setState({surname: e})}
+            />
+            <AuthInput
+              label={str.birthDate}
+              placeholder={str.enterDOB}
+              value={birthDate}
+              onChangeText={e => this.setState({birthDate: e})}
+            />
+            <AuthInput
+              label={str.email}
+              placeholder={str.enterEmail}
+              value={email}
+              onChangeText={e => this.setState({email: e})}
+            />
+            <AuthInput
+              label={str.telephone}
+              placeholder={str.enterTelephone}
+              value={telephone}
+              onChangeText={e => this.setState({telephone: e})}
+            />
           </View>
         );
       case PAGES.CONTACT:
         return (
           <View>
-            <AuthInput label={str.email} placeholder={str.enterContactEmail} />
+            <AuthInput
+              label={str.email}
+              placeholder={str.enterContactEmail}
+              value={email}
+              onChangeText={e => this.setState({email: e})}
+            />
             <PickerInput
               label={str.selectADistributor}
               placeholder={str.selectTheDistributor}
@@ -147,7 +217,9 @@ export default class Registration extends Component {
           label={this.setHeaderTitle()}
           onLeftPress={this.handleBack}
         />
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flex:1}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{flex: 1}}>
           {this.renderScreens()}
         </ScrollView>
         <AuthButton
@@ -177,3 +249,15 @@ export default class Registration extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {
+  userRegistration,
+  registerRejected,
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Registration);

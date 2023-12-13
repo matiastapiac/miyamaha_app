@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
+import {forgotPassword, changePassword} from '../store/actions/authActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
@@ -15,7 +17,7 @@ const PAGES = {
   CHANGE_PASSWORD: 3,
 };
 
-export default class ForgotPassword extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,10 @@ export default class ForgotPassword extends Component {
       isVisible: false,
       isUnRegister: false,
       status: false,
+      rut: '',
+      code: '',
+      password: '',
+      retypePassword: '',
     };
   }
 
@@ -37,7 +43,7 @@ export default class ForgotPassword extends Component {
         return str.changePass;
     }
   }
-  
+
   setAlertTitle() {
     const {page, status} = this.state;
     return page == PAGES.RUT && status
@@ -78,12 +84,17 @@ export default class ForgotPassword extends Component {
 
   renderScreens = () => {
     const {page, status} = this.state;
-
+    const {rut, code, password, retypePassword} = this.state;
     switch (page) {
       case PAGES.RUT:
         return (
           <View>
-            <AuthInput label={str.rut} placeholder={str.enterRut} />
+            <AuthInput
+              label={str.rut}
+              placeholder={str.enterRut}
+              value={rut}
+              onChangeText={e => this.setState({rut: e})}
+            />
             <Validation
               onPress={() => this.setState({status: !status})}
               status={status}
@@ -91,14 +102,28 @@ export default class ForgotPassword extends Component {
           </View>
         );
       case PAGES.CODE_VERIFICATION:
-        return <AuthInput label={str.code} placeholder={str.enterCode} />;
+        return (
+          <AuthInput
+            label={str.code}
+            placeholder={str.enterCode}
+            value={code}
+            onChangeText={e => this.setState({code: e})}
+          />
+        );
       case PAGES.CHANGE_PASSWORD:
         return (
           <View>
-            <AuthInput label={str.password} placeholder={str.enterPass} />
+            <AuthInput
+              label={str.password}
+              placeholder={str.enterPass}
+              value={password}
+              onChangeText={e => this.setState({password: e})}
+            />
             <AuthInput
               label={str.retypePass}
               placeholder={str.writePassAgain}
+              value={retypePassword}
+              onChangeText={e => this.setState({retypePassword: e})}
             />
           </View>
         );
@@ -131,3 +156,15 @@ export default class ForgotPassword extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {
+  forgotPassword,
+  changePassword,
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(ForgotPassword);

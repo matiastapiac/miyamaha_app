@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {ScrollView} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {data} from '../common/utils';
 import {strings as str} from '../common/strings';
@@ -8,7 +9,7 @@ import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
 import PickerInput from '../components/PickerInput';
 
-export default class DocumentRequest extends Component {
+class DocumentRequest extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,3 +50,12 @@ export default class DocumentRequest extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(DocumentRequest);

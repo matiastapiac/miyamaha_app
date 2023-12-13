@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {dealers} from '../common/utils';
 import {strings as str} from '../common/strings';
@@ -8,7 +9,7 @@ import TopHeader from '../components/TopHeader';
 import SearchCard from '../components/SearchCard';
 import AuthButton from '../components/AuthButton';
 
-export default class SerachDealers extends Component {
+class SerachDealers extends Component {
   renderItem = ({item}) => (
     <SearchCard
       title={item.name}
@@ -44,3 +45,12 @@ export default class SerachDealers extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(SerachDealers);

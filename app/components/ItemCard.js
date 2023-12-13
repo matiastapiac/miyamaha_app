@@ -16,8 +16,15 @@ const ItemCard = ({
   style,
 }) => {
   const renderIcon = () => {
+    const isURL = str => {
+      const urlRegex = new RegExp(/^(ftp|http|https):\/\/[^ "]+$/, 'i');
+      return urlRegex.test(str);
+    };
+
     if (icon) {
-      return <Image source={icon} style={styles.icon} />;
+      return (
+        <Image source={isURL(icon) ? {uri: icon} : icon} style={styles.icon} />
+      );
     } else {
       return (
         <Pressable onPress={onRadioPress}>

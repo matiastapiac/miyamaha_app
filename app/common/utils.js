@@ -65,6 +65,28 @@ export const bottomStack = [
   },
 ];
 
+export const BASEURL = 'https://apimiyamaha.handy.cl/User/';
+
+export const endpoints = {
+  login: 'login',
+  forgot_password: 'forgot-password',
+  register: 'register',
+  register_rejected: 'register-rejected',
+  profile: 'profile',
+  recover_password: 'recover-password',
+  change_password: 'change-password',
+  device_token: 'device-token',
+  documnets: 'documents',
+  folders: 'create-folder',
+  news: '',
+  maintenance_urls: '',
+  maintenance_certificate: '',
+  lost_documents: '',
+  post_sale: '',
+  distributors: '',
+  warranty_manual: '',
+};
+
 export const curousel = [images.img1, images.img2, images.img3];
 
 export const documents = [

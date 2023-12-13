@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {devices} from '../common/utils';
 import {colors} from '../common/colors';
@@ -8,7 +9,7 @@ import ItemCard from '../components/ItemCard';
 import Container from '../components/Container';
 import AuthButton from '../components/AuthButton';
 
-export default class ScheduleMaintenance extends Component {
+class ScheduleMaintenance extends Component {
   handleCancel = () => {
     this.props.navigation.pop();
   };
@@ -39,3 +40,15 @@ export default class ScheduleMaintenance extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(
+  mapStateToProps,
+  mapStateToDispatch,
+)(ScheduleMaintenance);

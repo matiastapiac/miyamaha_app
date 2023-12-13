@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
+import {connect} from 'react-redux';
 import {data, screen} from '../common/utils';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
@@ -8,7 +9,7 @@ import TopHeader from '../components/TopHeader';
 import PickerInput from '../components/PickerInput';
 import AuthButton from '../components/AuthButton';
 
-export default class Dealers extends Component {
+class Dealers extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,3 +72,12 @@ export default class Dealers extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Dealers);

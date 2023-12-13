@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {notifications} from '../common/utils';
 import {strings as str} from '../common/strings';
@@ -9,7 +10,7 @@ import ItemCard from '../components/ItemCard';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
 
-export default class Notification extends Component {
+class Notification extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,3 +76,12 @@ export default class Notification extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Notification);

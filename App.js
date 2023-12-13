@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {LogBox} from 'react-native';
+import {Provider} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import Navigation from './app/navigation';
+import store from './app/store';
 
 export default class App extends Component {
   componentDidMount() {
@@ -11,6 +13,10 @@ export default class App extends Component {
     LogBox.ignoreAllLogs();
   }
   render() {
-    return <Navigation />;
+    return (
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    );
   }
 }

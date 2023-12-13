@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
+import {connect} from 'react-redux';
 import {manuals} from '../common/utils';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
@@ -8,7 +9,7 @@ import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
 import AuthButton from '../components/AuthButton';
 
-export default class Manuals extends Component {
+class Manuals extends Component {
   renderItem = ({item, index}) => (
     <ItemCard icon={item.icon} title={item.title} subTitle={item.description} />
   );
@@ -31,3 +32,12 @@ export default class Manuals extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Manuals);

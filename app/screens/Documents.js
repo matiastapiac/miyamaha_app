@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {documents, screen} from '../common/utils';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
 
-export default class Documents extends Component {
+class Documents extends Component {
   handleEvent(index) {
     index == 0
       ? this.props.navigation.push(screen.MyDocuments)
@@ -41,3 +42,12 @@ export default class Documents extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Documents);

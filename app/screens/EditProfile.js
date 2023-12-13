@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
+import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
+import {updateProfile, fetchProfile} from '../store/actions/authActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 
-export default class EditProfile extends Component {
+class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +25,19 @@ export default class EditProfile extends Component {
   }
 
   componentDidMount() {
-    this.setUserData();
+    if (this.props?.profile) {
+      const {user} = this.props?.profile?.data;
+      this.setState({
+        name: user?.firstName,
+        surname: user?.lastName,
+        dob: '',
+        email: user?.email,
+        phone: user?.phone,
+        address: user?.address,
+        common: user?.commune,
+        region: user?.region,
+      });
+    }
   }
 
   setUserData() {
@@ -69,6 +83,21 @@ export default class EditProfile extends Component {
       default:
         break;
     }
+  };
+
+  handleUpdateProfile = () => {
+    const {name, surname, dob, email, phone, address, common, region} =
+      this.state;
+    const data = {
+      firstName: name,
+      lastName: surname,
+      email: email,
+      phone: phone,
+      address: address,
+      commune: common,
+      region: region,
+    };
+    this.props.updateProfile(data);
   };
 
   render() {
@@ -129,8 +158,25 @@ export default class EditProfile extends Component {
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
-        <AuthButton title={str.keep} style={gstyles.bottomBtn} />
+        <AuthButton
+          title={str.keep}
+          style={gstyles.bottomBtn}
+          onPress={this.handleUpdateProfile}
+        />
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.auth?.loading,
+  error: state?.auth?.error,
+  profile: state?.auth?.profile,
+});
+
+const mapStateToDispatch = {
+  updateProfile,
+  fetchProfile,
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(EditProfile);

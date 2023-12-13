@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
-import {curousel, screen, vehicles} from '../common/utils';
+import {connect} from 'react-redux';
+import {screen, vehicles} from '../common/utils';
 import {colors} from '../common/colors';
 import {strings as str} from '../common/strings';
 import Container from '../components/Container';
@@ -10,7 +11,7 @@ import ScheduleCard from '../components/ScheduleCard';
 import VehicleCarousel from '../components/VehicleCarousel';
 import CurveCarousel from '../components/CurveCarousel';
 
-export default class Maintenance extends Component {
+class Maintenance extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,12 +27,12 @@ export default class Maintenance extends Component {
     return (
       <Container>
         <TopHeader />
-        <CurveCarousel />
-        {/* <VehicleCarousel
+        {/* <CurveCarousel /> */}
+        <VehicleCarousel
           data={vehicles}
           activeSlide={activeSlide}
           onSnapToItem={index => this.setState({activeSlide: index})}
-        /> */}
+        />
         <FlatList
           data={vehicles[activeSlide].maintenance}
           keyExtractor={item => item.id}
@@ -68,3 +69,12 @@ export default class Maintenance extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Maintenance);

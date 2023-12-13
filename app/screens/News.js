@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, ScrollView, Image, LogBox, Pressable} from 'react-native';
+import {connect} from 'react-redux';
 import Container from '../components/Container';
 import {curousel} from '../common/utils';
 import {colors} from '../common/colors';
@@ -7,7 +8,7 @@ import {images} from '../common/images';
 import TopHeader from '../components/TopHeader';
 import ImageCarousel from '../components/ImageCarousel';
 
-export default class News extends Component {
+class News extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,6 +51,15 @@ export default class News extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(News);
 
 const styles = {
   container: {

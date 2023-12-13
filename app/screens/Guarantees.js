@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
+import {connect} from 'react-redux';
 import {guarantees, screen} from '../common/utils';
 import {gstyles} from '../common/gstyles';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
 
-export default class Guarantees extends Component {
+class Guarantees extends Component {
   renderItem = ({item, index}) => (
     <ItemCard
       icon={item.icon}
@@ -33,3 +34,12 @@ export default class Guarantees extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Guarantees);

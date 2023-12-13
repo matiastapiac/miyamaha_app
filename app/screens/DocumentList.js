@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
+import {connect} from 'react-redux';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {images} from '../common/images';
@@ -11,7 +12,7 @@ import DocCard from '../components/DocCard';
 import FloatingActionButton from '../components/FloatingButton';
 import DocAlert from '../components/DocAlert';
 
-export default class DocumentList extends Component {
+class DocumentList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,3 +57,12 @@ export default class DocumentList extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.loading,
+  error: state?.error,
+});
+
+const mapStateToDispatch = {};
+
+export default connect(mapStateToProps, mapStateToDispatch)(DocumentList);

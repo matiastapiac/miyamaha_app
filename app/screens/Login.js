@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View, ImageBackground, Image} from 'react-native';
+import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -9,13 +11,35 @@ import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {screen} from '../common/utils';
 import {strings as str} from '../common/strings';
+import {userLogin} from '../store/actions/authActions';
+import { setTokenHeader} from '../store/services/Api';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import TextButton from '../components/TextButton';
 
-export default class Login extends Component {
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      rut: '17402204-6',
+      password: 'Developer@18!',
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    const {login} = this.props;
+
+    if (login?.status === 'success' && prevProps.login?.status !== 'success') {
+      setTokenHeader(login?.data?.token);
+      this.props.navigation.push(screen.DashBoard);
+    }
+  }
+
   handleLogin = () => {
-    this.props.navigation.push(screen.DashBoard);
+    const {rut, password} = this.state;
+    if (rut && password) {
+      this.props.userLogin(rut, password);
+    }
   };
 
   handleRegister = () => {
@@ -27,6 +51,9 @@ export default class Login extends Component {
   };
 
   render() {
+    const {rut, password} = this.state;
+    const {loading, login} = this.props;
+
     return (
       <ImageBackground
         source={images.background}
@@ -34,8 +61,18 @@ export default class Login extends Component {
         style={styles.container}>
         <Image source={images.logo} resizeMode="contain" style={styles.logo} />
         <View style={styles.bottomContain}>
-          <AuthInput icon={images.card} placeholder={str.rut} />
-          <AuthInput icon={images.lock} placeholder={str.password} />
+          <AuthInput
+            icon={images.card}
+            placeholder={str.rut}
+            value={rut}
+            onChangeText={e => this.setState({rut: e})}
+          />
+          <AuthInput
+            icon={images.lock}
+            placeholder={str.password}
+            value={password}
+            onChangeText={e => this.setState({password: e})}
+          />
           <TextButton
             title={str.forgotPassword}
             font={FONTS.OpenSansMedium}
@@ -56,10 +93,21 @@ export default class Login extends Component {
             />
           </View>
         </View>
+        <Spinner visible={loading} color={colors.red} />
       </ImageBackground>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loading: state?.auth?.loading,
+  error: state?.auth?.error,
+  login: state?.auth?.login,
+});
+
+const mapStateToDispatch = {
+  userLogin,
+};
 
 const styles = StyleSheet.create({
   bottomContain: {
@@ -83,3 +131,5 @@ const styles = StyleSheet.create({
     width: wp(50),
   },
 });
+
+export default connect(mapStateToProps, mapStateToDispatch)(Login);
