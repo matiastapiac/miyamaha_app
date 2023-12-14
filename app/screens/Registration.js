@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {ScrollView, View} from 'react-native';
+import {FlatList, ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
+import DocumentPicker, {types} from 'react-native-document-picker';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
-import {data} from '../common/utils';
+import {BASEURL, data, endpoints} from '../common/utils';
 import {strings as str} from '../common/strings';
 import {userRegistration, registerRejected} from '../store/actions/authActions';
 import Container from '../components/Container';
@@ -12,6 +14,9 @@ import AuthInput from '../components/AuthInput';
 import Alert from '../components/Alert';
 import Validation from '../components/Validation';
 import PickerInput from '../components/PickerInput';
+import {colors} from '../common/colors';
+import {showMessage} from 'react-native-flash-message';
+import {images} from '../common/images';
 
 const PAGES = {
   RUT_VIN: 1,
@@ -37,27 +42,106 @@ class Registration extends Component {
       birthDate: '',
       email: '',
       telephone: '',
+      address: '',
+      comuna: '',
+      region: '',
+      document: [],
     };
   }
 
-  handleRegister = () => {
-    const {page, status} = this.state;
+  componentDidUpdate(prevProps) {
+    const {register} = this.props;
+
+    if (
+      register?.status === 'success' &&
+      prevProps.register?.status !== 'success'
+    ) {
+      this.setState({isSuccess: true});
+    }
+  }
+
+  handleSubmit = () => {
+    const {page, status, rut, vin} = this.state;
     if (page === PAGES.RUT_VIN && status) {
       this.setState({isStatusModal: true});
     } else if (
       [PAGES.PASSWORD, PAGES.PERSONAL_INFO, PAGES.CONTACT].includes(page)
     ) {
-      this.setState({isSuccess: true});
+      this.register();
     } else {
-      this.setState(prevState => ({page: prevState.page + 1}));
+      if (rut && vin) {
+        this.setState({page: 2});
+      } else {
+        showMessage({
+          message: str.filedCantEmpty,
+          icon: 'success',
+        });
+      }
     }
   };
+
+  register() {
+    const {rut, vin, password, retypePassword} = this.state;
+    if (password == retypePassword) {
+      const formdata = new FormData();
+      formdata.append('rut', rut);
+      formdata.append('vin', vin);
+      formdata.append('password', password);
+
+      this.props.userRegistration(formdata);
+    } else {
+      showMessage({message: str.passDoNotMatch, icon: 'info'});
+    }
+  }
+
+  registerMotorcycle() {
+    const {
+      page,
+      rut,
+      vin,
+      name,
+      surname,
+      email,
+      telephone,
+      address,
+      comuna,
+      region,
+      document,
+    } = this.state;
+    const file = document[0].uri;
+    const newMotorcycle = page === PAGES.PERSONAL_INFO ? true : false;
+    const formdata = new FormData();
+    formdata.append('rut', rut);
+    formdata.append('vin', vin);
+    formdata.append('firstName', name);
+    formdata.append('lastName', surname);
+    formdata.append('newMotorcycle', newMotorcycle);
+    formdata.append('email', email);
+    formdata.append('phone', telephone);
+    formdata.append('address', address);
+    formdata.append('commune', comuna);
+    formdata.append('region', region);
+    formdata.append('File', file);
+    formdata.append('distributorId', '1');
+  }
 
   handleBack = () => {
     const {page} = this.state;
     page === PAGES.RUT_VIN
       ? this.props.navigation.pop()
       : this.setState({page: 1});
+  };
+
+  pickDocument = () => {
+    DocumentPicker.pick({
+      type: [types.pdf],
+    })
+      .then(result => {
+        if (result.length > 0) {
+          this.setState({document: result});
+        }
+      })
+      .catch(e => console.log(e));
   };
 
   setAlertTitle() {
@@ -111,6 +195,10 @@ class Registration extends Component {
       birthDate,
       email,
       telephone,
+      address,
+      comuna,
+      region,
+      document,
     } = this.state;
 
     switch (page) {
@@ -141,12 +229,14 @@ class Registration extends Component {
             <AuthInput
               label={str.password}
               placeholder={str.enterPass}
+              secureTextEntry={true}
               value={password}
               onChangeText={e => this.setState({password: e})}
             />
             <AuthInput
               label={str.retypePass}
               placeholder={str.writePassAgain}
+              secureTextEntry={true}
               value={retypePassword}
               onChangeText={e => this.setState({retypePassword: e})}
             />
@@ -185,6 +275,37 @@ class Registration extends Component {
               value={telephone}
               onChangeText={e => this.setState({telephone: e})}
             />
+            <AuthInput
+              label={str.address}
+              placeholder={str.enterAddress}
+              value={address}
+              onChangeText={e => this.setState({address: e})}
+            />
+            <AuthInput
+              label={str.commune}
+              placeholder={str.enterComuna}
+              value={comuna}
+              onChangeText={e => this.setState({comuna: e})}
+            />
+            <AuthInput
+              label={str.region}
+              placeholder={str.enterRegion}
+              value={region}
+              onChangeText={e => this.setState({region: e})}
+            />
+            <View style={gstyles.docView}>
+              <Text style={gstyles.labelText}>{str.attachTransferDoc}</Text>
+              <AuthButton
+                title={str.attachFile}
+                style={{backgroundColor: colors.black}}
+                onPress={this.pickDocument}
+              />
+              {document.map((item, index) => (
+                <Text key={index} style={gstyles.docText}>
+                  {item.name}
+                </Text>
+              ))}
+            </View>
           </View>
         );
       case PAGES.CONTACT:
@@ -210,21 +331,25 @@ class Registration extends Component {
 
   render() {
     const {isSuccess, isStatusModal} = this.state;
-
+    const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader
           label={this.setHeaderTitle()}
           onLeftPress={this.handleBack}
         />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{flex: 1}}>
-          {this.renderScreens()}
-        </ScrollView>
+        <View style={[gstyles.listContainer, {marginBottom: '20%', flex: 1}]}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              flexGrow: 1,
+            }}>
+            {this.renderScreens()}
+          </ScrollView>
+        </View>
         <AuthButton
           title={str.following}
-          onPress={this.handleRegister}
+          onPress={this.handleSubmit}
           style={gstyles.bottomBtn}
         />
         <Alert
@@ -245,14 +370,16 @@ class Registration extends Component {
             this.setState({page: PAGES.CONTACT, isStatusModal: false})
           }
         />
+        <Spinner visible={loading} />
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  loading: state?.loading,
-  error: state?.error,
+  loading: state?.auth?.loading,
+  error: state?.auth?.error,
+  register: state?.auth?.register,
 });
 
 const mapStateToDispatch = {

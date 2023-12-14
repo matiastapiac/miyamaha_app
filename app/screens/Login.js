@@ -11,8 +11,8 @@ import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {screen} from '../common/utils';
 import {strings as str} from '../common/strings';
-import {userLogin} from '../store/actions/authActions';
-import { setTokenHeader} from '../store/services/Api';
+import {userLogin, storeAuthToken} from '../store/actions/authActions';
+import {setTokenHeader} from '../store/services/Api';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import TextButton from '../components/TextButton';
@@ -21,8 +21,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rut: '17402204-6',
-      password: 'Developer@18!',
+      rut: '',
+      password: '',
     };
   }
 
@@ -30,7 +30,8 @@ class Login extends Component {
     const {login} = this.props;
 
     if (login?.status === 'success' && prevProps.login?.status !== 'success') {
-      setTokenHeader(login?.data?.token);
+      setTokenHeader();
+      this.props.storeAuthToken(login?.data?.token);
       this.props.navigation.push(screen.DashBoard);
     }
   }
@@ -107,6 +108,7 @@ const mapStateToProps = state => ({
 
 const mapStateToDispatch = {
   userLogin,
+  storeAuthToken,
 };
 
 const styles = StyleSheet.create({

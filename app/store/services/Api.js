@@ -1,22 +1,24 @@
 import axios from 'axios';
 import {BASEURL, endpoints} from '../../common/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: BASEURL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-const fmInstance = axios.create({
+export const fmInstance = axios.create({
   baseURL: BASEURL,
   headers: {
     'Content-Type': 'multipart/form-data',
   },
 });
 
-export function setTokenHeader(token) {
-  if (token !== undefined) {
+export async function setTokenHeader() {
+  const token = await AsyncStorage.getItem('AUTH_TOKEN');
+  if (token) {
     instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     fmInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
@@ -47,26 +49,12 @@ export function register(rut, vin, password) {
 
   return fmInstance
     .post(endpoints.register, formdata)
-    .then(response => response.data);
+    .then(response => response);
 }
 
 export function register_rejected(data) {
-  const formdata = new FormData();
-  formdata.append('rut', data.rut);
-  formdata.append('vin', data.vin);
-  formdata.append('firstName', data.firstName);
-  formdata.append('lastName', data.lastName);
-  formdata.append('newMotorcycle', data.newMotorcycle);
-  formdata.append('email', data.email);
-  formdata.append('phone', data.phone);
-  formdata.append('address', data.address);
-  formdata.append('commune', data.commune);
-  formdata.append('region', data.region);
-  formdata.append('File', data.file);
-  formdata.append('distributorId', data.distributorId);
-
   return fmInstance
-    .post(endpoints.register, formdata)
+    .post(endpoints.register, data)
     .then(response => response.data);
 }
 

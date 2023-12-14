@@ -113,6 +113,7 @@ const mapStateToProps = state => ({
   loading: state?.auth?.loading,
   error: state?.auth?.error,
   profile: state?.auth?.profile,
+  authToken: state?.auth?.authToken,
 });
 
 const mapStateToDispatch = {

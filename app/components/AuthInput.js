@@ -12,6 +12,7 @@ const AuthInput = ({
   label,
   textarea,
   editable,
+  secureTextEntry,
 }) => {
   const renderInputField = () => {
     if (textarea || label) {
@@ -27,6 +28,7 @@ const AuthInput = ({
           accessible={true}
           accessibilityLabel={label || placeholder}
           editable={editable}
+          secureTextEntry={secureTextEntry}
         />
       );
     } else {

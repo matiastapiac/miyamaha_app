@@ -2,6 +2,8 @@ import {types} from '../types';
 
 const initialState = {
   login: null,
+  authToken: null,
+  register: null,
   profile: null,
   updateProfile: null,
   loading: false,
@@ -10,6 +12,13 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
+    //Store Authentication Token
+    case types.STORE_AUTH_TOKEN:
+      return {
+        ...state,
+        authToken: action.payload,
+      };
+
     // Login Reducer
     case types.LOGIN_REQUEST:
       return {...state, loading: true, error: null};
@@ -22,7 +31,7 @@ const authReducer = (state = initialState, action) => {
     case types.REGISTER_REQUEST:
       return {...state, loading: true, error: null};
     case types.REGISTER_SUCCESS:
-      return {...state, loading: false, user: action.payload};
+      return {...state, loading: false, register: action.payload};
     case types.REGISTER_FAILURE:
       return {...state, loading: false, error: action.payload};
 

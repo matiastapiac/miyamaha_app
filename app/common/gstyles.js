@@ -23,7 +23,7 @@ export const gstyles = StyleSheet.create({
     shadowOpacity: 0,
     elevation: 0,
     height: hp(9),
-    paddingBottom: hp(2)
+    paddingBottom: hp(2),
     // Platform.OS == 'ios' ? 20 : 10,
   },
   itemConatiner: {
@@ -62,5 +62,18 @@ export const gstyles = StyleSheet.create({
     fontSize: hp(2.5),
     textAlign: 'center',
     marginVertical: 10,
+  },
+  labelText: {
+    marginLeft: 10,
+    color: colors.grey,
+    fontFamily: FONTS.OpenSansSemiBold,
+  },
+  docText: {
+    textAlign: 'center',
+    fontFamily: FONTS.OpenSansRegular,
+  },
+  docView: {
+    backgroundColor: colors.white,
+    marginBottom: 20,
   },
 });

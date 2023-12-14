@@ -88,4 +88,13 @@ export const strings = {
   createfolder: 'Crear carpeta',
   uploadFile: 'Subir archivo',
   lastMaintenance: 'Última mantención',
+  attachTransferDoc: 'Adjuntar documento de transferencia',
+  attachFile: 'Adjuntar archivo',
+  enterAddress: 'Ingresa tu dirección',
+  enterComuna: 'Ingresa tu comuna',
+  enterRegion: 'Ingresa tu región',
+  filedCantEmpty: 'Fältet får inte vara tomt',
+  passDoNotMatch: 'De angivna lösenorden stämmer inte överens',
+  passValidation:
+    'The password must be at least 8 characters long. The password must contain at least one lowercase letter, one uppercase letter, one number and one special character.',
 };
