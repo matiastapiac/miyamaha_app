@@ -16,8 +16,8 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <FlashMessage position="top" />
         <Navigation />
+        <FlashMessage position="top" />
       </Provider>
     );
   }

@@ -6,6 +6,8 @@ const initialState = {
   register: null,
   profile: null,
   updateProfile: null,
+  forgotpass: null,
+  changepass: null,
   loading: false,
   error: null,
 };
@@ -14,6 +16,12 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     //Store Authentication Token
     case types.STORE_AUTH_TOKEN:
+      return {
+        ...state,
+        authToken: action.payload,
+      };
+
+    case types.LOAD_AUTH_TOKEN:
       return {
         ...state,
         authToken: action.payload,
@@ -39,8 +47,16 @@ const authReducer = (state = initialState, action) => {
     case types.FORGOT_PASSWORD_REQUEST:
       return {...state, loading: true, error: null};
     case types.FORGOT_PASSWORD_SUCCESS:
-      return {...state, loading: false, user: action.payload};
+      return {...state, loading: false, forgotpass: action.payload};
     case types.FORGOT_PASSWORD_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
+    // Change Password Reducer
+    case types.CHANGE_PASSWORD_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.CHANGE_PASSWORD_SUCCESS:
+      return {...state, loading: false, changepass: action.payload};
+    case types.CHANGE_PASSWORD_FAILURE:
       return {...state, loading: false, error: action.payload};
 
     // Get User Profile

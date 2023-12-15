@@ -8,7 +8,14 @@ import {strings as str} from '../common/strings';
 import AuthButton from './AuthButton';
 import AuthInput from './AuthInput';
 
-export default function DocAlert({visible, title, onCancel}) {
+export default function DocAlert({
+  visible,
+  title,
+  onCancel,
+  onCreate,
+  value,
+  onChangeText,
+}) {
   return (
     <Modal isVisible={visible}>
       <View style={styles.mainContainer}>
@@ -16,8 +23,10 @@ export default function DocAlert({visible, title, onCancel}) {
         <AuthInput
           label={str.specifyFolderName}
           placeholder={str.folderName}
+          value={value}
+          onChangeText={onChangeText}
         />
-        <AuthButton title={str.create} disabled />
+        <AuthButton title={str.create} onPress={onCreate} />
         <AuthButton
           title={str.cancel}
           style={{backgroundColor: colors.black}}

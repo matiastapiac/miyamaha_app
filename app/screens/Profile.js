@@ -30,13 +30,17 @@ class Profile extends Component {
 
   componentDidMount() {
     this.props.fetchProfile();
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.props.fetchProfile();
+    });
   }
 
   componentDidUpdate(prevProps) {
     const {profile} = this.props;
     if (
-      profile?.status === 'success' &&
-      prevProps.profile?.status !== 'success'
+      profile &&
+      profile.status === 'success' &&
+      profile !== prevProps.profile
     ) {
       const {user, motorcycles} = profile?.data;
       this.setState({
@@ -51,6 +55,10 @@ class Profile extends Component {
         vehicles: motorcycles,
       });
     }
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   handleEditProfile = () => {

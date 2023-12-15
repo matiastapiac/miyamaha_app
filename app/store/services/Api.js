@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {BASEURL, endpoints} from '../../common/utils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const instance = axios.create({
   baseURL: BASEURL,
@@ -16,8 +15,7 @@ export const fmInstance = axios.create({
   },
 });
 
-export async function setTokenHeader() {
-  const token = await AsyncStorage.getItem('AUTH_TOKEN');
+export async function setTokenHeader(token) {
   if (token) {
     instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     fmInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -30,15 +28,6 @@ export function login(rut, password) {
     password,
   };
   return instance.post(endpoints.login, data).then(response => response.data);
-}
-
-export function forgot_password(rut) {
-  const data = {
-    rut,
-  };
-  return instance
-    .post(endpoints.forgot_password, data)
-    .then(response => response.data);
 }
 
 export function register(rut, vin, password) {
@@ -70,14 +59,13 @@ export function request_newMotorcycle(data) {
     .then(response => response.data);
 }
 
-export function update_profile(data) {
+export function forgot_password(rut) {
+  const data = {
+    rut,
+  };
   return instance
-    .post(endpoints.register, data)
+    .post(endpoints.forgot_password, data)
     .then(response => response.data);
-}
-
-export function get_profile() {
-  return instance.get(endpoints.profile).then(response => response.data);
 }
 
 export function recover_password(rut, recoveryCode, newPassword) {
@@ -101,6 +89,14 @@ export function change_password(password, newPassword) {
     .then(response => response.data);
 }
 
+export function update_profile(data) {
+  return instance.post(endpoints.profile, data).then(response => response.data);
+}
+
+export function get_profile() {
+  return instance.get(endpoints.profile).then(response => response.data);
+}
+
 export function device_token(playerId) {
   const data = {
     playerId,
@@ -111,18 +107,20 @@ export function device_token(playerId) {
 }
 
 export function get_documents() {
-  return instance.get(endpoints.documnets).then(response => response.data);
+  return instance.get(endpoints.documents).then(response => response.data);
 }
 
-export function upload_document() {
-  const data = new FormData();
+export function upload_document(data) {
   return fmInstance
-    .post(endpoints.documnets, data)
+    .post(endpoints.documents, data)
     .then(response => response.data);
 }
 
-export function create_folder() {
-  const data = {};
+export function create_folder(folderPath, folderName) {
+  const data = {
+    folderPath,
+    folderName,
+  };
   return instance.post(endpoints.folders, data).then(response => response.data);
 }
 
@@ -132,6 +130,24 @@ export function delete_document(documentId) {
     .then(response => response.data);
 }
 
+export function lost_documents(typeDocument, distributorId) {
+  const data = {
+    typeDocument,
+    distributorId,
+  };
+  return instance
+    .post(endpoints.lost_documents, data)
+    .then(response => response.data);
+}
+
 export function fetch_news() {
   return instance.get(endpoints.news).then(response => response.data);
+}
+
+export function get_distributors() {
+  return instance.get(endpoints.distributors).then(response => response.data);
+}
+
+export function maintenance_urls() {
+  return instance.get(endpoints.maintenance_urls).then(response => response.data);
 }

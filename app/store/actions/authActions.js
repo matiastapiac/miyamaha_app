@@ -29,7 +29,6 @@ export const userLogin = (rut, password) => async dispatch => {
     .then(async resp => {
       if (resp.status == 'success') {
         showMessage({message: resp.message, icon: 'success', type: 'success'});
-        storeAuthToken(resp.data.token);
         await AsyncStorage.setItem('AUTH_TOKEN', resp.data.token);
       } else {
         showMessage({message: resp.message, icon: 'danger', type: 'danger'});
@@ -53,10 +52,18 @@ export const userLogin = (rut, password) => async dispatch => {
   }
 };
 
-export const storeAuthToken = token => ({
-  type: types.STORE_AUTH_TOKEN,
-  payload: token,
-});
+export const storeAuthToken = token => {
+  return async dispatch => {
+    try {
+      await AsyncStorage.setItem('authToken', token);
+
+      dispatch({
+        type: types.STORE_AUTH_TOKEN,
+        payload: token,
+      });
+    } catch (error) {}
+  };
+};
 
 export const userRegistration = data => async dispatch => {
   dispatch({type: types.REGISTER_REQUEST});
@@ -108,12 +115,12 @@ export const registerRejected = data => async dispatch => {
   }
 };
 
-export const forgotPassword = () => async dispatch => {
+export const forgotPassword = (data) => async dispatch => {
   dispatch({type: types.FORGOT_PASSWORD_REQUEST});
 
   try {
-    const data = await forgot_password();
-    dispatch({type: types.FORGOT_PASSWORD_SUCCESS, payload: data});
+    const resp = await forgot_password(data);
+    dispatch({type: types.FORGOT_PASSWORD_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.FORGOT_PASSWORD_FAILURE, payload: error});
   }
@@ -134,8 +141,8 @@ export const changePassword = () => async dispatch => {
   dispatch({type: types.CHANGE_PASSWORD_REQUEST});
 
   try {
-    const data = await change_password();
-    dispatch({type: types.CHANGE_PASSWORD_SUCCESS, payload: data});
+    const resp = await change_password();
+    dispatch({type: types.CHANGE_PASSWORD_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: error});
   }
@@ -146,9 +153,16 @@ export const updateProfile = data => async dispatch => {
 
   try {
     const resp = await update_profile(data);
-    console.log(resp);
+    if (resp.status == 'success') {
+      showMessage({
+        message: resp.message,
+        type: 'success',
+        icon: 'success',
+      });
+    }
     dispatch({type: types.UPDATE_PROFILE_SUCCESS, payload: resp});
   } catch (error) {
+    console.log(error, 'error==');
     dispatch({type: types.UPDATE_PROFILE_FAILURE, payload: error});
   }
 };

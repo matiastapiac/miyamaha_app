@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import {FlatList, ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
-import {BASEURL, data, endpoints} from '../common/utils';
 import {strings as str} from '../common/strings';
 import {userRegistration, registerRejected} from '../store/actions/authActions';
+import {fetchDistributors} from '../store/actions/ditributorsActions';
+import {colors} from '../common/colors';
+import {showMessage} from 'react-native-flash-message';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -14,9 +16,6 @@ import AuthInput from '../components/AuthInput';
 import Alert from '../components/Alert';
 import Validation from '../components/Validation';
 import PickerInput from '../components/PickerInput';
-import {colors} from '../common/colors';
-import {showMessage} from 'react-native-flash-message';
-import {images} from '../common/images';
 
 const PAGES = {
   RUT_VIN: 1,
@@ -46,11 +45,27 @@ class Registration extends Component {
       comuna: '',
       region: '',
       document: [],
+      distributors: [],
     };
   }
 
+  componentDidMount() {
+    this.getDitributors();
+  }
+
   componentDidUpdate(prevProps) {
-    const {register} = this.props;
+    const {register, distributors} = this.props;
+    if (
+      distributors &&
+      distributors.status === 'success' &&
+      distributors !== prevProps.distributors
+    ) {
+      const data = distributors.data.map(item => ({
+        key: item.id,
+        value: item.name,
+      }));
+      this.setState({distributors: data});
+    }
 
     if (
       register?.status === 'success' &&
@@ -107,6 +122,7 @@ class Registration extends Component {
       comuna,
       region,
       document,
+      distributorId,
     } = this.state;
     const file = document[0].uri;
     const newMotorcycle = page === PAGES.PERSONAL_INFO ? true : false;
@@ -122,7 +138,11 @@ class Registration extends Component {
     formdata.append('commune', comuna);
     formdata.append('region', region);
     formdata.append('File', file);
-    formdata.append('distributorId', '1');
+    formdata.append('distributorId', distributorId);
+  }
+
+  getDitributors() {
+    this.props.fetchDistributors();
   }
 
   handleBack = () => {
@@ -134,7 +154,7 @@ class Registration extends Component {
 
   pickDocument = () => {
     DocumentPicker.pick({
-      type: [types.pdf],
+      type: [types.pdf, types.images],
     })
       .then(result => {
         if (result.length > 0) {
@@ -199,6 +219,8 @@ class Registration extends Component {
       comuna,
       region,
       document,
+      distributors,
+      distributorId,
     } = this.state;
 
     switch (page) {
@@ -320,7 +342,8 @@ class Registration extends Component {
             <PickerInput
               label={str.selectADistributor}
               placeholder={str.selectTheDistributor}
-              data={data}
+              data={distributors}
+              setSelected={e => this.setState({distributorId: e})}
             />
           </View>
         );
@@ -331,7 +354,8 @@ class Registration extends Component {
 
   render() {
     const {isSuccess, isStatusModal} = this.state;
-    const {loading} = this.props;
+    const {loading, distributors} = this.props;
+
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader
@@ -380,11 +404,13 @@ const mapStateToProps = state => ({
   loading: state?.auth?.loading,
   error: state?.auth?.error,
   register: state?.auth?.register,
+  distributors: state?.distributors?.distributors,
 });
 
 const mapStateToDispatch = {
   userRegistration,
   registerRejected,
+  fetchDistributors,
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(Registration);

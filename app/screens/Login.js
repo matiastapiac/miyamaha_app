@@ -16,25 +16,44 @@ import {setTokenHeader} from '../store/services/Api';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import TextButton from '../components/TextButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import store from '../store';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rut: '',
-      password: '',
+      rut: '17402204-6',
+      password: 'Developer@18!',
     };
+  }
+  componentDidMount() {
+    this.loadAuthToken();
   }
 
   componentDidUpdate(prevProps) {
     const {login} = this.props;
 
     if (login?.status === 'success' && prevProps.login?.status !== 'success') {
-      setTokenHeader();
+      setTokenHeader(login?.data?.token);
       this.props.storeAuthToken(login?.data?.token);
       this.props.navigation.push(screen.DashBoard);
     }
   }
+
+  loadAuthToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      if (token !== null) {
+        this.props.navigation.push(screen.DashBoard);
+        setTokenHeader(token);
+        store.dispatch({
+          type: 'LOAD_AUTH_TOKEN',
+          payload: token,
+        });
+      }
+    } catch (error) {}
+  };
 
   handleLogin = () => {
     const {rut, password} = this.state;

@@ -45,7 +45,7 @@ export const gstyles = StyleSheet.create({
   },
   docContent: {
     flex: 1,
-    paddingVertical: 20,
+    paddingVertical: 10,
     backgroundColor: colors.white,
   },
   dealersTitle: {
@@ -76,4 +76,9 @@ export const gstyles = StyleSheet.create({
     backgroundColor: colors.white,
     marginBottom: 20,
   },
+  spinnerText: {
+    fontFamily: FONTS.OpenSansRegular,
+    color:colors.white,
+    fontSize:hp(2)
+  }
 });

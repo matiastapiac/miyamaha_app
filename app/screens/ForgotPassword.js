@@ -10,6 +10,7 @@ import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
 import Validation from '../components/Validation';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const PAGES = {
   RUT: 1,
@@ -31,7 +32,21 @@ class ForgotPassword extends Component {
       retypePassword: '',
     };
   }
-
+  componentDidUpdate(prevProps) {
+    const {forgotpass, changepass} = this.props;
+    if (
+      forgotpass?.status === 'success' &&
+      forgotpass !== prevProps.forgotpass
+    ) {
+      this.setState({isVisible: true});
+    }
+    if (
+      changepass?.status === 'success' &&
+      changepass !== prevProps.changepass
+    ) {
+      this.setState({isUnRegister: true});
+    }
+  }
   setHeaderTitle() {
     const {page} = this.state;
     switch (page) {
@@ -65,7 +80,8 @@ class ForgotPassword extends Component {
   handleSubmit = () => {
     const {page, isVisible, isUnRegister, status} = this.state;
     if (page == PAGES.RUT && status) {
-      this.setState({isUnRegister: !isUnRegister});
+      this.handleChangePassword();
+      // this.setState({isUnRegister: !isUnRegister});
     } else if (page == PAGES.RUT && isVisible) {
       this.setState({page: 2, isVisible: false});
     } else if (page == PAGES.CODE_VERIFICATION) {
@@ -73,10 +89,20 @@ class ForgotPassword extends Component {
     } else if (page == PAGES.CHANGE_PASSWORD && isVisible) {
       this.props.navigation.pop();
     } else {
-      this.setState({isVisible: true});
+      this.handleForgotPassword();
     }
   };
 
+  handleForgotPassword() {
+    this.props.forgotPassword(this.state.rut);
+  }
+
+  handleChangePassword() {
+    const {password, retypePassword} = this.state;
+    if (password == retypePassword) {
+      this.props.changePassword(password, retypePassword);
+    }
+  }
   handleBack = () => {
     const {page} = this.state;
     page == PAGES.RUT ? this.props.navigation.pop() : this.setState({page: 1});
@@ -134,6 +160,7 @@ class ForgotPassword extends Component {
 
   render() {
     const {isVisible, isUnRegister} = this.state;
+    const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader
@@ -152,14 +179,17 @@ class ForgotPassword extends Component {
           subTitle={this.setAlertSubTitle()}
           onSubmit={this.handleSubmit}
         />
+        <Spinner visible={loading} />
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  loading: state?.loading,
-  error: state?.error,
+  loading: state?.auth?.loading,
+  error: state?.auth?.error,
+  forgotpass: state?.auth?.forgotpass,
+  changepass: state?.auth?.changepass,
 });
 
 const mapStateToDispatch = {

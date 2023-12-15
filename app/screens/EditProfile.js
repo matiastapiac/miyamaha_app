@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
 import {connect} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
 import {updateProfile, fetchProfile} from '../store/actions/authActions';
@@ -37,6 +39,16 @@ class EditProfile extends Component {
         common: user?.commune,
         region: user?.region,
       });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {update} = this.props;
+    if (
+      update?.status === 'success' &&
+      update !== prevProps.updateProfile
+    ) {
+      this.props.navigation.goBack();
     }
   }
 
@@ -103,6 +115,7 @@ class EditProfile extends Component {
   render() {
     const {name, surname, dob, email, phone, address, common, region} =
       this.state;
+    const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.editProfile} />
@@ -163,6 +176,7 @@ class EditProfile extends Component {
           style={gstyles.bottomBtn}
           onPress={this.handleUpdateProfile}
         />
+        <Spinner visible={loading} />
       </Container>
     );
   }
@@ -172,6 +186,7 @@ const mapStateToProps = state => ({
   loading: state?.auth?.loading,
   error: state?.auth?.error,
   profile: state?.auth?.profile,
+  update: state?.auth?.updateProfile,
 });
 
 const mapStateToDispatch = {

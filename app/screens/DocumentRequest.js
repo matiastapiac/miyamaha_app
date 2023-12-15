@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {data} from '../common/utils';
 import {strings as str} from '../common/strings';
+import {lostDocumentRequest} from '../store/actions/documentActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -18,6 +19,11 @@ class DocumentRequest extends Component {
       distributor: '',
     };
   }
+
+  handleRequestDocument = () => {
+    const {docType, distributor} = this.state;
+    this.props.lostDocumentRequest(docType, distributor);
+  };
 
   setDocType = e => {
     this.setState({docType: e});
@@ -45,17 +51,24 @@ class DocumentRequest extends Component {
             setSelected={this.setDistributor}
           />
         </ScrollView>
-        <AuthButton title={str.send} style={gstyles.bottomBtn} />
+        <AuthButton
+          title={str.send}
+          style={gstyles.bottomBtn}
+          onPress={this.handleRequestDocument}
+        />
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  loading: state?.loading,
-  error: state?.error,
+  loading: state?.document?.loading,
+  error: state?.document?.error,
+  lost: state?.document?.lost,
 });
 
-const mapStateToDispatch = {};
+const mapStateToDispatch = {
+  lostDocumentRequest,
+};
 
 export default connect(mapStateToProps, mapStateToDispatch)(DocumentRequest);
