@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
-import {images} from '../common/images';
 import {screen} from '../common/utils';
 import {strings as str} from '../common/strings';
 import {fetchProfile} from '../store/actions/authActions';
@@ -77,6 +77,7 @@ class Profile extends Component {
       region,
       vehicles,
     } = this.state;
+    const {loading} = this.props
 
     return (
       <Container style={{paddingHorizontal: 10}}>
@@ -112,6 +113,7 @@ class Profile extends Component {
           style={gstyles.bottomBtn}
           onPress={this.handleEditProfile}
         />
+        <Spinner visible={loading}/>
       </Container>
     );
   }

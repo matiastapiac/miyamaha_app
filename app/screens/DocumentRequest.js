@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
 import {ScrollView} from 'react-native';
 import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
 import {data} from '../common/utils';
 import {strings as str} from '../common/strings';
-import {lostDocumentRequest} from '../store/actions/documentActions';
+import {
+  lostDocumentRequest,
+  getDocumentTypes,
+} from '../store/actions/documentActions';
+import {fetchDistributors} from '../store/actions/ditributorsActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -16,8 +21,37 @@ class DocumentRequest extends Component {
     this.state = {
       isSubmited: false,
       docType: '',
-      distributor: '',
+      distributor: 0,
+      distributors: [],
+      types: [],
     };
+  }
+
+  componentDidMount() {
+    this.props.getDocumentTypes();
+    this.props.fetchDistributors();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {docTypes, distributors} = this.props;
+
+    if (docTypes?.status === 'success' && docTypes !== prevProps.docTypes) {
+      const types = [];
+      docTypes.data.map(i => types.push({key: i, value: i}));
+      this.setState({
+        types,
+      });
+    }
+    if (
+      distributors?.status === 'success' &&
+      distributors !== prevProps.distributors
+    ) {
+      const data = [];
+      distributors.data.map(i => data.push({key: i.id, value: i.name}));
+      this.setState({
+        distributors: data,
+      });
+    }
   }
 
   handleRequestDocument = () => {
@@ -34,6 +68,8 @@ class DocumentRequest extends Component {
   };
 
   render() {
+    const {types, distributors} = this.state;
+    const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.docRequest} />
@@ -41,13 +77,14 @@ class DocumentRequest extends Component {
           <PickerInput
             label={str.selectTypeOfDoc}
             placeholder={str.selectTypeOfDoc}
-            data={data}
+            data={types}
             setSelected={this.setDocType}
           />
           <PickerInput
+            key={'key'}
             label={str.selectADistributor}
             placeholder={str.selectTheDistributor}
-            data={data}
+            data={distributors}
             setSelected={this.setDistributor}
           />
         </ScrollView>
@@ -56,6 +93,7 @@ class DocumentRequest extends Component {
           style={gstyles.bottomBtn}
           onPress={this.handleRequestDocument}
         />
+        <Spinner visible={loading} />
       </Container>
     );
   }
@@ -65,10 +103,14 @@ const mapStateToProps = state => ({
   loading: state?.document?.loading,
   error: state?.document?.error,
   lost: state?.document?.lost,
+  docTypes: state?.document?.docTypes,
+  distributors: state?.distributors?.distributors,
 });
 
 const mapStateToDispatch = {
   lostDocumentRequest,
+  getDocumentTypes,
+  fetchDistributors,
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(DocumentRequest);

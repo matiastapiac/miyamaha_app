@@ -13,7 +13,6 @@ const PickerInput = ({label, data, setSelected, placeholder}) => {
       <SelectList
         setSelected={setSelected}
         data={data}
-        save="value"
         placeholder={placeholder}
         searchPlaceholder={placeholder}
         fontFamily={FONTS.OpenSansMedium}

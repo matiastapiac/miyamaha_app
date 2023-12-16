@@ -13,6 +13,7 @@ import {
   getDocuments,
   createFolder,
   uploadDocument,
+  deleteDocument,
 } from '../store/actions/documentActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
@@ -36,7 +37,7 @@ class MyDocuments extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {documents, folder, file} = this.props;
+    const {documents, folder, file, isDelete} = this.props;
     if (
       documents &&
       documents?.status === 'success' &&
@@ -47,8 +48,11 @@ class MyDocuments extends Component {
       });
     }
     if (
-      (folder?.status === 'success' && folder !== prevProps.folder) ||
-      (file?.status === 'success' && file !== prevProps.file)
+      (folder && folder.status === 'success' && folder !== prevProps.folder) ||
+      (file && file.status === 'success' && file !== prevProps.file) ||
+      (isDelete &&
+        isDelete.status === 'success' &&
+        isDelete !== prevProps.isDelete)
     ) {
       this.props.getDocuments();
     }
@@ -66,6 +70,10 @@ class MyDocuments extends Component {
   handleCreateFolder = () => {
     this.props.createFolder('/', this.state.folderName);
     this.handleFolderBtn();
+  };
+
+  handleDeleteDocument = documentId => {
+    this.props.deleteDocument(documentId);
   };
 
   pickDocument = () => {
@@ -95,6 +103,7 @@ class MyDocuments extends Component {
       icon={item.documentType == 'file' ? images.file : images.folder}
       title={item.documentName}
       onPress={() => this.handleEvent(item)}
+      onDelete={() => this.handleDeleteDocument(item.id)}
     />
   );
 
@@ -142,12 +151,14 @@ const mapStateToProps = state => ({
   documents: state?.document?.documents,
   folder: state?.document?.folder,
   file: state?.document?.file,
+  isDelete: state?.document?.isDelete,
 });
 
 const mapStateToDispatch = {
   getDocuments,
   createFolder,
   uploadDocument,
+  deleteDocument,
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(MyDocuments);

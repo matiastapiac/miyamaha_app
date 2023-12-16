@@ -110,6 +110,10 @@ export function get_documents() {
   return instance.get(endpoints.documents).then(response => response.data);
 }
 
+export function document_types() {
+  return instance.get(endpoints.document_types).then(response => response.data);
+}
+
 export function upload_document(data) {
   return fmInstance
     .post(endpoints.documents, data)
@@ -126,7 +130,7 @@ export function create_folder(folderPath, folderName) {
 
 export function delete_document(documentId) {
   return instance
-    .delete(endpoints.documnets + `/${documentId}`)
+    .delete(endpoints.documents + `/${documentId}`)
     .then(response => response.data);
 }
 
@@ -149,5 +153,19 @@ export function get_distributors() {
 }
 
 export function maintenance_urls() {
-  return instance.get(endpoints.maintenance_urls).then(response => response.data);
+  return instance
+    .get(endpoints.maintenance_urls)
+    .then(response => response.data);
+}
+
+export function maintenance_certificate(vin) {
+  return instance
+    .get(endpoints.maintenance_certificate + `/${vin}`)
+    .then(response => response.data);
+}
+
+export function warranty_manual() {
+  return instance
+    .get(endpoints.warranty_manual)
+    .then(response => response.data);
 }

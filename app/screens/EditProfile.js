@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
 import {connect} from 'react-redux';
-import {showMessage} from 'react-native-flash-message';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';

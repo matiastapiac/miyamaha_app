@@ -4,7 +4,8 @@ const initialState = {
   documents: null,
   folder: null,
   file: null,
-  delete: null,
+  isDelete: null,
+  docTypes: null,
   lost: null,
   loading: false,
   error: null,
@@ -20,6 +21,14 @@ const documentReducer = (state = initialState, action) => {
     case types.FETCH_DOCUMENTS_FAILURE:
       return {...state, loading: false, error: action.payload};
 
+    // Get Document Types
+    case types.DOCUMENT_TYPES_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.DOCUMENT_TYPES_SUCCESS:
+      return {...state, loading: false, docTypes: action.payload};
+    case types.DOCUMENT_TYPES_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
     // Upload Document
     case types.UPLOAD_DOCUMENT_REQUEST:
       return {...state, loading: true, error: null};
@@ -32,7 +41,7 @@ const documentReducer = (state = initialState, action) => {
     case types.DELETE_DOCUMENT_REQUEST:
       return {...state, loading: true, error: null};
     case types.DELETE_DOCUMENT_SUCCESS:
-      return {...state, loading: false, delete: action.payload};
+      return {...state, loading: false, isDelete: action.payload};
     case types.DELETE_DOCUMENT_FAILURE:
       return {...state, loading: false, error: action.payload};
 

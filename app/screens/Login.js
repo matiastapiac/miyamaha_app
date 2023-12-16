@@ -33,7 +33,6 @@ class Login extends Component {
 
   componentDidUpdate(prevProps) {
     const {login} = this.props;
-
     if (login?.status === 'success' && prevProps.login?.status !== 'success') {
       setTokenHeader(login?.data?.token);
       this.props.storeAuthToken(login?.data?.token);

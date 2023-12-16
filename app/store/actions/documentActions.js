@@ -2,6 +2,7 @@ import {types} from '../types';
 import {
   create_folder,
   delete_document,
+  document_types,
   get_documents,
   lost_documents,
   upload_document,
@@ -16,6 +17,17 @@ export const getDocuments = () => async dispatch => {
     dispatch({type: types.FETCH_DOCUMENTS_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.FETCH_DOCUMENTS_FAILURE, payload: error});
+  }
+};
+
+export const getDocumentTypes = () => async dispatch => {
+  dispatch({type: types.DOCUMENT_TYPES_REQUEST});
+
+  try {
+    const resp = await document_types();
+    dispatch({type: types.DOCUMENT_TYPES_SUCCESS, payload: resp});
+  } catch (error) {
+    dispatch({type: types.DOCUMENT_TYPES_FAILURE, payload: error});
   }
 };
 
@@ -34,11 +46,14 @@ export const uploadDocument = data => async dispatch => {
   }
 };
 
-export const deleteDocument = () => async dispatch => {
+export const deleteDocument = documentId => async dispatch => {
   dispatch({type: types.DELETE_DOCUMENT_REQUEST});
 
   try {
-    const resp = await delete_document();
+    const resp = await delete_document(documentId);
+    if (resp.status == 'success') {
+      showMessage({message: resp.message, icon: 'success', type: 'success'});
+    }
     dispatch({type: types.DELETE_DOCUMENT_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.DELETE_DOCUMENT_FAILURE, payload: error});
