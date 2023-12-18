@@ -81,7 +81,7 @@ export const endpoints = {
   news: 'news',
   maintenance_urls: 'maintenance-urls',
   maintenance_certificate: 'maintenance-certificate',
-  lost_documents: 'lost-documents ',
+  lost_documents: 'lost-documents',
   post_sale: 'post-sale',
   distributors: 'distributors',
   warranty_manual: 'warranty-manual',

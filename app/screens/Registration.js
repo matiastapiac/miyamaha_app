@@ -54,7 +54,8 @@ class Registration extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {register, distributors} = this.props;
+    const {register, distributors, motorcycle} = this.props;
+
     if (
       distributors &&
       distributors.status === 'success' &&
@@ -68,20 +69,31 @@ class Registration extends Component {
     }
 
     if (
-      register?.status === 'success' &&
-      prevProps.register?.status !== 'success'
+      register &&
+      register.status === 'success' &&
+      prevProps.register.status !== 'success'
     ) {
       this.setState({isSuccess: true});
+    }
+
+    if (
+      register &&
+      register.status === 'error' &&
+      register !== prevProps.register
+    ) {
+      this.setState({page: 1, status: true});
     }
   }
 
   handleSubmit = () => {
     const {page, status, rut, vin} = this.state;
-    if (page === PAGES.RUT_VIN && status) {
-      this.setState({isStatusModal: true});
-    } else if (
-      [PAGES.PASSWORD, PAGES.PERSONAL_INFO, PAGES.CONTACT].includes(page)
-    ) {
+    if (page === PAGES.PERSONAL_INFO || page === PAGES.CONTACT) {
+      this.registerMotorcycle();
+    }
+    // if (page === PAGES.RUT_VIN && status) {
+    //   this.setState({isStatusModal: true});
+    // }
+    else if ([PAGES.PASSWORD, PAGES.PERSONAL_INFO].includes(page)) {
       this.register();
     } else {
       if (rut && vin) {
@@ -123,22 +135,34 @@ class Registration extends Component {
       region,
       document,
       distributorId,
+      password,
     } = this.state;
-    const file = document[0].uri;
-    const newMotorcycle = page === PAGES.PERSONAL_INFO ? true : false;
+
+    const newMotorcycle = page === PAGES.CONTACT ? true : false;
     const formdata = new FormData();
-    formdata.append('rut', rut);
-    formdata.append('vin', vin);
-    formdata.append('firstName', name);
-    formdata.append('lastName', surname);
-    formdata.append('newMotorcycle', newMotorcycle);
-    formdata.append('email', email);
-    formdata.append('phone', telephone);
-    formdata.append('address', address);
-    formdata.append('commune', comuna);
-    formdata.append('region', region);
-    formdata.append('File', file);
-    formdata.append('distributorId', distributorId);
+    if (newMotorcycle) {
+      formdata.append('rut', rut);
+      formdata.append('vin', vin);
+      formdata.append('email', email);
+      formdata.append('distributorId', distributorId);
+      formdata.append('password', password);
+    } else {
+      const file = document[0].uri;
+      formdata.append('rut', rut);
+      formdata.append('vin', vin);
+      formdata.append('firstName', name);
+      formdata.append('lastName', surname);
+      formdata.append('newMotorcycle', newMotorcycle);
+      formdata.append('email', email);
+      formdata.append('phone', telephone);
+      formdata.append('address', address);
+      formdata.append('commune', comuna);
+      formdata.append('region', region);
+      formdata.append('File', file);
+    }
+
+    console.log(formdata);
+    this.props.registerRejected(formdata);
   }
 
   getDitributors() {
@@ -240,7 +264,7 @@ class Registration extends Component {
               onChangeText={e => this.setState({vin: e})}
             />
             <Validation
-              onPress={() => this.setState({status: !status})}
+              // onPress={() => this.setState({status: !status})}
               status={status}
             />
           </View>
@@ -353,7 +377,7 @@ class Registration extends Component {
   };
 
   render() {
-    const {isSuccess, isStatusModal} = this.state;
+    const {isSuccess, isStatusModal, status} = this.state;
     const {loading, distributors} = this.props;
 
     return (
@@ -384,15 +408,13 @@ class Registration extends Component {
         />
         <Alert
           vStatus
-          visible={isStatusModal}
+          visible={status}
           title={str.newOrUsedMotorcycle}
           subTitle={str.selectOption}
           onOld={() =>
-            this.setState({page: PAGES.PERSONAL_INFO, isStatusModal: false})
+            this.setState({page: PAGES.PERSONAL_INFO, status: false})
           }
-          onNew={() =>
-            this.setState({page: PAGES.CONTACT, isStatusModal: false})
-          }
+          onNew={() => this.setState({page: PAGES.CONTACT, status: false})}
         />
         <Spinner visible={loading} />
       </Container>
@@ -404,6 +426,7 @@ const mapStateToProps = state => ({
   loading: state?.auth?.loading,
   error: state?.auth?.error,
   register: state?.auth?.register,
+  motorcycle: state?.auth?.motorcycle,
   distributors: state?.distributors?.distributors,
 });
 

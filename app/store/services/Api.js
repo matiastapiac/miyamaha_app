@@ -75,7 +75,7 @@ export function recover_password(rut, recoveryCode, newPassword) {
     newPassword,
   };
   return instance
-    .post(endpoints.recover_password, data)
+    .put(endpoints.recover_password, data)
     .then(response => response.data);
 }
 
@@ -167,5 +167,16 @@ export function maintenance_certificate(vin) {
 export function warranty_manual() {
   return instance
     .get(endpoints.warranty_manual)
+    .then(response => response.data);
+}
+
+export function post_sale(reason, distributorId, query) {
+  const data = {
+    reason,
+    distributorId,
+    query,
+  };
+  return instance
+    .post(endpoints.post_sale, data)
     .then(response => response.data);
 }

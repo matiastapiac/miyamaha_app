@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import moment from 'moment';
 import {gstyles} from '../common/gstyles';
 import {screen} from '../common/utils';
 import {strings as str} from '../common/strings';
@@ -46,7 +47,7 @@ class Profile extends Component {
       this.setState({
         name: user?.firstName,
         surname: user?.lastName,
-        dob: '',
+        dob: user?.birthdate,
         email: user?.email,
         phone: user?.phone,
         address: user?.address,
@@ -86,7 +87,7 @@ class Profile extends Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthInput label={str.name} value={name} editable={false} />
             <AuthInput label={str.surname} value={surname} editable={false} />
-            <AuthInput label={str.birthDate} value={dob} editable={false} />
+            <AuthInput label={str.birthDate} value={dob && moment(dob).format('DD/MM/YYYY')} editable={false} />
             <AuthInput label={str.email} value={email} editable={false} />
             <AuthInput label={str.telephone} value={phone} editable={false} />
             <AuthInput label={str.address} value={address} editable={false} />

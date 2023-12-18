@@ -115,7 +115,7 @@ export const registerRejected = data => async dispatch => {
   }
 };
 
-export const forgotPassword = (data) => async dispatch => {
+export const forgotPassword = data => async dispatch => {
   dispatch({type: types.FORGOT_PASSWORD_REQUEST});
 
   try {
@@ -126,12 +126,15 @@ export const forgotPassword = (data) => async dispatch => {
   }
 };
 
-export const recoverPassword = () => async dispatch => {
+export const recoverPassword = (rut, code, password) => async dispatch => {
   dispatch({type: types.RECOVER_PASSWORD_REQUEST});
 
   try {
-    const data = await recover_password();
-    dispatch({type: types.RECOVER_PASSWORD_SUCCESS, payload: data});
+    const resp = await recover_password(rut, code, password);
+    if (resp.status == 'success') {
+      showMessage({message: resp.message, icon: 'success', type: 'success'});
+    }
+    dispatch({type: types.RECOVER_PASSWORD_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: error});
   }

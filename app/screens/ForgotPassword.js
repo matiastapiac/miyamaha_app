@@ -3,7 +3,11 @@ import {View} from 'react-native';
 import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
-import {forgotPassword, changePassword} from '../store/actions/authActions';
+import {
+  forgotPassword,
+  changePassword,
+  recoverPassword,
+} from '../store/actions/authActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
@@ -33,18 +37,29 @@ class ForgotPassword extends Component {
     };
   }
   componentDidUpdate(prevProps) {
-    const {forgotpass, changepass} = this.props;
+    const {forgotpass, changepass, recoverpass, error} = this.props;
+    console.log(prevProps)
     if (
-      forgotpass?.status === 'success' &&
+      forgotpass &&
+      forgotpass.status === 'success' &&
       forgotpass !== prevProps.forgotpass
     ) {
       this.setState({isVisible: true});
     }
     if (
-      changepass?.status === 'success' &&
+      changepass &&
+      changepass.status === 'success' &&
       changepass !== prevProps.changepass
     ) {
       this.setState({isUnRegister: true});
+    }
+    if (
+      recoverpass &&
+      recoverpass.status === 'success' &&
+      recoverpass !== prevProps.recoverpass
+    ) {
+      this.setState({isVisible: true});
+      this.props.navigation.pop();
     }
   }
   setHeaderTitle() {
@@ -78,7 +93,8 @@ class ForgotPassword extends Component {
   }
 
   handleSubmit = () => {
-    const {page, isVisible, isUnRegister, status} = this.state;
+    const {page, isVisible, isUnRegister, status, rut, code, password} =
+      this.state;
     if (page == PAGES.RUT && status) {
       this.handleChangePassword();
       // this.setState({isUnRegister: !isUnRegister});
@@ -86,6 +102,8 @@ class ForgotPassword extends Component {
       this.setState({page: 2, isVisible: false});
     } else if (page == PAGES.CODE_VERIFICATION) {
       this.setState({page: 3});
+    } else if (page == PAGES.CHANGE_PASSWORD) {
+      this.props.recoverPassword(rut, code, password);
     } else if (page == PAGES.CHANGE_PASSWORD && isVisible) {
       this.props.navigation.pop();
     } else {
@@ -103,6 +121,7 @@ class ForgotPassword extends Component {
       this.props.changePassword(password, retypePassword);
     }
   }
+
   handleBack = () => {
     const {page} = this.state;
     page == PAGES.RUT ? this.props.navigation.pop() : this.setState({page: 1});
@@ -190,11 +209,13 @@ const mapStateToProps = state => ({
   error: state?.auth?.error,
   forgotpass: state?.auth?.forgotpass,
   changepass: state?.auth?.changepass,
+  recoverpass: state?.auth?.recoverpass,
 });
 
 const mapStateToDispatch = {
   forgotPassword,
   changePassword,
+  recoverPassword,
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(ForgotPassword);

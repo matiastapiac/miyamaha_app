@@ -3,7 +3,6 @@ import {ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
-import {data} from '../common/utils';
 import {strings as str} from '../common/strings';
 import {
   lostDocumentRequest,
@@ -33,7 +32,7 @@ class DocumentRequest extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {docTypes, distributors} = this.props;
+    const {docTypes, distributors, lost} = this.props;
 
     if (docTypes?.status === 'success' && docTypes !== prevProps.docTypes) {
       const types = [];
@@ -52,6 +51,9 @@ class DocumentRequest extends Component {
         distributors: data,
       });
     }
+    if (lost && lost.status === 'success' && lost !== prevProps.lost) {
+      this.props.navigation.pop();
+    }
   }
 
   handleRequestDocument = () => {
@@ -68,7 +70,7 @@ class DocumentRequest extends Component {
   };
 
   render() {
-    const {types, distributors} = this.state;
+    const {types, distributors, docType, distributor} = this.state;
     const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
@@ -92,6 +94,7 @@ class DocumentRequest extends Component {
           title={str.send}
           style={gstyles.bottomBtn}
           onPress={this.handleRequestDocument}
+          disabled={docType && distributor != 0 ? false : true}
         />
         <Spinner visible={loading} />
       </Container>

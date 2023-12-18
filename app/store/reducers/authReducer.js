@@ -8,6 +8,8 @@ const initialState = {
   updateProfile: null,
   forgotpass: null,
   changepass: null,
+  recoverpass: null,
+  motorcycle: null,
   loading: false,
   error: null,
 };
@@ -43,6 +45,14 @@ const authReducer = (state = initialState, action) => {
     case types.REGISTER_FAILURE:
       return {...state, loading: false, error: action.payload};
 
+    // Register Motorcycle
+    case types.REGISTER_REJECTED_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.REGISTER_REJECTED_SUCCESS:
+      return {...state, loading: false, motorcycle: action.payload};
+    case types.REGISTER_REJECTED_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
     // Forgot Password Reducer
     case types.FORGOT_PASSWORD_REQUEST:
       return {...state, loading: true, error: null};
@@ -57,6 +67,14 @@ const authReducer = (state = initialState, action) => {
     case types.CHANGE_PASSWORD_SUCCESS:
       return {...state, loading: false, changepass: action.payload};
     case types.CHANGE_PASSWORD_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
+    // Recover Password
+    case types.RECOVER_PASSWORD_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.RECOVER_PASSWORD_SUCCESS:
+      return {...state, loading: false, recoverpass: action.payload};
+    case types.RECOVER_PASSWORD_FAILURE:
       return {...state, loading: false, error: action.payload};
 
     // Get User Profile

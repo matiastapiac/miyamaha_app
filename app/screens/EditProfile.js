@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import DatePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
 import {updateProfile, fetchProfile} from '../store/actions/authActions';
@@ -22,6 +24,7 @@ class EditProfile extends Component {
       address: '',
       common: '',
       region: '',
+      isPickerVisibile: false,
     };
   }
 
@@ -31,7 +34,7 @@ class EditProfile extends Component {
       this.setState({
         name: user?.firstName,
         surname: user?.lastName,
-        dob: '',
+        dob: user?.birthdate,
         email: user?.email,
         phone: user?.phone,
         address: user?.address,
@@ -43,26 +46,9 @@ class EditProfile extends Component {
 
   componentDidUpdate(prevProps) {
     const {update} = this.props;
-    if (
-      update?.status === 'success' &&
-      update !== prevProps.updateProfile
-    ) {
+    if (update?.status === 'success' && update !== prevProps.updateProfile) {
       this.props.navigation.goBack();
     }
-  }
-
-  setUserData() {
-    const {user} = this.props?.route?.params;
-    this.setState({
-      name: user.name,
-      surname: user.surname,
-      dob: user.dob,
-      email: user.email,
-      phone: user.phone,
-      address: user.address,
-      common: user.common,
-      region: user.region,
-    });
   }
 
   handleChangeText = (label, text) => {
@@ -102,6 +88,7 @@ class EditProfile extends Component {
     const data = {
       firstName: name,
       lastName: surname,
+      birthdate: moment(dob).format('YYYY-MM-DD'),
       email: email,
       phone: phone,
       address: address,
@@ -111,9 +98,22 @@ class EditProfile extends Component {
     this.props.updateProfile(data);
   };
 
+  handleConfirm = date => {
+    this.setState({dob: date, isPickerVisibile: false});
+  };
+
   render() {
-    const {name, surname, dob, email, phone, address, common, region} =
-      this.state;
+    const {
+      name,
+      surname,
+      dob,
+      email,
+      phone,
+      address,
+      common,
+      region,
+      isPickerVisibile,
+    } = this.state;
     const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
@@ -135,10 +135,8 @@ class EditProfile extends Component {
               />
               <AuthInput
                 label={str.birthDate}
-                value={dob}
-                onChangeText={text =>
-                  this.handleChangeText(str.birthDate, text)
-                }
+                value={dob && moment(dob).format('DD/MM/YYYY')}
+                onTouchStart={() => this.setState({isPickerVisibile: true})}
               />
               <AuthInput
                 label={str.email}
@@ -174,6 +172,12 @@ class EditProfile extends Component {
           title={str.keep}
           style={gstyles.bottomBtn}
           onPress={this.handleUpdateProfile}
+        />
+        <DatePicker
+          isVisible={isPickerVisibile}
+          mode="date"
+          onConfirm={this.handleConfirm}
+          onCancel={() => this.setState({isPickerVisibile: true})}
         />
         <Spinner visible={loading} />
       </Container>

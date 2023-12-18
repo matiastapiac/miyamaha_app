@@ -35,6 +35,7 @@ class Dealers extends Component {
   };
 
   render() {
+    const {region, city, common} = this.state;
     return (
       <Container>
         <TopHeader />
@@ -65,6 +66,7 @@ class Dealers extends Component {
           <AuthButton
             title={str.following}
             style={gstyles.bottomBtn}
+            disabled={region && city && common ? false : true}
             onPress={this.handleSubmit}
           />
         </View>

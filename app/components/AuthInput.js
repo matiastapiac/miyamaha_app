@@ -13,6 +13,7 @@ const AuthInput = ({
   textarea,
   editable,
   secureTextEntry,
+  onTouchStart
 }) => {
   const renderInputField = () => {
     if (textarea || label) {
@@ -22,6 +23,7 @@ const AuthInput = ({
           numberOfLines={textarea ? 4 : 1}
           value={value}
           onChangeText={onChangeText}
+          onTouchStart={onTouchStart}
           placeholder={placeholder}
           placeholderTextColor={colors.grey1}
           style={textarea ? styles.textArea : styles.labelInput}

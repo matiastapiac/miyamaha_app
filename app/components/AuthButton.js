@@ -7,6 +7,8 @@ import {heightPercentageToDP as hp} from '../common/dimensions';
 const AuthButton = ({title, style, onPress, disabled, textStyle}) => {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
+  const opacity = disabled ? 0.6 : 1;
+
   const handleButtonPress = () => {
     if (isButtonDisabled) {
       return;
@@ -22,7 +24,7 @@ const AuthButton = ({title, style, onPress, disabled, textStyle}) => {
 
   return (
     <Pressable
-      style={[styles.button, style]}
+      style={[styles.button, style, {opacity: opacity}]}
       onPress={handleButtonPress}
       disabled={disabled || isButtonDisabled}
       accessibilityRole="button"
