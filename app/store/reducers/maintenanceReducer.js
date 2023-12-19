@@ -3,6 +3,7 @@ import {types} from '../types';
 const initialState = {
   urls: null,
   postSale: null,
+  postSaleReasons: null,
   warrantyManual: null,
   loading: false,
   error: null,
@@ -24,6 +25,14 @@ const maintenanceReducer = (state = initialState, action) => {
     case types.POST_SALE_SUCCESS:
       return {...state, loading: false, postSale: action.payload};
     case types.POST_SALE_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
+    // Post Sale Reasons
+    case types.POST_SALE_REASONS_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.POST_SALE_REASONS_SUCCESS:
+      return {...state, loading: false, postSaleReasons: action.payload};
+    case types.POST_SALE_REASONS_FAILURE:
       return {...state, loading: false, error: action.payload};
 
     // Get Warranty Manual

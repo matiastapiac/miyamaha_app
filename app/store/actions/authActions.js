@@ -2,8 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {types} from '../types';
 import {
   login,
-  forgot_password,
-  register,
   register_rejected,
   update_profile,
   get_profile,
@@ -94,7 +92,7 @@ export const userRegistration = data => async dispatch => {
 export const registerRejected = data => async dispatch => {
   dispatch({type: types.REGISTER_REJECTED_REQUEST});
 
-  fetch(BASEURL + endpoints.register, {
+  fetch(BASEURL + endpoints.register_rejected, {
     method: 'POST',
     body: data,
   })
@@ -115,15 +113,23 @@ export const registerRejected = data => async dispatch => {
   }
 };
 
-export const forgotPassword = data => async dispatch => {
+export const forgotPassword = rut => async dispatch => {
   dispatch({type: types.FORGOT_PASSWORD_REQUEST});
 
-  try {
-    const resp = await forgot_password(data);
-    dispatch({type: types.FORGOT_PASSWORD_SUCCESS, payload: resp});
-  } catch (error) {
-    dispatch({type: types.FORGOT_PASSWORD_FAILURE, payload: error});
-  }
+  fetch(BASEURL + endpoints.forgot_password, {
+    method: 'POST',
+    body: JSON.stringify({rut}),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(responseJson => responseJson.json())
+    .then(resp => {
+      dispatch({type: types.FORGOT_PASSWORD_SUCCESS, payload: resp});
+    })
+    .catch(error => {
+      dispatch({type: types.FORGOT_PASSWORD_FAILURE, payload: error});
+    });
 };
 
 export const recoverPassword = (rut, code, password) => async dispatch => {

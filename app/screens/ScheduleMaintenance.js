@@ -96,11 +96,15 @@ class ScheduleMaintenance extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.maintenance?.loading,
-  error: state?.maintenance?.error,
-  urls: state?.maintenance?.urls,
-});
+const mapStateToProps = state => {
+  const {loading, error, urls} = state.maintenance;
+
+  return {
+    loading,
+    error,
+    urls,
+  };
+};
 
 const mapStateToDispatch = {
   getMaintenanceUrls,

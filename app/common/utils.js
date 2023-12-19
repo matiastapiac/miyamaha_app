@@ -86,6 +86,7 @@ export const endpoints = {
   distributors: 'distributors',
   warranty_manual: 'warranty-manual',
   document_types: 'document-types',
+  post_sale_reasons: 'post-sale-reasons',
 };
 
 export const curousel = [images.img1, images.img2, images.img3];

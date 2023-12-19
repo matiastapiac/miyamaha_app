@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
+import DatePicker from 'react-native-modal-datetime-picker';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
 import {userRegistration, registerRejected} from '../store/actions/authActions';
 import {fetchDistributors} from '../store/actions/ditributorsActions';
 import {colors} from '../common/colors';
-import {showMessage} from 'react-native-flash-message';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -16,6 +17,7 @@ import AuthInput from '../components/AuthInput';
 import Alert from '../components/Alert';
 import Validation from '../components/Validation';
 import PickerInput from '../components/PickerInput';
+import moment from 'moment';
 
 const PAGES = {
   RUT_VIN: 1,
@@ -46,6 +48,8 @@ class Registration extends Component {
       region: '',
       document: [],
       distributors: [],
+      distributorId: '',
+      isPickerVisibile: false,
     };
   }
 
@@ -82,6 +86,14 @@ class Registration extends Component {
       register !== prevProps.register
     ) {
       this.setState({page: 1, status: true});
+    }
+
+    if (
+      motorcycle &&
+      motorcycle.status === 'success' &&
+      motorcycle !== prevProps.motorcycle
+    ) {
+      this.setState({isSuccess: true});
     }
   }
 
@@ -135,7 +147,6 @@ class Registration extends Component {
       region,
       document,
       distributorId,
-      password,
     } = this.state;
 
     const newMotorcycle = page === PAGES.CONTACT ? true : false;
@@ -145,9 +156,7 @@ class Registration extends Component {
       formdata.append('vin', vin);
       formdata.append('email', email);
       formdata.append('distributorId', distributorId);
-      formdata.append('password', password);
     } else {
-      const file = document[0].uri;
       formdata.append('rut', rut);
       formdata.append('vin', vin);
       formdata.append('firstName', name);
@@ -158,10 +167,13 @@ class Registration extends Component {
       formdata.append('address', address);
       formdata.append('commune', comuna);
       formdata.append('region', region);
-      formdata.append('File', file);
+      formdata.append('File', {
+        uri: document[0].uri,
+        type: document[0].type,
+        name: document[0].name,
+      });
     }
 
-    console.log(formdata);
     this.props.registerRejected(formdata);
   }
 
@@ -226,6 +238,27 @@ class Registration extends Component {
     }
   }
 
+  disabledBtn() {
+    const {page, rut, vin, password, retypePassword, email, distributorId} =
+      this.state;
+    switch (page) {
+      case PAGES.RUT_VIN:
+        return rut && vin ? false : true;
+      case PAGES.PASSWORD:
+        return password && retypePassword ? false : true;
+      case PAGES.CONTACT:
+        return email && distributorId ? false : true;
+      case PAGES.PERSONAL_INFO:
+        return email ? false : true;
+      default:
+        return true;
+    }
+  }
+
+  handleConfirm = date => {
+    this.setState({birthDate: date, isPickerVisibile: false});
+  };
+
   renderScreens = () => {
     const {
       page,
@@ -244,7 +277,6 @@ class Registration extends Component {
       region,
       document,
       distributors,
-      distributorId,
     } = this.state;
 
     switch (page) {
@@ -263,10 +295,7 @@ class Registration extends Component {
               value={vin}
               onChangeText={e => this.setState({vin: e})}
             />
-            <Validation
-              // onPress={() => this.setState({status: !status})}
-              status={status}
-            />
+            <Validation status={status} />
           </View>
         );
       case PAGES.PASSWORD:
@@ -306,8 +335,8 @@ class Registration extends Component {
             <AuthInput
               label={str.birthDate}
               placeholder={str.enterDOB}
-              value={birthDate}
-              onChangeText={e => this.setState({birthDate: e})}
+              value={moment(birthDate).format('DD/MM/YYYY')}
+              onTouchStart={() => this.setState({isPickerVisibile: true})}
             />
             <AuthInput
               label={str.email}
@@ -377,8 +406,8 @@ class Registration extends Component {
   };
 
   render() {
-    const {isSuccess, isStatusModal, status} = this.state;
-    const {loading, distributors} = this.props;
+    const {isSuccess, status, isPickerVisibile} = this.state;
+    const {loading} = this.props;
 
     return (
       <Container style={{paddingHorizontal: 10}}>
@@ -399,6 +428,7 @@ class Registration extends Component {
           title={str.following}
           onPress={this.handleSubmit}
           style={gstyles.bottomBtn}
+          disabled={this.disabledBtn()}
         />
         <Alert
           visible={isSuccess}
@@ -416,19 +446,30 @@ class Registration extends Component {
           }
           onNew={() => this.setState({page: PAGES.CONTACT, status: false})}
         />
+        <DatePicker
+          isVisible={isPickerVisibile}
+          mode="date"
+          onConfirm={this.handleConfirm}
+          onCancel={() => this.setState({isPickerVisibile: true})}
+        />
         <Spinner visible={loading} />
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.auth?.loading,
-  error: state?.auth?.error,
-  register: state?.auth?.register,
-  motorcycle: state?.auth?.motorcycle,
-  distributors: state?.distributors?.distributors,
-});
+const mapStateToProps = state => {
+  const {loading, error, register, motorcycle} = state.auth;
+  const {distributors} = state.distributors;
+
+  return {
+    loading,
+    error,
+    register,
+    motorcycle,
+    distributors,
+  };
+};
 
 const mapStateToDispatch = {
   userRegistration,

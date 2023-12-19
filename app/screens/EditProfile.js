@@ -45,9 +45,13 @@ class EditProfile extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {update} = this.props;
-    if (update?.status === 'success' && update !== prevProps.updateProfile) {
-      this.props.navigation.goBack();
+    const {profileUpdate} = this.props;
+    if (
+      profileUpdate &&
+      profileUpdate.status === 'success' &&
+      profileUpdate !== prevProps.profileUpdate
+    ) {
+      this.props.navigation.pop();
     }
   }
 
@@ -185,12 +189,16 @@ class EditProfile extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.auth?.loading,
-  error: state?.auth?.error,
-  profile: state?.auth?.profile,
-  update: state?.auth?.updateProfile,
-});
+const mapStateToProps = state => {
+  const {loading, error, profile, profileUpdate} = state.auth;
+
+  return {
+    loading,
+    error,
+    profile,
+    profileUpdate,
+  };
+};
 
 const mapStateToDispatch = {
   updateProfile,

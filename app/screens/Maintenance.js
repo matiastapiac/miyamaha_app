@@ -35,7 +35,7 @@ class Maintenance extends Component {
         />
         <FlatList
           data={vehicles[activeSlide].maintenance}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => (
             <ScheduleCard
               key={index}

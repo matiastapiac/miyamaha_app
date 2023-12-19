@@ -145,14 +145,18 @@ class MyDocuments extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.document?.loading,
-  error: state?.document?.error,
-  documents: state?.document?.documents,
-  folder: state?.document?.folder,
-  file: state?.document?.file,
-  isDelete: state?.document?.isDelete,
-});
+const mapStateToProps = state => {
+  const {loading, error, documents, folder, file, isDelete} = state.document;
+
+  return {
+    loading,
+    error,
+    documents,
+    folder,
+    file,
+    isDelete,
+  };
+};
 
 const mapStateToDispatch = {
   getDocuments,

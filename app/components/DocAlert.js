@@ -22,11 +22,11 @@ export default function DocAlert({
         <Text style={styles.title}>{title}</Text>
         <AuthInput
           label={str.specifyFolderName}
-          placeholder={str.folderName}
+          placeholder={str.folderName}  
           value={value}
           onChangeText={onChangeText}
         />
-        <AuthButton title={str.create} onPress={onCreate} />
+        <AuthButton title={str.create} onPress={onCreate} disabled={!value} />
         <AuthButton
           title={str.cancel}
           style={{backgroundColor: colors.black}}

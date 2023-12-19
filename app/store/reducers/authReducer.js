@@ -5,7 +5,7 @@ const initialState = {
   authToken: null,
   register: null,
   profile: null,
-  updateProfile: null,
+  profileUpdate: null,
   forgotpass: null,
   changepass: null,
   recoverpass: null,
@@ -89,7 +89,7 @@ const authReducer = (state = initialState, action) => {
     case types.UPDATE_PROFILE_REQUEST:
       return {...state, loading: true, error: null};
     case types.UPDATE_PROFILE_SUCCESS:
-      return {...state, loading: false, updateProfile: action.payload};
+      return {...state, loading: false, profileUpdate: action.payload};
     case types.UPDATE_PROFILE_FAILURE:
       return {...state, loading: false, error: action.payload};
 

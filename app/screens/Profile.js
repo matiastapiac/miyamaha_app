@@ -78,7 +78,7 @@ class Profile extends Component {
       region,
       vehicles,
     } = this.state;
-    const {loading} = this.props
+    const {loading} = this.props;
 
     return (
       <Container style={{paddingHorizontal: 10}}>
@@ -87,7 +87,11 @@ class Profile extends Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthInput label={str.name} value={name} editable={false} />
             <AuthInput label={str.surname} value={surname} editable={false} />
-            <AuthInput label={str.birthDate} value={dob && moment(dob).format('DD/MM/YYYY')} editable={false} />
+            <AuthInput
+              label={str.birthDate}
+              value={dob && moment(dob).format('DD/MM/YYYY')}
+              editable={false}
+            />
             <AuthInput label={str.email} value={email} editable={false} />
             <AuthInput label={str.telephone} value={phone} editable={false} />
             <AuthInput label={str.address} value={address} editable={false} />
@@ -114,18 +118,21 @@ class Profile extends Component {
           style={gstyles.bottomBtn}
           onPress={this.handleEditProfile}
         />
-        <Spinner visible={loading}/>
+        <Spinner visible={loading} />
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.auth?.loading,
-  error: state?.auth?.error,
-  profile: state?.auth?.profile,
-  authToken: state?.auth?.authToken,
-});
+const mapStateToProps = state => {
+  const {loading, error, profile} = state.auth;
+
+  return {
+    loading,
+    error,
+    profile,
+  };
+};
 
 const mapStateToDispatch = {
   fetchProfile,

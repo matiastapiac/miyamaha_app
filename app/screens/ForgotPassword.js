@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
 import {
@@ -14,7 +15,6 @@ import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
 import Validation from '../components/Validation';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 const PAGES = {
   RUT: 1,
@@ -37,8 +37,7 @@ class ForgotPassword extends Component {
     };
   }
   componentDidUpdate(prevProps) {
-    const {forgotpass, changepass, recoverpass, error} = this.props;
-    console.log(prevProps)
+    const {forgotpass, recoverpass} = this.props;
     if (
       forgotpass &&
       forgotpass.status === 'success' &&
@@ -46,13 +45,15 @@ class ForgotPassword extends Component {
     ) {
       this.setState({isVisible: true});
     }
+
     if (
-      changepass &&
-      changepass.status === 'success' &&
-      changepass !== prevProps.changepass
+      forgotpass &&
+      forgotpass.status === 'error' &&
+      forgotpass !== prevProps.forgotpass
     ) {
-      this.setState({isUnRegister: true});
+      this.setState({status: true});
     }
+
     if (
       recoverpass &&
       recoverpass.status === 'success' &&
@@ -62,6 +63,7 @@ class ForgotPassword extends Component {
       this.props.navigation.pop();
     }
   }
+
   setHeaderTitle() {
     const {page} = this.state;
     switch (page) {
@@ -93,11 +95,10 @@ class ForgotPassword extends Component {
   }
 
   handleSubmit = () => {
-    const {page, isVisible, isUnRegister, status, rut, code, password} =
-      this.state;
+    const {page, isVisible, status, rut, code, password} = this.state;
     if (page == PAGES.RUT && status) {
-      this.handleChangePassword();
-      // this.setState({isUnRegister: !isUnRegister});
+      this.setState({status: false});
+      this.props.navigation.pop();
     } else if (page == PAGES.RUT && isVisible) {
       this.setState({page: 2, isVisible: false});
     } else if (page == PAGES.CODE_VERIFICATION) {
@@ -113,13 +114,6 @@ class ForgotPassword extends Component {
 
   handleForgotPassword() {
     this.props.forgotPassword(this.state.rut);
-  }
-
-  handleChangePassword() {
-    const {password, retypePassword} = this.state;
-    if (password == retypePassword) {
-      this.props.changePassword(password, retypePassword);
-    }
   }
 
   handleBack = () => {
@@ -140,10 +134,7 @@ class ForgotPassword extends Component {
               value={rut}
               onChangeText={e => this.setState({rut: e})}
             />
-            <Validation
-              onPress={() => this.setState({status: !status})}
-              status={status}
-            />
+            <Validation status={status} />
           </View>
         );
       case PAGES.CODE_VERIFICATION:
@@ -163,12 +154,14 @@ class ForgotPassword extends Component {
               placeholder={str.enterPass}
               value={password}
               onChangeText={e => this.setState({password: e})}
+              secureTextEntry={true}
             />
             <AuthInput
               label={str.retypePass}
               placeholder={str.writePassAgain}
               value={retypePassword}
               onChangeText={e => this.setState({retypePassword: e})}
+              secureTextEntry={true}
             />
           </View>
         );
@@ -177,8 +170,22 @@ class ForgotPassword extends Component {
     }
   };
 
+  disabledBtn() {
+    const {page, rut, code, password, retypePassword} = this.state;
+    switch (page) {
+      case PAGES.RUT:
+        return rut ? false : true;
+      case PAGES.CODE_VERIFICATION:
+        return code ? false : true;
+      case PAGES.CHANGE_PASSWORD:
+        return password && retypePassword ? false : true;
+      default:
+        return true;
+    }
+  }
+
   render() {
-    const {isVisible, isUnRegister} = this.state;
+    const {isVisible, status} = this.state;
     const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
@@ -191,9 +198,10 @@ class ForgotPassword extends Component {
           title={str.following}
           onPress={this.handleSubmit}
           style={gstyles.bottomBtn}
+          disabled={this.disabledBtn()}
         />
         <Alert
-          visible={isVisible || isUnRegister}
+          visible={isVisible || status}
           title={this.setAlertTitle()}
           subTitle={this.setAlertSubTitle()}
           onSubmit={this.handleSubmit}
@@ -204,13 +212,16 @@ class ForgotPassword extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.auth?.loading,
-  error: state?.auth?.error,
-  forgotpass: state?.auth?.forgotpass,
-  changepass: state?.auth?.changepass,
-  recoverpass: state?.auth?.recoverpass,
-});
+const mapStateToProps = state => {
+  const {loading, error, forgotpass, recoverpass} = state.auth;
+
+  return {
+    loading,
+    error,
+    forgotpass,
+    recoverpass,
+  };
+};
 
 const mapStateToDispatch = {
   forgotPassword,

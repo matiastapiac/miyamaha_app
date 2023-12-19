@@ -3,9 +3,11 @@ import {ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
-import {data} from '../common/utils';
 import {strings as str} from '../common/strings';
-import {requestPostSale} from '../store/actions/maintenanceActions';
+import {
+  requestPostSale,
+  getPostSaleReasons,
+} from '../store/actions/maintenanceActions';
 import {fetchDistributors} from '../store/actions/ditributorsActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
@@ -23,15 +25,17 @@ class SalesForm extends Component {
       distributor: '',
       query: '',
       distributors: [],
+      reasons: [],
     };
   }
 
   componentDidMount() {
     this.props.fetchDistributors();
+    this.props.getPostSaleReasons();
   }
 
   componentDidUpdate(prevProps) {
-    const {distributors} = this.props;
+    const {distributors, postSaleReasons, postSale} = this.props;
     if (
       distributors &&
       distributors.status === 'success' &&
@@ -43,13 +47,31 @@ class SalesForm extends Component {
         distributors: data,
       });
     }
+
+    if (
+      postSaleReasons &&
+      postSaleReasons.status === 'success' &&
+      postSaleReasons !== prevProps.postSaleReasons
+    ) {
+      const data = [];
+      postSaleReasons.data.map(i => data.push({key: i, value: i}));
+      this.setState({
+        reasons: data,
+      });
+    }
+
+    if (
+      postSale &&
+      postSale.status === 'success' &&
+      postSale !== prevProps.postSale
+    ) {
+      this.setState({isSubmited: true});
+    }
   }
 
   handleSumbit = () => {
     const {reason, distributor, query} = this.state;
     this.props.requestPostSale(reason, distributor, query);
-    return;
-    this.setState({isSubmited: !this.state.isSubmited});
   };
 
   setReason = e => {
@@ -61,7 +83,8 @@ class SalesForm extends Component {
   };
 
   render() {
-    const {isSubmited, query, reason, distributor, distributors} = this.state;
+    const {isSubmited, query, reason, distributor, distributors, reasons} =
+      this.state;
     const {loading} = this.props;
     return (
       <Container style={{paddingHorizontal: 10}}>
@@ -70,7 +93,7 @@ class SalesForm extends Component {
           <PickerInput
             placeholder={str.selectReason}
             label={str.whatReasonForQuery}
-            data={data}
+            data={reasons}
             setSelected={this.setReason}
           />
           <PickerInput
@@ -90,7 +113,7 @@ class SalesForm extends Component {
         <AuthButton
           style={gstyles.bottomBtn}
           title={str.send}
-          disabled={reason && distributor && query ? false : true}
+          disabled={!reason || !distributor || !query}
           onPress={this.handleSumbit}
         />
         <Alert
@@ -98,7 +121,7 @@ class SalesForm extends Component {
           title={str.submittedForm}
           subTitle={str.willSendYouEmailRespondingResponse}
           btnTitle={str.close}
-          onSubmit={this.handleSumbit}
+          onSubmit={() => this.props.navigation.pop()}
         />
         <Spinner visible={loading} />
       </Container>
@@ -106,15 +129,22 @@ class SalesForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.maintenance?.loading,
-  error: state?.maintenance?.error,
-  postSale: state?.maintenance?.postSale,
-  distributors: state?.distributors?.distributors,
-});
+const mapStateToProps = state => {
+  const {loading, error, postSale, postSaleReasons} = state.maintenance;
+  const {distributors} = state.distributors;
+
+  return {
+    loading,
+    error,
+    postSale,
+    postSaleReasons,
+    distributors,
+  };
+};
 
 const mapStateToDispatch = {
   requestPostSale,
+  getPostSaleReasons,
   fetchDistributors,
 };
 

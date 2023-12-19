@@ -23,8 +23,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rut: '17402204-6',
-      password: 'Developer@18!',
+      rut: '',
+      password: '',
     };
   }
   componentDidMount() {
@@ -43,6 +43,7 @@ class Login extends Component {
   loadAuthToken = async () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
+      // console.log(token);
       if (token !== null) {
         this.props.navigation.push(screen.DashBoard);
         setTokenHeader(token);
@@ -71,7 +72,7 @@ class Login extends Component {
 
   render() {
     const {rut, password} = this.state;
-    const {loading, login} = this.props;
+    const {loading} = this.props;
 
     return (
       <ImageBackground
@@ -90,6 +91,7 @@ class Login extends Component {
             icon={images.lock}
             placeholder={str.password}
             value={password}
+            secureTextEntry={true}
             onChangeText={e => this.setState({password: e})}
           />
           <TextButton
@@ -102,6 +104,7 @@ class Login extends Component {
             title={str.login}
             style={{marginVertical: 20}}
             onPress={this.handleLogin}
+            disabled={rut && password ? false : true}
           />
           <View>
             <Text style={styles.text}>{str.noAccount}</Text>
@@ -118,11 +121,15 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.auth?.loading,
-  error: state?.auth?.error,
-  login: state?.auth?.login,
-});
+const mapStateToProps = state => {
+  const {loading, error, login} = state.auth;
+
+  return {
+    loading,
+    error,
+    login,
+  };
+};
 
 const mapStateToDispatch = {
   userLogin,

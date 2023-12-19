@@ -34,23 +34,26 @@ class DocumentRequest extends Component {
   componentDidUpdate(prevProps) {
     const {docTypes, distributors, lost} = this.props;
 
-    if (docTypes?.status === 'success' && docTypes !== prevProps.docTypes) {
-      const types = [];
-      docTypes.data.map(i => types.push({key: i, value: i}));
+    if (
+      docTypes &&
+      docTypes.status === 'success' &&
+      docTypes !== prevProps.docTypes
+    ) {
       this.setState({
-        types,
+        types: docTypes.data.map(i => ({key: i, value: i})),
       });
     }
+
     if (
-      distributors?.status === 'success' &&
+      distributors &&
+      distributors.status === 'success' &&
       distributors !== prevProps.distributors
     ) {
-      const data = [];
-      distributors.data.map(i => data.push({key: i.id, value: i.name}));
       this.setState({
-        distributors: data,
+        distributors: distributors.data.map(i => ({key: i.id, value: i.name})),
       });
     }
+
     if (lost && lost.status === 'success' && lost !== prevProps.lost) {
       this.props.navigation.pop();
     }
@@ -94,7 +97,7 @@ class DocumentRequest extends Component {
           title={str.send}
           style={gstyles.bottomBtn}
           onPress={this.handleRequestDocument}
-          disabled={docType && distributor != 0 ? false : true}
+          disabled={!docType || distributor === 0}
         />
         <Spinner visible={loading} />
       </Container>
@@ -102,13 +105,18 @@ class DocumentRequest extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.document?.loading,
-  error: state?.document?.error,
-  lost: state?.document?.lost,
-  docTypes: state?.document?.docTypes,
-  distributors: state?.distributors?.distributors,
-});
+const mapStateToProps = state => {
+  const {loading, error, lost, docTypes} = state.document;
+  const {distributors} = state.distributors;
+
+  return {
+    loading,
+    error,
+    lost,
+    docTypes,
+    distributors,
+  };
+};
 
 const mapStateToDispatch = {
   lostDocumentRequest,

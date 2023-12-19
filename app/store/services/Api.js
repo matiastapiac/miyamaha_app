@@ -180,3 +180,9 @@ export function post_sale(reason, distributorId, query) {
     .post(endpoints.post_sale, data)
     .then(response => response.data);
 }
+
+export function post_sale_reasons() {
+  return instance
+    .get(endpoints.post_sale_reasons)
+    .then(response => response.data);
+}
