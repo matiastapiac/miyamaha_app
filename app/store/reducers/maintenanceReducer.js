@@ -5,6 +5,7 @@ const initialState = {
   postSale: null,
   postSaleReasons: null,
   warrantyManual: null,
+  news: null,
   loading: false,
   error: null,
 };
@@ -41,6 +42,14 @@ const maintenanceReducer = (state = initialState, action) => {
     case types.WARRANTY_MANUAL_SUCCESS:
       return {...state, loading: false, warrantyManual: action.payload};
     case types.WARRANTY_MANUAL_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
+    // Get News
+    case types.FETCH_NEWS_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.FETCH_NEWS_SUCCESS:
+      return {...state, loading: false, news: action.payload};
+    case types.FETCH_NEWS_FAILURE:
       return {...state, loading: false, error: action.payload};
 
     default:

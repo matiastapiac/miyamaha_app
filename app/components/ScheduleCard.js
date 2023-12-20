@@ -4,9 +4,11 @@ import {images} from '../common/images';
 import {FONTS} from '../common/fonts';
 import {colors} from '../common/colors';
 import {heightPercentageToDP as hp} from '../common/dimensions';
+import moment from 'moment';
 
 export default function ScheduleCard({km, name, address, date}) {
-  const e = date.split(' ');
+  const fm = moment(date).format('DD MMM YYYY');
+  const e = fm.split(' ');
   return (
     <View>
       <Pressable style={styles.container}>

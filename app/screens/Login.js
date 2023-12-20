@@ -115,7 +115,7 @@ class Login extends Component {
             />
           </View>
         </View>
-        <Spinner visible={loading} color={colors.red} />
+        <Spinner visible={loading} />
       </ImageBackground>
     );
   }

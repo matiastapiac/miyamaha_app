@@ -1,19 +1,19 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import Carousel, {ParallaxImage, Pagination} from 'react-native-snap-carousel';
+import moment from 'moment';
 import {FONTS} from '../common/fonts';
 import {colors} from '../common/colors';
-import {vehicles} from '../common/utils';
 import {strings as str} from '../common/strings';
 
 const {width: screenWidth} = Dimensions.get('window');
 
 export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
-  const _renderItem = ({item, index}, parallaxProps) => {
+  const _renderItem = ({item}, parallaxProps) => {
     return (
-      <View style={styles.item} key={index}>
+      <View style={styles.item}>
         <ParallaxImage
-          source={item.image}
+          source={{uri: item.photoUrl}}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.1}
@@ -37,15 +37,15 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
         style={{
           textAlign: 'center',
           marginTop: -80,
-          marginBottom: -25,
+          marginBottom: data.length > 0 ? 0 : -25,
           color: colors.red,
           fontFamily: FONTS.FjallaOneRegular,
           fontSize: 30,
         }}>
-        {data[activeSlide].vehicle}
+        {data[activeSlide]?.parentModelCode}
       </Text>
       <Pagination
-        dotsLength={vehicles.length}
+        dotsLength={data.length}
         activeDotIndex={activeSlide}
         dotStyle={{
           width: 15,
@@ -64,14 +64,15 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
         inactiveDotOpacity={0.6}
         inactiveDotScale={0.6}
       />
+
       <Text
         style={{
           textAlign: 'center',
-          marginTop: -20,
+          marginTop: data.length > 0 ? 30 : -20,
           color: colors.grey,
           fontFamily: FONTS.OpenSansBold,
         }}>
-        {data[activeSlide].date}
+        {moment(data[activeSlide]?.createdAt).format('DD MMM YYYY')}
       </Text>
       <View
         style={{

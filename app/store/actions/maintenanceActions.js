@@ -1,5 +1,11 @@
 import {types} from '../types';
-import {maintenance_urls, post_sale, post_sale_reasons, warranty_manual} from '../services/Api';
+import {
+  fetch_news,
+  maintenance_urls,
+  post_sale,
+  post_sale_reasons,
+  warranty_manual,
+} from '../services/Api';
 
 export const getMaintenanceUrls = () => async dispatch => {
   dispatch({type: types.FETCH_MAINTENANCE_URLS_REQUEST});
@@ -43,5 +49,16 @@ export const getPostSaleReasons = () => async dispatch => {
     dispatch({type: types.POST_SALE_REASONS_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.POST_SALE_REASONS_FAILURE, payload: error});
+  }
+};
+
+export const getNews = () => async dispatch => {
+  dispatch({type: types.FETCH_NEWS_REQUEST});
+
+  try {
+    const resp = await fetch_news();
+    dispatch({type: types.FETCH_NEWS_SUCCESS, payload: resp});
+  } catch (error) {
+    dispatch({type: types.FETCH_NEWS_FAILURE, payload: error});
   }
 };

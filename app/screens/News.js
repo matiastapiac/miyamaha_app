@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, ScrollView, Image, LogBox, Pressable} from 'react-native';
 import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import Container from '../components/Container';
-import {curousel} from '../common/utils';
 import {colors} from '../common/colors';
-import {images} from '../common/images';
+import {getNews} from '../store/actions/maintenanceActions';
 import TopHeader from '../components/TopHeader';
 import ImageCarousel from '../components/ImageCarousel';
 
@@ -12,23 +12,37 @@ class News extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [images.img4, images.img5, images.img4, images.img5],
+      carouselNews: [],
+      galleryNews: [],
     };
   }
 
   componentDidMount() {
     LogBox.ignoreAllLogs();
+    this.props.getNews();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {news} = this.props;
+
+    if (news && news.status === 'success' && news !== prevProps.news) {
+      const carouselNews = news.data.carouselNews;
+      const galleryNews = news.data.galleryNews;
+      this.setState({carouselNews, galleryNews});
+    }
   }
 
   renderImages = () => {
-    return this.state.data.map((item, index) => (
+    return this.state.galleryNews.map((item, index) => (
       <Pressable key={index} style={styles.imageWrapper}>
-        <Image source={item} style={styles.image} />
+        <Image source={{uri: item.imageUrl}} style={styles.image} />
       </Pressable>
     ));
   };
 
   render() {
+    const {carouselNews} = this.state;
+    const {loading} = this.props;
     return (
       <Container>
         <TopHeader />
@@ -36,7 +50,7 @@ class News extends Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}>
           <View style={styles.carouselContainer}>
-            <ImageCarousel images={curousel} />
+            <ImageCarousel images={carouselNews} />
           </View>
           <View
             style={{
@@ -47,17 +61,25 @@ class News extends Component {
             {this.renderImages()}
           </View>
         </ScrollView>
+        <Spinner visible={loading} />
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.loading,
-  error: state?.error,
-});
+const mapStateToProps = state => {
+  const {loading, error, news} = state.maintenance;
 
-const mapStateToDispatch = {};
+  return {
+    loading,
+    error,
+    news,
+  };
+};
+
+const mapStateToDispatch = {
+  getNews,
+};
 
 export default connect(mapStateToProps, mapStateToDispatch)(News);
 

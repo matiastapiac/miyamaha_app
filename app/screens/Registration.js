@@ -154,6 +154,7 @@ class Registration extends Component {
     if (newMotorcycle) {
       formdata.append('rut', rut);
       formdata.append('vin', vin);
+      formdata.append('newMotorcycle', newMotorcycle);
       formdata.append('email', email);
       formdata.append('distributorId', distributorId);
     } else {

@@ -97,4 +97,12 @@ export const strings = {
   passDoNotMatch: 'De angivna lösenorden stämmer inte överens',
   passValidation:
     'The password must be at least 8 characters long. The password must contain at least one lowercase letter, one uppercase letter, one number and one special character.',
+  selectRegion: 'Seleccione una región',
+  selectCity: 'Selecciona una ciudad',
+  maintenanceManual: 'Manual de mantenimiento',
+  userManual: 'Manual de usuario',
+  userManualDesc:
+    'Instrucciones y guías para el uso adecuado de tu motocicleta',
+  maintenanceManualDesc:
+    'Indicaciones del fabricante para el mantenimiento de tu motocicleta',
 };

@@ -1,35 +1,99 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Linking,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {colors} from '../common/colors';
 import {images} from '../common/images';
 import {FONTS} from '../common/fonts';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 
 export default function SearchCard({title, address, time = [], phone, email}) {
+  const businessHours = time && time.split('. ');
+
+  const addUrl = Platform.select({
+    ios: `maps:0,0?q=${address}`,
+    android: `geo:0,0?q=${address}`,
+  });
+
+  const linking = data => {
+    const phoneUrl = Platform.select({
+      ios: `telprompt:${data}`,
+      android: `tel:${data}`,
+    });
+    Linking.openURL(phoneUrl);
+  };
+
   const renderTime = () => {
-    return time.map((item, index) => (
-      <View key={index} style={styles.list}>
-        <Text style={[styles.lightFont, {fontFamily: FONTS.OpenSansSemiBold}]}>
-          {item.day}
-        </Text>
-        <Text style={styles.lightFont}>{item.timing}</Text>
-      </View>
-    ));
+    return businessHours.map((item, index) => {
+      const parts =
+        businessHours.length > 1 ? item.split(' de ') : businessHours;
+      return (
+        <View key={index} style={styles.list}>
+          <Text
+            style={[styles.lightFont, {fontFamily: FONTS.OpenSansSemiBold}]}>
+            {parts[0]}
+          </Text>
+          <Text style={styles.lightFont}>
+            {parts.length > 1 &&
+              parts[1].replace('a', '-').replace(' hrs', '').replace('.', '')}
+          </Text>
+        </View>
+      );
+    });
   };
 
   const renderContactInfo = (icon, content, isLine) => {
     if (!content) return null;
 
-    return (
-      <View style={[styles.itemWrapper, {borderBottomColor: colors.grey3}]}>
-        <Image source={icon} style={styles.icon} />
+    const parts = content.split('|').map((part, index) => (
+      <Pressable key={index} onPress={() => linking(part)}>
         <Text
           style={[
             styles.rightContent,
             styles.lightFont,
-            {textDecorationLine: isLine, fontFamily:FONTS.OpenSansSemiBold},
+            {
+              fontFamily: FONTS.OpenSansSemiBold,
+              textDecorationLine: 'underline',
+            },
           ]}>
-          {content}
+          {part}
+        </Text>
+      </Pressable>
+    ));
+
+    return (
+      <View style={[styles.itemWrapper, {borderBottomColor: colors.grey3}]}>
+        <Image source={icon} style={styles.icon} />
+        <Text>
+          {parts.length > 1 ? (
+            <>
+              {parts[0]}
+              <View>
+                <Text>{'   '}|</Text>
+              </View>
+              {parts[1]}
+            </>
+          ) : (
+            <Pressable onPress={() => isLine && linking(content)}>
+              <Text
+                style={[
+                  styles.rightContent,
+                  styles.lightFont,
+                  {
+                    textDecorationLine: isLine ? 'underline' : 'none',
+                    fontFamily: FONTS.OpenSansSemiBold,
+                  },
+                ]}>
+                {content}
+              </Text>
+            </Pressable>
+          )}
         </Text>
       </View>
     );
@@ -41,16 +105,18 @@ export default function SearchCard({title, address, time = [], phone, email}) {
         <Image source={images.marker} style={styles.icon} />
         <View style={styles.rightContent}>
           <Text style={styles.titleFont}>{title}</Text>
-          <Text
-            style={[styles.lightFont, {textDecorationLine: 'underline'}]}
-            numberOfLines={1}>
-            {address}
-          </Text>
+          <Pressable onPress={() => Linking.openURL(addUrl)}>
+            <Text
+              style={[styles.lightFont, {textDecorationLine: 'underline'}]}
+              numberOfLines={1}>
+              {address}
+            </Text>
+          </Pressable>
         </View>
       </View>
       <View style={[styles.itemWrapper, {alignItems: 'flex-start'}]}>
         <Image source={images.calendar} style={styles.icon} />
-        <View style={styles.rightContent}>{renderTime()}</View>
+        {time && <View style={styles.rightContent}>{renderTime()}</View>}
       </View>
       {renderContactInfo(images.phone, phone, 'underline')}
       {renderContactInfo(images.mail, email)}

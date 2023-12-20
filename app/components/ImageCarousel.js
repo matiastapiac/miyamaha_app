@@ -54,8 +54,8 @@ const ImageCarousel = ({images}) => {
           borderRadius: 10,
         }}>
         <Image
-          source={item}
-          style={{width: '95%', height: '90%', resizeMode: 'stretch'}}
+          source={{uri: item.imageUrl}}
+          style={{width: '95%', height: '90%', resizeMode: 'stretch', borderRadius:10}}
         />
       </View>
     );
@@ -79,17 +79,18 @@ const ImageCarousel = ({images}) => {
         }}
       />
       <View style={styles.dotContainer}>
-        {images.map((_, index) => {
-          const backgroundColor =
-            index === currentIndex ? colors.red : colors.white;
+        {images &&
+          images.map((_, index) => {
+            const backgroundColor =
+              index === currentIndex ? colors.red : colors.white;
 
-          return (
-            <View
-              key={index.toString()}
-              style={[styles.dot, {backgroundColor}]}
-            />
-          );
-        })}
+            return (
+              <View
+                key={index.toString()}
+                style={[styles.dot, {backgroundColor}]}
+              />
+            );
+          })}
       </View>
     </View>
   );

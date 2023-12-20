@@ -21,6 +21,7 @@ const PickerInput = ({label, data, setSelected, placeholder}) => {
         dropdownTextStyles={styles.dropdownText}
         dropdownStyles={styles.dropdown}
         inputStyles={styles.input}
+        search={false}
       />
     </View>
   );

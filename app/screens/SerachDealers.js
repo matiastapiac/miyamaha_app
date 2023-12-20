@@ -2,19 +2,46 @@ import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
 import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
-import {dealers} from '../common/utils';
 import {strings as str} from '../common/strings';
+import {fetchDistributors} from '../store/actions/ditributorsActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import SearchCard from '../components/SearchCard';
 import AuthButton from '../components/AuthButton';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class SerachDealers extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+  }
+  componentDidMount() {
+    this.props.fetchDistributors();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {distributors} = this.props;
+    const {city, region} = this.props.route.params;
+
+    if (
+      distributors &&
+      distributors.status === 'success' &&
+      distributors !== prevProps.distributors
+    ) {
+      const data = distributors.data.filter(
+        item => item.city == city || item.region == region,
+      );
+      this.setState({data});
+    }
+  }
+
   renderItem = ({item}) => (
     <SearchCard
       title={item.name}
-      address={item.address}
-      time={item.time}
+      address={`${item.address}, ${item.city}, ${item.region}`}
+      time={item.businessHours}
       phone={item.phone}
       email={item.email}
     />
@@ -25,12 +52,14 @@ class SerachDealers extends Component {
   };
 
   render() {
+    const {loading} = this.props;
+    const {data} = this.state;
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.searchResults} />
         <View style={[gstyles.listContainer, {marginBottom: '40%'}]}>
           <FlatList
-            data={dealers}
+            data={data}
             keyExtractor={item => item.id}
             renderItem={this.renderItem}
             showsVerticalScrollIndicator={false}
@@ -41,16 +70,24 @@ class SerachDealers extends Component {
           style={gstyles.bottomBtn}
           onPress={this.handleSubmit}
         />
+        <Spinner visible={loading} />
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.loading,
-  error: state?.error,
-});
+const mapStateToProps = state => {
+  const {loading, error, distributors} = state.distributors;
 
-const mapStateToDispatch = {};
+  return {
+    loading,
+    error,
+    distributors,
+  };
+};
+
+const mapStateToDispatch = {
+  fetchDistributors,
+};
 
 export default connect(mapStateToProps, mapStateToDispatch)(SerachDealers);

@@ -104,13 +104,6 @@ export const registerRejected = data => async dispatch => {
     .catch(error => {
       dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: error});
     });
-  return;
-  try {
-    const data = await register_rejected();
-    dispatch({type: types.REGISTER_REJECTED_SUCCESS, payload: data});
-  } catch (error) {
-    dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: error});
-  }
 };
 
 export const forgotPassword = rut => async dispatch => {

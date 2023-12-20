@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
-import {data, screen} from '../common/utils';
+import {screen} from '../common/utils';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
+import {fetchDistributors} from '../store/actions/ditributorsActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import PickerInput from '../components/PickerInput';
@@ -16,8 +17,30 @@ class Dealers extends Component {
       isSubmited: false,
       region: '',
       city: '',
-      common: '',
+      cities: [],
+      regions: [],
     };
+  }
+
+  componentDidMount() {
+    this.props.fetchDistributors();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {distributors} = this.props;
+
+    if (
+      distributors &&
+      distributors.status === 'success' &&
+      distributors !== prevProps.distributors
+    ) {
+      const cities = distributors.data.map(item => item.city);
+      const regions = distributors.data.map(item => item.region);
+      this.setState({
+        cities: Array.from(new Set(cities)),
+        regions: Array.from(new Set(regions)),
+      });
+    }
   }
 
   setRegion = e => {
@@ -31,11 +54,12 @@ class Dealers extends Component {
   };
 
   handleSubmit = () => {
-    this.props.navigation.push(screen.SerachDealers);
+    const {city, region} = this.state;
+    this.props.navigation.push(screen.SerachDealers, {city, region});
   };
 
   render() {
-    const {region, city, common} = this.state;
+    const {region, city, regions, cities} = this.state;
     return (
       <Container>
         <TopHeader />
@@ -46,27 +70,21 @@ class Dealers extends Component {
             contentContainerStyle={{paddingBottom: 20}}>
             <PickerInput
               label={str.region}
-              placeholder={str.metropolitan}
-              data={data}
+              placeholder={str.selectRegion}
+              data={regions}
               setSelected={this.setRegion}
             />
             <PickerInput
               label={str.city}
-              placeholder={str.santiago}
-              data={data}
+              placeholder={str.selectCity}
+              data={cities}
               setSelected={this.setCity}
-            />
-            <PickerInput
-              label={str.commune}
-              placeholder={str.counts}
-              data={data}
-              setSelected={this.setCommon}
             />
           </ScrollView>
           <AuthButton
             title={str.following}
             style={gstyles.bottomBtn}
-            disabled={!region || !city || !common}
+            disabled={!region && !city}
             onPress={this.handleSubmit}
           />
         </View>
@@ -75,11 +93,18 @@ class Dealers extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  loading: state?.loading,
-  error: state?.error,
-});
+const mapStateToProps = state => {
+  const {loading, error, distributors} = state.distributors;
 
-const mapStateToDispatch = {};
+  return {
+    loading,
+    error,
+    distributors,
+  };
+};
+
+const mapStateToDispatch = {
+  fetchDistributors,
+};
 
 export default connect(mapStateToProps, mapStateToDispatch)(Dealers);
