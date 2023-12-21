@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text, StyleSheet, View, ImageBackground, Image} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -16,7 +17,6 @@ import {setTokenHeader} from '../store/services/Api';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import TextButton from '../components/TextButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import store from '../store';
 
 class Login extends Component {

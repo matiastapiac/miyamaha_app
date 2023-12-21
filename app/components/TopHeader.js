@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {images} from '../common/images';
@@ -17,22 +17,35 @@ export default function TopHeader({
 }) {
   const navigation = useNavigation();
   const iconSize = label ? hp(2.5) : hp(4);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleBack = () => {
-    onLeftPress
-      ? onLeftPress()
-      : label
-      ? navigation.goBack()
-      : navigation.push(screen.Profile);
+    if (!isButtonDisabled) {
+      setIsButtonDisabled(true);
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 1000);
+      onLeftPress
+        ? onLeftPress()
+        : label
+        ? navigation.goBack()
+        : navigation.push(screen.Profile);
+    }
   };
 
   const handleRightPress = () => {
-    navigation.push(screen.Notification);
+    if (!isButtonDisabled) {
+      setIsButtonDisabled(true);
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 1000);
+      navigation.push(screen.Notification);
+    }
   };
 
   const renderLeftIcon = () => {
     return (
-      <Pressable onPress={handleBack}>
+      <Pressable onPress={handleBack} disabled={isButtonDisabled}>
         <Image
           source={label ? images.leftarrow : images.profile}
           style={{height: iconSize, width: iconSize, tintColor: iColor}}
@@ -67,7 +80,7 @@ export default function TopHeader({
     return label ? (
       <View style={{height: iconSize, width: iconSize}}></View>
     ) : (
-      <Pressable onPress={handleRightPress}>
+      <Pressable onPress={handleRightPress} disabled={isButtonDisabled}>
         <Image source={images.vRed} style={styles.badge} />
         <Image
           source={images.bell}

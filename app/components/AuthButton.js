@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Keyboard, Pressable, StyleSheet, Text} from 'react-native';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {heightPercentageToDP as hp} from '../common/dimensions';
@@ -16,6 +16,7 @@ const AuthButton = ({title, style, onPress, disabled, textStyle}) => {
     setButtonDisabled(true);
 
     onPress && onPress();
+    Keyboard.dismiss()
 
     setTimeout(() => {
       setButtonDisabled(false);

@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import {View, FlatList} from 'react-native';
 import {connect} from 'react-redux';
-import {screen, vehicles} from '../common/utils';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {screen} from '../common/utils';
 import {colors} from '../common/colors';
 import {strings as str} from '../common/strings';
 import {fetchProfile} from '../store/actions/authActions';
+import {getMaintenanceCertificate} from '../store/actions/maintenanceActions';
+import {images} from '../common/images';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
 import ScheduleCard from '../components/ScheduleCard';
 import VehicleCarousel from '../components/VehicleCarousel';
-import CurveCarousel from '../components/CurveCarousel';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 class Maintenance extends Component {
   constructor(props) {
@@ -20,8 +21,7 @@ class Maintenance extends Component {
       activeSlide: 0,
       data: [
         {
-          photoUrl:
-            'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.jpg',
+          photoUrl: images.yamaha1,
           userManualUrl:
             'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
           maintenanceManualUrl:
@@ -39,6 +39,33 @@ class Maintenance extends Component {
               id: 1,
               motorcycleVin: 'JYARJ251000000000',
               maintenanceType: '3000 KM',
+              maintenanceDate: '2021-01-01T00:00:00',
+              distributorName: 'Yamaha',
+              distritutorAddress: 'Av. Apoquindo 1234',
+              createdAt: '2021-01-01T00:00:00',
+              updatedAt: '2021-01-01T00:00:00',
+            },
+          ],
+        },
+        {
+          photoUrl: images.yamaha2,
+          userManualUrl:
+            'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
+          maintenanceManualUrl:
+            'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
+          vin: 'JYARJ251000000000',
+          engineNumber: 'H402E-0093745',
+          parentModelCode: 'YZF-R44',
+          year: 2021,
+          color: 'Azul',
+          licensePlate: 'AB1234',
+          createdAt: '2021-01-01T00:00:00',
+          updatedAt: '2021-01-01T00:00:00',
+          maintenance: [
+            {
+              id: 1,
+              motorcycleVin: 'JYARJ251000000000',
+              maintenanceType: '200 KM',
               maintenanceDate: '2021-01-01T00:00:00',
               distributorName: 'Yamaha',
               distritutorAddress: 'Av. Apoquindo 1234',
@@ -72,13 +99,18 @@ class Maintenance extends Component {
     this.props.navigation.push(screen.ScheduleMaintenance);
   };
 
+  handleDownloadCerti = () => {
+    const {data, activeSlide} = this.state;
+    console.log(data[activeSlide].vin);
+    this.props.getMaintenanceCertificate('LBPDG3518P0039868');
+  };
+
   render() {
     const {activeSlide, data} = this.state;
     const {loading} = this.props;
     return (
       <Container>
         <TopHeader />
-        {/* <CurveCarousel /> */}
         <VehicleCarousel
           data={data}
           activeSlide={activeSlide}
@@ -86,8 +118,7 @@ class Maintenance extends Component {
         />
         <FlatList
           data={data[activeSlide].maintenance}
-          keyExtractor={(item) => item
-          }
+          keyExtractor={item => item}
           renderItem={({item, index}) => (
             <ScheduleCard
               key={index}
@@ -114,6 +145,7 @@ class Maintenance extends Component {
           />
           <AuthButton
             title={str.downloadCertificare}
+            onPress={this.handleDownloadCerti}
             style={{width: '48%', backgroundColor: colors.black}}
             textStyle={{fontSize: 12}}
           />
@@ -126,16 +158,19 @@ class Maintenance extends Component {
 
 const mapStateToProps = state => {
   const {loading, error, profile} = state.auth;
+  const {certificate} = state.maintenance;
 
   return {
     loading,
     error,
     profile,
+    certificate,
   };
 };
 
 const mapStateToDispatch = {
   fetchProfile,
+  getMaintenanceCertificate,
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(Maintenance);

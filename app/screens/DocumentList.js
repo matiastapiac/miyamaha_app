@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Linking, View} from 'react-native';
 import {connect} from 'react-redux';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -101,11 +101,16 @@ class DocumentList extends Component {
       .catch(e => console.log(e));
   };
 
+  handleEvent(item) {
+    item.documentType == 'file' && Linking.openURL(item.documentUrl);
+  }
+
   renderItem = ({item}) => (
     <DocCard
       icon={item.documentType == 'file' ? images.file : images.folder}
       title={item.documentName}
       onDelete={() => this.handleDeleteDocument(item.id)}
+      onPress={() => this.handleEvent(item)}
     />
   );
 

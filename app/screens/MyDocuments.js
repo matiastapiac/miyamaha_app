@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Linking, View} from 'react-native';
 import {connect} from 'react-redux';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -59,8 +59,9 @@ class MyDocuments extends Component {
   }
 
   handleEvent(item) {
-    item.documentType == 'folder' &&
-      this.props.navigation.push(screen.DocumentList, {item});
+    item.documentType == 'folder'
+      ? this.props.navigation.push(screen.DocumentList, {item})
+      : Linking.openURL(item.documentUrl);
   }
 
   handleFolderBtn = () => {

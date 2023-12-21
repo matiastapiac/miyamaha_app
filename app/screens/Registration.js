@@ -5,9 +5,14 @@ import {showMessage} from 'react-native-flash-message';
 import DocumentPicker, {types} from 'react-native-document-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DatePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
-import {userRegistration, registerRejected} from '../store/actions/authActions';
+import {
+  userRegistration,
+  registerNewMotorcycle,
+  registerOldMotorcycle,
+} from '../store/actions/authActions';
 import {fetchDistributors} from '../store/actions/ditributorsActions';
 import {colors} from '../common/colors';
 import Container from '../components/Container';
@@ -17,7 +22,6 @@ import AuthInput from '../components/AuthInput';
 import Alert from '../components/Alert';
 import Validation from '../components/Validation';
 import PickerInput from '../components/PickerInput';
-import moment from 'moment';
 
 const PAGES = {
   RUT_VIN: 1,
@@ -147,6 +151,7 @@ class Registration extends Component {
       region,
       document,
       distributorId,
+      birthDate,
     } = this.state;
 
     const newMotorcycle = page === PAGES.CONTACT ? true : false;
@@ -157,25 +162,26 @@ class Registration extends Component {
       formdata.append('newMotorcycle', newMotorcycle);
       formdata.append('email', email);
       formdata.append('distributorId', distributorId);
+      this.props.registerNewMotorcycle(formdata);
     } else {
       formdata.append('rut', rut);
       formdata.append('vin', vin);
       formdata.append('firstName', name);
       formdata.append('lastName', surname);
+      formdata.append('Birthdate', moment(birthDate).format('YYYY-MM-DD'));
       formdata.append('newMotorcycle', newMotorcycle);
       formdata.append('email', email);
       formdata.append('phone', telephone);
       formdata.append('address', address);
       formdata.append('commune', comuna);
       formdata.append('region', region);
-      formdata.append('File', {
+      formdata.append('file', {
         uri: document[0].uri,
         type: document[0].type,
         name: document[0].name,
       });
+      this.props.registerOldMotorcycle(formdata);
     }
-
-    this.props.registerRejected(formdata);
   }
 
   getDitributors() {
@@ -240,17 +246,42 @@ class Registration extends Component {
   }
 
   disabledBtn() {
-    const {page, rut, vin, password, retypePassword, email, distributorId} =
-      this.state;
+    const {
+      page,
+      rut,
+      vin,
+      password,
+      retypePassword,
+      email,
+      distributorId,
+      name,
+      surname,
+      birthDate,
+      comuna,
+      region,
+      address,
+      document,
+    } = this.state;
+
     switch (page) {
       case PAGES.RUT_VIN:
-        return rut && vin ? false : true;
+        return !(rut && vin);
       case PAGES.PASSWORD:
-        return password && retypePassword ? false : true;
+        return !(password && retypePassword);
       case PAGES.CONTACT:
-        return email && distributorId ? false : true;
+        return !(email && distributorId);
       case PAGES.PERSONAL_INFO:
-        return email ? false : true;
+        const isPersonalInfoComplete =
+          name &&
+          surname &&
+          birthDate &&
+          address &&
+          comuna &&
+          region &&
+          email &&
+          document.length > 0;
+
+        return !isPersonalInfoComplete;
       default:
         return true;
     }
@@ -336,7 +367,7 @@ class Registration extends Component {
             <AuthInput
               label={str.birthDate}
               placeholder={str.enterDOB}
-              value={moment(birthDate).format('DD/MM/YYYY')}
+              value={birthDate && moment(birthDate).format('DD/MM/YYYY')}
               onTouchStart={() => this.setState({isPickerVisibile: true})}
             />
             <AuthInput
@@ -474,7 +505,8 @@ const mapStateToProps = state => {
 
 const mapStateToDispatch = {
   userRegistration,
-  registerRejected,
+  registerNewMotorcycle,
+  registerOldMotorcycle,
   fetchDistributors,
 };
 

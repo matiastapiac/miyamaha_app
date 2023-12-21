@@ -45,12 +45,20 @@ const authReducer = (state = initialState, action) => {
     case types.REGISTER_FAILURE:
       return {...state, loading: false, error: action.payload};
 
-    // Register Motorcycle
-    case types.REGISTER_REJECTED_REQUEST:
+    // Register New Motorcycle
+    case types.REGISTER_NEW_MOTORCYCLE_REQUEST:
       return {...state, loading: true, error: null};
-    case types.REGISTER_REJECTED_SUCCESS:
+    case types.REGISTER_NEW_MOTORCYCLE_SUCCESS:
       return {...state, loading: false, motorcycle: action.payload};
-    case types.REGISTER_REJECTED_FAILURE:
+    case types.REGISTER_NEW_MOTORCYCLE_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
+    // Register Old Motorcycle
+    case types.REGISTER_OLD_MOTORCYCLE_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.REGISTER_OLD_MOTORCYCLE_SUCCESS:
+      return {...state, loading: false, motorcycle: action.payload};
+    case types.REGISTER_OLD_MOTORCYCLE_FAILURE:
       return {...state, loading: false, error: action.payload};
 
     // Forgot Password Reducer

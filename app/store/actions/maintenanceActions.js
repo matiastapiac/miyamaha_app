@@ -1,6 +1,7 @@
 import {types} from '../types';
 import {
   fetch_news,
+  maintenance_certificate,
   maintenance_urls,
   post_sale,
   post_sale_reasons,
@@ -15,6 +16,19 @@ export const getMaintenanceUrls = () => async dispatch => {
     dispatch({type: types.FETCH_MAINTENANCE_URLS_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.FETCH_MAINTENANCE_URLS_DELETE, payload: error});
+  }
+};
+
+export const getMaintenanceCertificate = vin => async dispatch => {
+  dispatch({type: types.MAINTENANCE_CERTIFICATE_REQUEST});
+
+  try {
+    const resp = await maintenance_certificate(vin);
+    console.log(resp);
+    dispatch({type: types.MAINTENANCE_CERTIFICATE_SUCCESS, payload: resp});
+  } catch (error) {
+    console.log(error);
+    dispatch({type: types.MAINTENANCE_CERTIFICATE_FAILURE, payload: error});
   }
 };
 

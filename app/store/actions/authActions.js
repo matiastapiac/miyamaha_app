@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {types} from '../types';
 import {
   login,
-  register_rejected,
   update_profile,
   get_profile,
   recover_password,
@@ -73,7 +72,7 @@ export const userRegistration = data => async dispatch => {
     .then(respJson => respJson.json())
     .then(resp => {
       if (resp.status == 'error') {
-        showMessage({message: resp.message, icon: 'warning'});
+        // showMessage({message: resp.message, icon: 'warning'});
       } else if (resp.status == 400) {
         showMessage({
           message: str.passValidation,
@@ -89,20 +88,37 @@ export const userRegistration = data => async dispatch => {
     });
 };
 
-export const registerRejected = data => async dispatch => {
-  dispatch({type: types.REGISTER_REJECTED_REQUEST});
+export const registerNewMotorcycle = data => async dispatch => {
+  dispatch({type: types.REGISTER_NEW_MOTORCYCLE_REQUEST});
 
-  fetch(BASEURL + endpoints.register_rejected, {
+  fetch(BASEURL + endpoints.register_rejected_new_motorcycle, {
     method: 'POST',
     body: data,
   })
     .then(respJson => respJson.json())
     .then(resp => {
-      console.log(resp);
-      dispatch({type: types.REGISTER_REJECTED_SUCCESS, payload: data});
+      dispatch({type: types.REGISTER_NEW_MOTORCYCLE_SUCCESS, payload: resp});
     })
     .catch(error => {
-      dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: error});
+      dispatch({type: types.REGISTER_NEW_MOTORCYCLE_FAILURE, payload: error});
+    });
+};
+
+export const registerOldMotorcycle = data => async dispatch => {
+  dispatch({type: types.REGISTER_OLD_MOTORCYCLE_REQUEST});
+
+  fetch(BASEURL + endpoints.register_rejected_old_motorcycle, {
+    method: 'POST',
+    body: data,
+  })
+    .then(respJson => respJson.json())
+    .then(resp => {
+      console.log(resp)
+      dispatch({type: types.REGISTER_OLD_MOTORCYCLE_SUCCESS, payload: resp});
+    })
+    .catch(error => {
+      console.log(error)
+      dispatch({type: types.REGISTER_OLD_MOTORCYCLE_FAILURE, payload: error});
     });
 };
 
@@ -164,7 +180,6 @@ export const updateProfile = data => async dispatch => {
     }
     dispatch({type: types.UPDATE_PROFILE_SUCCESS, payload: resp});
   } catch (error) {
-    console.log(error, 'error==');
     dispatch({type: types.UPDATE_PROFILE_FAILURE, payload: error});
   }
 };

@@ -14,6 +14,7 @@ const AuthInput = ({
   editable,
   secureTextEntry,
   onTouchStart,
+  ...restProps
 }) => {
   const renderInputField = () => {
     if (textarea || label) {
@@ -23,7 +24,7 @@ const AuthInput = ({
           numberOfLines={textarea ? 4 : 1}
           value={value}
           onChangeText={onChangeText}
-          onTouchStart={onTouchStart}
+          onPressIn={onTouchStart}
           placeholder={placeholder}
           placeholderTextColor={colors.grey1}
           style={textarea ? styles.textArea : styles.labelInput}
@@ -31,6 +32,7 @@ const AuthInput = ({
           accessibilityLabel={label || placeholder}
           editable={editable}
           secureTextEntry={secureTextEntry}
+          {...restProps}
         />
       );
     } else {
@@ -46,6 +48,7 @@ const AuthInput = ({
             accessible={true}
             accessibilityLabel={placeholder}
             secureTextEntry={secureTextEntry}
+            {...restProps}
           />
         </View>
       );

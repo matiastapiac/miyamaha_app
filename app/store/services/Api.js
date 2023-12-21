@@ -5,6 +5,7 @@ export const instance = axios.create({
   baseURL: BASEURL,
   headers: {
     'Content-Type': 'application/json',
+    // 'Content-Type': 'application/pdf',
   },
 });
 
@@ -28,23 +29,6 @@ export function login(rut, password) {
     password,
   };
   return instance.post(endpoints.login, data).then(response => response.data);
-}
-
-export function register(rut, vin, password) {
-  const formdata = new FormData();
-  formdata.append('rut', rut);
-  formdata.append('vin', vin);
-  formdata.append('password', password);
-
-  return fmInstance
-    .post(endpoints.register, formdata)
-    .then(response => response);
-}
-
-export function register_rejected(data) {
-  return fmInstance
-    .post(endpoints.register, data)
-    .then(response => response.data);
 }
 
 export function request_newMotorcycle(data) {

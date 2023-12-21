@@ -71,7 +71,8 @@ export const endpoints = {
   login: 'login',
   forgot_password: 'forgot-password',
   register: 'register',
-  register_rejected: 'register-rejected',
+  register_rejected_new_motorcycle: 'register-rejected-new-motorcycle',
+  register_rejected_old_motorcycle: 'register-rejected-old-motorcycle',
   profile: 'profile',
   recover_password: 'recover-password',
   change_password: 'change-password',
@@ -163,87 +164,6 @@ export const data = [
   {key: '5', value: 'Test5'},
 ];
 
-export const manuals = [
-  {
-    id: 1,
-    title: 'R1 - Manual de mantenimiento',
-    description:
-      'Indicaciones del fabricante para el mantenimiento de tu motocicleta',
-    icon: images.book,
-  },
-  {
-    id: 2,
-    title: 'R1 - Manual de usuario',
-    description: 'Instrucciones y guías para el uso adecuado de tu motocicleta',
-    icon: images.book,
-  },
-  {
-    id: 3,
-    title: 'Tracer 9 GT - Manual de mantenimiento',
-    description:
-      'Indicaciones del fabricante para el mantenimiento de tu motocicleta',
-    icon: images.book,
-  },
-  {
-    id: 4,
-    title: 'Tracer 9 GT - Manual de usuario',
-    description: 'Instrucciones y guías para el uso adecuado de tu motocicleta',
-    icon: images.book,
-  },
-];
-
-export const myDocuments = [
-  {
-    id: 1,
-    name: 'Documentos Seguro',
-    type: 'folder',
-    files: ['Seguro obligatorio.jpg', 'Póliza de seguro.jpg'],
-  },
-  {id: 2, name: 'R1', type: 'folder'},
-  {id: 3, name: 'Tracer', type: 'folder'},
-  {id: 4, name: 'Mapa Argentina.pdf', type: 'pdf'},
-  {id: 5, name: 'Copia carnet conducir.jpg', type: 'pdf'},
-];
-
-export const dealers = [
-  {
-    id: 1,
-    name: 'Yamaha Motos',
-    address: 'Av. las Condes 8326, Las  Condes.',
-    time: [
-      {day: 'Lunes a viernes', timing: '10:00-19:00'},
-      {day: 'Sábados', timing: '10:00-14:00'},
-      {day: 'Domingo', timing: 'Cerrado'},
-    ],
-    phone: '(2) 2299 1000',
-    email: 'contacto@yamaimport.cl',
-  },
-  {
-    id: 2,
-    name: 'MotoXstore',
-    address: 'Av. Manquehue Sur 576, Las Condes',
-    time: [
-      {day: 'Lunes a viernes', timing: '10:00-19:00'},
-      {day: 'Sábados', timing: '10:00-14:00'},
-      {day: 'Domingo', timing: 'Cerrado'},
-    ],
-    phone: '(2) 2299 1000',
-    email: 'contacto@yamaimport.cl',
-  },
-  {
-    id: 3,
-    name: 'YAMAHA CICLOMOTO',
-    address: ' Av. Francisco Bilbao 205, Providencia',
-    time: [
-      {day: 'Lunes a viernes', timing: '10:00-19:00'},
-      {day: 'Sábados', timing: '10:00-14:00'},
-      {day: 'Domingo', timing: 'Cerrado'},
-    ],
-    phone: '(2) 2299 1000',
-    email: 'contacto@yamaimport.cl',
-  },
-];
-
 export const devices = [
   {
     id: 1,
@@ -262,55 +182,6 @@ export const devices = [
     title: 'Agendar via Whatsapp',
     subTitle: 'Chatea con una de nuestras operadoras para agendar tu cita.',
     icon: images.whatsapp,
-  },
-];
-
-export const vehicles = [
-  {
-    id: 1,
-    image: images.yamaha1,
-    vehicle: 'R1',
-    date: '25 ABRIL 2022',
-    maintenance: [
-      {
-        dealer: 'Yamaha Motos',
-        distance: '6.000 km',
-        address: 'Av. las Condes 8326, Las Condes',
-        date: '25 ABRIL 2022',
-      },
-      {
-        dealer: 'Yamaha Ciclomoto',
-        distance: '3.000 km',
-        address: 'Av. Francisco Bilbao 205, Providencia',
-        date: '04 AGOSTO 2021',
-      },
-      {
-        dealer: 'MotoXstore',
-        distance: '1.000 km',
-        address: 'Av. Manquehue Sur 576, Las Condes',
-        date: '05 FEBRERO 2019',
-      },
-    ],
-  },
-  {
-    id: 2,
-    vehicle: 'TRACER 9 GT',
-    image: images.yamaha2,
-    date: '01 FEBRERO 2023',
-    maintenance: [
-      {
-        dealer: 'Yamaha Motos',
-        distance: '3.000 km',
-        address: 'Av. las Condes 8326, Las Condes',
-        date: '01 FEBRERO 2023',
-      },
-      {
-        dealer: 'MotoXstore',
-        distance: '1.000 km',
-        address: 'Av. Manquehue Sur 576, Las Condes',
-        date: '04 NOVIEMBRE 2022',
-      },
-    ],
   },
 ];
 

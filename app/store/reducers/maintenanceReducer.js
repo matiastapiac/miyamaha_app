@@ -6,6 +6,7 @@ const initialState = {
   postSaleReasons: null,
   warrantyManual: null,
   news: null,
+  certificate: null,
   loading: false,
   error: null,
 };
@@ -18,6 +19,14 @@ const maintenanceReducer = (state = initialState, action) => {
     case types.FETCH_MAINTENANCE_URLS_SUCCESS:
       return {...state, loading: false, urls: action.payload};
     case types.FETCH_MAINTENANCE_URLS_DELETE:
+      return {...state, loading: false, error: action.payload};
+
+    // Get Maintenance Certificate
+    case types.MAINTENANCE_CERTIFICATE_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.MAINTENANCE_CERTIFICATE_SUCCESS:
+      return {...state, loading: false, certificate: action.payload};
+    case types.MAINTENANCE_CERTIFICATE_FAILURE:
       return {...state, loading: false, error: action.payload};
 
     // Post Sale

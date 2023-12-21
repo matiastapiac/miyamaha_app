@@ -13,7 +13,7 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
     return (
       <View style={styles.item}>
         <ParallaxImage
-          source={{uri: item.photoUrl}}
+          source={ item.photoUrl}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.1}
@@ -37,7 +37,7 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
         style={{
           textAlign: 'center',
           marginTop: -80,
-          marginBottom: data.length > 0 ? 0 : -25,
+          marginBottom:  -25,
           color: colors.red,
           fontFamily: FONTS.FjallaOneRegular,
           fontSize: 30,
@@ -68,7 +68,7 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
       <Text
         style={{
           textAlign: 'center',
-          marginTop: data.length > 0 ? 30 : -20,
+          marginTop: -20,
           color: colors.grey,
           fontFamily: FONTS.OpenSansBold,
         }}>

@@ -13,7 +13,7 @@ import {images} from '../common/images';
 import {FONTS} from '../common/fonts';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 
-export default function SearchCard({title, address, time = [], phone, email}) {
+export default function SearchCard({title, address, time, phone, email}) {
   const businessHours = time && time.split('. ');
 
   const addUrl = Platform.select({
@@ -116,7 +116,10 @@ export default function SearchCard({title, address, time = [], phone, email}) {
       </View>
       <View style={[styles.itemWrapper, {alignItems: 'flex-start'}]}>
         <Image source={images.calendar} style={styles.icon} />
-        {time && <View style={styles.rightContent}>{renderTime()}</View>}
+        <Text style={[styles.lightFont, styles.rightContent]} numberOfLines={2}>
+          {time ? time : '-'}
+        </Text>
+        {/* {time && <View style={styles.rightContent}>{renderTime()}</View>} */}
       </View>
       {renderContactInfo(images.phone, phone, 'underline')}
       {renderContactInfo(images.mail, email)}
