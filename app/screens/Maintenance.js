@@ -91,8 +91,8 @@ class Maintenance extends Component {
       profile !== prevProps.profile
     ) {
       const data = profile.data.motorcycles;
-      this.setState({data: [...this.state.data, ...data]});
-      // this.setState({data});
+      // this.setState({data: [...this.state.data, ...data]});
+      this.setState({data});
     }
   }
 
