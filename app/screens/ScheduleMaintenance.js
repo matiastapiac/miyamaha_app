@@ -52,7 +52,9 @@ class ScheduleMaintenance extends Component {
     }
 
     if (link) {
-      Linking.openURL(link);
+      Linking.openURL(link)
+        .then(() => {})
+        .catch(err => console.log(err));
     }
   };
 

@@ -1,11 +1,14 @@
 import axios from 'axios';
 import {BASEURL, endpoints} from '../../common/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+
+global.Buffer = require('buffer').Buffer;
 
 export const instance = axios.create({
   baseURL: BASEURL,
   headers: {
     'Content-Type': 'application/json',
-    // 'Content-Type': 'application/pdf',
   },
 });
 
@@ -142,10 +145,16 @@ export function maintenance_urls() {
     .then(response => response.data);
 }
 
-export function maintenance_certificate(vin) {
-  return instance
-    .get(endpoints.maintenance_certificate + `/${vin}`)
-    .then(response => response.data);
+export async function maintenance_certificate(vin) {
+  const token = await AsyncStorage.getItem('authToken');
+  const response = await ReactNativeBlobUtil.config({
+    fileCache: true,
+    path: `${ReactNativeBlobUtil.fs.dirs.DownloadDir}/maintenance_certificate.pdf`,
+  }).fetch('GET', `${BASEURL + endpoints.maintenance_certificate}/${vin}`, {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/pdf',
+  });
+  return response;
 }
 
 export function warranty_manual() {

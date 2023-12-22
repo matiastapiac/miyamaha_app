@@ -78,7 +78,12 @@ export const gstyles = StyleSheet.create({
   },
   spinnerText: {
     fontFamily: FONTS.OpenSansRegular,
-    color:colors.white,
-    fontSize:hp(2)
-  }
+    color: colors.white,
+    fontSize: hp(2),
+  },
+  flashMsg: {
+    marginHorizontal: Platform.select({android: 10}),
+    marginTop: Platform.select({android: 10}),
+    borderRadius: Platform.select({android: 5}),
+  },
 });

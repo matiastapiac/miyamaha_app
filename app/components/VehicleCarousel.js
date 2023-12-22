@@ -13,7 +13,7 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
     return (
       <View style={styles.item}>
         <ParallaxImage
-          source={ item.photoUrl}
+          source={{uri: item.photoUrl}}
           containerStyle={styles.imageContainer}
           style={styles.image}
           parallaxFactor={0.1}
@@ -28,77 +28,82 @@ export default function VehicleCarousel({data, activeSlide, onSnapToItem}) {
         data={data}
         renderItem={_renderItem}
         sliderWidth={screenWidth}
-        itemWidth={screenWidth - 90}
+        itemWidth={screenWidth - 70}
         hasParallaxImages={true}
         onSnapToItem={onSnapToItem}
         layout={'default'}
       />
-      <Text
-        style={{
-          textAlign: 'center',
-          marginTop: -80,
-          marginBottom:  -25,
-          color: colors.red,
-          fontFamily: FONTS.FjallaOneRegular,
-          fontSize: 30,
-        }}>
-        {data[activeSlide]?.parentModelCode}
-      </Text>
-      <Pagination
-        dotsLength={data.length}
-        activeDotIndex={activeSlide}
-        dotStyle={{
-          width: 15,
-          height: 15,
-          borderRadius: 100,
-          backgroundColor: colors.red,
-        }}
-        inactiveDotStyle={{
-          width: 20,
-          height: 20,
-          borderRadius: 100,
-          borderColor: colors.red,
-          borderWidth: 2,
-          backgroundColor: colors.white,
-        }}
-        inactiveDotOpacity={0.6}
-        inactiveDotScale={0.6}
-      />
-
-      <Text
-        style={{
-          textAlign: 'center',
-          marginTop: -20,
-          color: colors.grey,
-          fontFamily: FONTS.OpenSansBold,
-        }}>
-        {moment(data[activeSlide]?.createdAt).format('DD MMM YYYY')}
-      </Text>
-      <View
-        style={{
-          width: '20%',
-          alignSelf: 'center',
-          marginVertical: 5,
-          borderBottomWidth: 2,
-          borderBottomColor: colors.red,
-        }}
-      />
-      <Text
-        style={{
-          textAlign: 'center',
-          color: colors.grey,
-          fontFamily: FONTS.OpenSansRegular,
-        }}>
-        {str.lastMaintenance}
-      </Text>
+      <View style={styles.detailContainer}>
+        <Text style={styles.titleTxt}>
+          {data[activeSlide]?.parentModelCode}
+        </Text>
+        <Pagination
+          dotsLength={data.length}
+          activeDotIndex={activeSlide}
+          containerStyle={{paddingVertical: 5}}
+          dotStyle={styles.dot}
+          inactiveDotStyle={styles.inactiveDot}
+          inactiveDotOpacity={0.6}
+          inactiveDotScale={0.6}
+        />
+        <Text style={styles.dateTxt}>
+          {data[activeSlide]?.createdAt &&
+            moment(data[activeSlide]?.createdAt).format('DD MMM YYYY')}
+        </Text>
+        <View style={styles.border} />
+        <Text style={styles.bottomTxt}>{str.lastMaintenance}</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  detailContainer: {
+    marginTop: -60,
+    marginBottom: 10,
+  },
+  inactiveDot: {
+    width: 15,
+    height: 15,
+    borderRadius: 100,
+    borderColor: colors.red,
+    borderWidth: 2,
+    backgroundColor: colors.white,
+    marginHorizontal: -5,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 100,
+    backgroundColor: colors.red,
+    marginHorizontal: -5,
+  },
+  bottomTxt: {
+    textAlign: 'center',
+    color: colors.grey,
+    fontFamily: FONTS.OpenSansRegular,
+  },
+  border: {
+    width: '20%',
+    alignSelf: 'center',
+    marginVertical: 5,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.red,
+  },
+  titleTxt: {
+    textAlign: 'center',
+    color: colors.red,
+    fontFamily: FONTS.FjallaOneRegular,
+    fontSize: 30,
+  },
+  dateTxt: {
+    textAlign: 'center',
+    color: colors.grey,
+    fontFamily: FONTS.OpenSansBold,
+  },
   item: {
     width: screenWidth - 40,
-    height: screenWidth - 60,
+    height: screenWidth - 110,
   },
   imageContainer: {
     flex: 1,

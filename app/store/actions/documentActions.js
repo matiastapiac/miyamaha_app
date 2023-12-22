@@ -56,6 +56,7 @@ export const deleteDocument = documentId => async dispatch => {
     }
     dispatch({type: types.DELETE_DOCUMENT_SUCCESS, payload: resp});
   } catch (error) {
+    showMessage({message: 'Folder not empty.', icon: 'danger', type: 'danger'});
     dispatch({type: types.DELETE_DOCUMENT_FAILURE, payload: error});
   }
 };

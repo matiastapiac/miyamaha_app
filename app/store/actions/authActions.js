@@ -113,11 +113,11 @@ export const registerOldMotorcycle = data => async dispatch => {
   })
     .then(respJson => respJson.json())
     .then(resp => {
-      console.log(resp)
+      console.log(resp);
       dispatch({type: types.REGISTER_OLD_MOTORCYCLE_SUCCESS, payload: resp});
     })
     .catch(error => {
-      console.log(error)
+      console.log(error);
       dispatch({type: types.REGISTER_OLD_MOTORCYCLE_FAILURE, payload: error});
     });
 };
@@ -180,6 +180,11 @@ export const updateProfile = data => async dispatch => {
     }
     dispatch({type: types.UPDATE_PROFILE_SUCCESS, payload: resp});
   } catch (error) {
+    showMessage({
+      message: 'Los campos no pueden estar vacíos',
+      type: 'danger',
+      icon: 'danger',
+    });
     dispatch({type: types.UPDATE_PROFILE_FAILURE, payload: error});
   }
 };

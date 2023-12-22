@@ -23,8 +23,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rut: '',
-      password: '',
+      rut: '17402204-6',
+      password: 'Developer@18',
     };
   }
   componentDidMount() {

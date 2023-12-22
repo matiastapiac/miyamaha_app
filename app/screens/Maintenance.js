@@ -7,7 +7,6 @@ import {colors} from '../common/colors';
 import {strings as str} from '../common/strings';
 import {fetchProfile} from '../store/actions/authActions';
 import {getMaintenanceCertificate} from '../store/actions/maintenanceActions';
-import {images} from '../common/images';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthButton from '../components/AuthButton';
@@ -21,7 +20,8 @@ class Maintenance extends Component {
       activeSlide: 0,
       data: [
         {
-          photoUrl: images.yamaha1,
+          photoUrl:
+            'https://miyamaha.s3.us-east-2.amazonaws.com/generics/avatar-moto.png',
           userManualUrl:
             'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
           maintenanceManualUrl:
@@ -48,7 +48,8 @@ class Maintenance extends Component {
           ],
         },
         {
-          photoUrl: images.yamaha2,
+          photoUrl:
+            'https://miyamaha.s3.us-east-2.amazonaws.com/generics/avatar-moto.png',
           userManualUrl:
             'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
           maintenanceManualUrl:
@@ -84,13 +85,13 @@ class Maintenance extends Component {
 
   componentDidUpdate(prevProps) {
     const {profile} = this.props;
-
     if (
       profile &&
       profile.status === 'success' &&
       profile !== prevProps.profile
     ) {
       const data = profile.data.motorcycles;
+      this.setState({data: [...this.state.data, ...data]});
       // this.setState({data});
     }
   }
@@ -101,8 +102,7 @@ class Maintenance extends Component {
 
   handleDownloadCerti = () => {
     const {data, activeSlide} = this.state;
-    console.log(data[activeSlide].vin);
-    this.props.getMaintenanceCertificate('LBPDG3518P0039868');
+    this.props.getMaintenanceCertificate(data[activeSlide].vin);
   };
 
   render() {
@@ -116,21 +116,24 @@ class Maintenance extends Component {
           activeSlide={activeSlide}
           onSnapToItem={index => this.setState({activeSlide: index})}
         />
-        <FlatList
-          data={data[activeSlide].maintenance}
-          keyExtractor={item => item}
-          renderItem={({item, index}) => (
-            <ScheduleCard
-              key={index}
-              km={item.maintenanceType}
-              name={item.distributorName}
-              address={item.distritutorAddress}
-              date={item.createdAt}
-            />
-          )}
-          contentContainerStyle={{marginHorizontal: 10}}
-          showsVerticalScrollIndicator={false}
-        />
+
+        {data.length > 0 && (
+          <FlatList
+            data={data[activeSlide].maintenance}
+            keyExtractor={item => item}
+            renderItem={({item, index}) => (
+              <ScheduleCard
+                key={index}
+                km={item.maintenanceType}
+                name={item.distributorName}
+                address={item.distritutorAddress}
+                date={item.createdAt}
+              />
+            )}
+            contentContainerStyle={{marginHorizontal: 10}}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
         <View
           style={{
             flexDirection: 'row',

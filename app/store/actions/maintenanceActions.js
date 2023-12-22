@@ -7,6 +7,8 @@ import {
   post_sale_reasons,
   warranty_manual,
 } from '../services/Api';
+import {showMessage} from 'react-native-flash-message';
+import {ReactNativeBlobUtilFile} from 'react-native-blob-util';
 
 export const getMaintenanceUrls = () => async dispatch => {
   dispatch({type: types.FETCH_MAINTENANCE_URLS_REQUEST});
@@ -24,10 +26,31 @@ export const getMaintenanceCertificate = vin => async dispatch => {
 
   try {
     const resp = await maintenance_certificate(vin);
-    console.log(resp);
+    console.log(resp, '++++');
+    if (resp.respInfo.status === 200) {
+      showMessage({
+        message: 'PDF downloaded successfully',
+        type: 'success',
+        icon: 'success',
+      });
+      ReactNativeBlobUtilFile.android.actionViewIntent(
+        resp.path(),
+        'application/pdf',
+      );
+    } else {
+      showMessage({
+        message: 'Failed to download PDF',
+        type: 'danger',
+        icon: 'danger',
+      });
+    }
     dispatch({type: types.MAINTENANCE_CERTIFICATE_SUCCESS, payload: resp});
   } catch (error) {
-    console.log(error);
+    showMessage({
+      message: 'Failed to download PDF',
+      type: 'danger',
+      icon: 'danger',
+    });
     dispatch({type: types.MAINTENANCE_CERTIFICATE_FAILURE, payload: error});
   }
 };

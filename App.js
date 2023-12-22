@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {LogBox} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import Navigation from './app/navigation';
 import store from './app/store';
+import {gstyles} from './app/common/gstyles';
+import {colors} from './app/common/colors';
 
 export default class App extends Component {
   componentDidMount() {
@@ -16,8 +18,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
+        <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
         <Navigation />
-        <FlashMessage position="top" />
+        <FlashMessage position="top" style={gstyles.flashMsg} />
       </Provider>
     );
   }

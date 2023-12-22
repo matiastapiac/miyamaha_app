@@ -54,6 +54,7 @@ class MyDocuments extends Component {
         isDelete.status === 'success' &&
         isDelete !== prevProps.isDelete)
     ) {
+      this.setState({folderName: ''});
       this.props.getDocuments();
     }
   }
