@@ -18,64 +18,7 @@ class Maintenance extends Component {
     super(props);
     this.state = {
       activeSlide: 0,
-      data: [
-        {
-          photoUrl:
-            'https://miyamaha.s3.us-east-2.amazonaws.com/generics/avatar-moto.png',
-          userManualUrl:
-            'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
-          maintenanceManualUrl:
-            'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
-          vin: 'JYARJ251000000000',
-          engineNumber: 'H402E-0093745',
-          parentModelCode: 'YZF-R3',
-          year: 2021,
-          color: 'Azul',
-          licensePlate: 'AB1234',
-          createdAt: '2021-01-01T00:00:00',
-          updatedAt: '2021-01-01T00:00:00',
-          maintenance: [
-            {
-              id: 1,
-              motorcycleVin: 'JYARJ251000000000',
-              maintenanceType: '3000 KM',
-              maintenanceDate: '2021-01-01T00:00:00',
-              distributorName: 'Yamaha',
-              distritutorAddress: 'Av. Apoquindo 1234',
-              createdAt: '2021-01-01T00:00:00',
-              updatedAt: '2021-01-01T00:00:00',
-            },
-          ],
-        },
-        {
-          photoUrl:
-            'https://miyamaha.s3.us-east-2.amazonaws.com/generics/avatar-moto.png',
-          userManualUrl:
-            'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
-          maintenanceManualUrl:
-            'https://mi-yamaha.s3.amazonaws.com/12345678-9/JYARJ251000000000/2021-01-01-00-00-00/12345678-9-JYARJ251000000000-2021-01-01-00-00-00.pdf',
-          vin: 'JYARJ251000000000',
-          engineNumber: 'H402E-0093745',
-          parentModelCode: 'YZF-R44',
-          year: 2021,
-          color: 'Azul',
-          licensePlate: 'AB1234',
-          createdAt: '2021-01-01T00:00:00',
-          updatedAt: '2021-01-01T00:00:00',
-          maintenance: [
-            {
-              id: 1,
-              motorcycleVin: 'JYARJ251000000000',
-              maintenanceType: '200 KM',
-              maintenanceDate: '2021-01-01T00:00:00',
-              distributorName: 'Yamaha',
-              distritutorAddress: 'Av. Apoquindo 1234',
-              createdAt: '2021-01-01T00:00:00',
-              updatedAt: '2021-01-01T00:00:00',
-            },
-          ],
-        },
-      ],
+      data: [],
     };
   }
 
@@ -91,7 +34,6 @@ class Maintenance extends Component {
       profile !== prevProps.profile
     ) {
       const data = profile.data.motorcycles;
-      // this.setState({data: [...this.state.data, ...data]});
       this.setState({data});
     }
   }

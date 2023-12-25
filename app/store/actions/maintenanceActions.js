@@ -8,7 +8,7 @@ import {
   warranty_manual,
 } from '../services/Api';
 import {showMessage} from 'react-native-flash-message';
-import {ReactNativeBlobUtilFile} from 'react-native-blob-util';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 export const getMaintenanceUrls = () => async dispatch => {
   dispatch({type: types.FETCH_MAINTENANCE_URLS_REQUEST});
@@ -26,14 +26,13 @@ export const getMaintenanceCertificate = vin => async dispatch => {
 
   try {
     const resp = await maintenance_certificate(vin);
-    console.log(resp, '++++');
     if (resp.respInfo.status === 200) {
       showMessage({
         message: 'PDF downloaded successfully',
         type: 'success',
         icon: 'success',
       });
-      ReactNativeBlobUtilFile.android.actionViewIntent(
+      ReactNativeBlobUtil.android.actionViewIntent(
         resp.path(),
         'application/pdf',
       );
