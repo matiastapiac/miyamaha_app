@@ -1,7 +1,8 @@
+import {Platform} from 'react-native';
 import axios from 'axios';
-import {BASEURL, endpoints} from '../../common/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import {BASEURL, endpoints} from '../../common/utils';
 
 global.Buffer = require('buffer').Buffer;
 
@@ -147,9 +148,13 @@ export function maintenance_urls() {
 
 export async function maintenance_certificate(vin) {
   const token = await AsyncStorage.getItem('authToken');
+  const path = Platform.select({
+    ios: ReactNativeBlobUtil.fs.dirs.DocumentDir,
+    android: ReactNativeBlobUtil.fs.dirs.DownloadDir,
+  });
   const response = await ReactNativeBlobUtil.config({
     fileCache: true,
-    path: `${ReactNativeBlobUtil.fs.dirs.DownloadDir}/maintenance_certificate.pdf`,
+    path: `${path}/maintenance_certificate.pdf`,
   }).fetch('GET', `${BASEURL + endpoints.maintenance_certificate}/${vin}`, {
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/pdf',
