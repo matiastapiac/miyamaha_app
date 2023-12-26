@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {View, FlatList, Linking, Platform} from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {showMessage} from 'react-native-flash-message';
 import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {devices} from '../common/utils';
@@ -9,7 +11,6 @@ import {getMaintenanceUrls} from '../store/actions/maintenanceActions';
 import ItemCard from '../components/ItemCard';
 import Container from '../components/Container';
 import AuthButton from '../components/AuthButton';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 class ScheduleMaintenance extends Component {
   constructor(props) {
@@ -54,7 +55,11 @@ class ScheduleMaintenance extends Component {
     if (link) {
       Linking.openURL(link)
         .then(() => {})
-        .catch(err => console.log(err));
+        .catch(
+          err =>
+            err.message.includes('whatsapp') &&
+            showMessage({message: str.whatsappNotInstalled, type: 'danger', icon:'info'}),
+        );
     }
   };
 

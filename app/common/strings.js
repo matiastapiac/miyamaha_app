@@ -105,4 +105,6 @@ export const strings = {
     'Instrucciones y guías para el uso adecuado de tu motocicleta',
   maintenanceManualDesc:
     'Indicaciones del fabricante para el mantenimiento de tu motocicleta',
+  whatsappNotInstalled: 'WhatsApp no ​​está instalado en tu dispositivo',
+  phoneNotValid: 'El número de teléfono no es válido',
 };

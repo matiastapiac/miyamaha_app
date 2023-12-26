@@ -1,3 +1,6 @@
+import {Platform} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import {types} from '../types';
 import {
   fetch_news,
@@ -7,8 +10,6 @@ import {
   post_sale_reasons,
   warranty_manual,
 } from '../services/Api';
-import {showMessage} from 'react-native-flash-message';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 
 export const getMaintenanceUrls = () => async dispatch => {
   dispatch({type: types.FETCH_MAINTENANCE_URLS_REQUEST});
@@ -32,10 +33,14 @@ export const getMaintenanceCertificate = vin => async dispatch => {
         type: 'success',
         icon: 'success',
       });
-      ReactNativeBlobUtil.android.actionViewIntent(
-        resp.path(),
-        'application/pdf',
-      );
+
+      Platform.select({
+        ios: ReactNativeBlobUtil.ios.openDocument(resp.path()),
+        android: ReactNativeBlobUtil.android.actionViewIntent(
+          resp.path(),
+          'application/pdf',
+        ),
+      });
     } else {
       showMessage({
         message: 'Failed to download PDF',

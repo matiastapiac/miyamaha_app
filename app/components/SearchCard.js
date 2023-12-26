@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 import {colors} from '../common/colors';
 import {images} from '../common/images';
 import {FONTS} from '../common/fonts';
@@ -17,7 +18,7 @@ export default function SearchCard({title, address, time, phone, email}) {
   const businessHours = time && time.split('. ');
 
   const addUrl = Platform.select({
-    ios: `maps:0,0?q=${address}`,
+    ios: `http://maps.apple.com/?q=${address}`,
     android: `geo:0,0?q=${address}`,
   });
 
@@ -51,9 +52,10 @@ export default function SearchCard({title, address, time, phone, email}) {
   const renderContactInfo = (icon, content, isLine) => {
     if (!content) return null;
 
-    const parts = content.split('|').map((part, index) => (
-      <Pressable key={index} onPress={() => linking(part)}>
+    const parts = content.split(' | ').map((part, index) => (
+      <Pressable key={index}>
         <Text
+          onPress={() => linking(part)}
           style={[
             styles.rightContent,
             styles.lightFont,
@@ -80,8 +82,9 @@ export default function SearchCard({title, address, time, phone, email}) {
               {parts[1]}
             </>
           ) : (
-            <Pressable onPress={() => isLine && linking(content)}>
+            <Pressable>
               <Text
+                onPress={() => isLine && linking(content)}
                 style={[
                   styles.rightContent,
                   styles.lightFont,
@@ -105,7 +108,12 @@ export default function SearchCard({title, address, time, phone, email}) {
         <Image source={images.marker} style={styles.icon} />
         <View style={styles.rightContent}>
           <Text style={styles.titleFont}>{title}</Text>
-          <Pressable onPress={() => Linking.openURL(addUrl)}>
+          <Pressable
+            onPress={() =>
+              Linking.openURL(addUrl)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+            }>
             <Text
               style={[styles.lightFont, {textDecorationLine: 'underline'}]}
               numberOfLines={1}>
