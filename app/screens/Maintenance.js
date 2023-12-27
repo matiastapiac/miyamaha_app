@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, FlatList} from 'react-native';
+import {View, FlatList, PermissionsAndroid} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {screen} from '../common/utils';
@@ -42,9 +42,17 @@ class Maintenance extends Component {
     this.props.navigation.push(screen.ScheduleMaintenance);
   };
 
-  handleDownloadCerti = () => {
+  handleDownloadCerti = async () => {
     const {data, activeSlide} = this.state;
-    this.props.getMaintenanceCertificate(data[activeSlide].vin);
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Permission granted');
+      this.props.getMaintenanceCertificate(data[activeSlide].vin);
+    } else {
+      console.log('Permission denied');
+    }
   };
 
   render() {

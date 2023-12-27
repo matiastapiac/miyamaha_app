@@ -65,6 +65,8 @@ export const bottomStack = [
   },
 ];
 
+export const ONESIGNAL_APP_ID = '28128a11-c593-4cab-99bf-fec96290d21b';
+
 export const BASEURL = 'https://apimiyamaha.handy.cl/User/';
 
 export const endpoints = {
