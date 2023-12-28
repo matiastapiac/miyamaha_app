@@ -48,10 +48,8 @@ class Maintenance extends Component {
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Permission granted');
       this.props.getMaintenanceCertificate(data[activeSlide].vin);
     } else {
-      console.log('Permission denied');
     }
   };
 

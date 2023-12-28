@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View, ImageBackground, Image} from 'react-native';
+import {StackActions} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -12,7 +14,11 @@ import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {screen} from '../common/utils';
 import {strings as str} from '../common/strings';
-import {userLogin, storeAuthToken} from '../store/actions/authActions';
+import {
+  userLogin,
+  storeAuthToken,
+  setDeviceToken,
+} from '../store/actions/authActions';
 import {setTokenHeader} from '../store/services/Api';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
@@ -27,25 +33,30 @@ class Login extends Component {
       password: '',
     };
   }
+
   componentDidMount() {
     this.loadAuthToken();
   }
 
   componentDidUpdate(prevProps) {
     const {login} = this.props;
-    if (login?.status === 'success' && prevProps.login?.status !== 'success') {
+    if (
+      login &&
+      login.status === 'success' &&
+      prevProps.login?.status !== 'success'
+    ) {
       setTokenHeader(login?.data?.token);
       this.props.storeAuthToken(login?.data?.token);
-      this.props.navigation.push(screen.DashBoard);
+      this.props.setDeviceToken(uuid.v4());
+      this.props.navigation.dispatch(StackActions.replace(screen.DashBoard));
     }
   }
 
   loadAuthToken = async () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
-      // console.log(token);
       if (token !== null) {
-        this.props.navigation.push(screen.DashBoard);
+        this.props.navigation.dispatch(StackActions.replace(screen.DashBoard));
         setTokenHeader(token);
         store.dispatch({
           type: 'LOAD_AUTH_TOKEN',
@@ -134,6 +145,7 @@ const mapStateToProps = state => {
 const mapStateToDispatch = {
   userLogin,
   storeAuthToken,
+  setDeviceToken,
 };
 
 const styles = StyleSheet.create({

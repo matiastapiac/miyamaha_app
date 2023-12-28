@@ -79,7 +79,7 @@ class Registration extends Component {
     if (
       register &&
       register.status === 'success' &&
-      prevProps.register.status !== 'success'
+      register !== prevProps.register
     ) {
       this.setState({isSuccess: true});
     }
@@ -89,7 +89,9 @@ class Registration extends Component {
       register.status === 'error' &&
       register !== prevProps.register
     ) {
-      this.setState({page: 1, status: true});
+      register.message == 'Incorrect information.'
+        ? this.setState({page: 1, status: true})
+        : this.props.navigation.pop();
     }
 
     if (

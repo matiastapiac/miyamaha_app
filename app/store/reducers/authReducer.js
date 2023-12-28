@@ -10,6 +10,7 @@ const initialState = {
   changepass: null,
   recoverpass: null,
   motorcycle: null,
+  deviceToken: null,
   loading: false,
   error: null,
 };
@@ -99,6 +100,14 @@ const authReducer = (state = initialState, action) => {
     case types.UPDATE_PROFILE_SUCCESS:
       return {...state, loading: false, profileUpdate: action.payload};
     case types.UPDATE_PROFILE_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
+    // Set Device Token
+    case types.DEVICE_TOKEN_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.DEVICE_TOKEN_SUCCESS:
+      return {...state, loading: false, deviceToken: action.payload};
+    case types.DEVICE_TOKEN_FAILURE:
       return {...state, loading: false, error: action.payload};
 
     default:

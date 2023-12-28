@@ -1,11 +1,12 @@
+import {OneSignal} from 'react-native-onesignal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {types} from '../types';
 import {
-  login,
   update_profile,
   get_profile,
   recover_password,
   change_password,
+  device_token,
 } from '../services/Api';
 import {BASEURL, endpoints} from '../../common/utils';
 import {showMessage} from 'react-native-flash-message';
@@ -33,20 +34,6 @@ export const userLogin = (rut, password) => async dispatch => {
       dispatch({type: types.LOGIN_SUCCESS, payload: resp});
     })
     .catch(error => dispatch({type: types.LOGIN_FAILURE, payload: error}));
-  return;
-  try {
-    const resp = await login(rut, password);
-    console.log(resp);
-    if (resp.status == 'success') {
-      showMessage({message: resp.message, icon: 'success', type: 'success'});
-      storeAuthToken(resp.data.token);
-      await AsyncStorage.setItem('AUTH_TOKEN', resp.data.token);
-    }
-    dispatch({type: types.LOGIN_SUCCESS, payload: resp});
-  } catch (error) {
-    console.log(error);
-    dispatch({type: types.LOGIN_FAILURE, payload: error});
-  }
 };
 
 export const storeAuthToken = token => {
@@ -72,7 +59,7 @@ export const userRegistration = data => async dispatch => {
     .then(respJson => respJson.json())
     .then(resp => {
       if (resp.status == 'error') {
-        // showMessage({message: resp.message, icon: 'warning'});
+        showMessage({message: resp.message, icon: 'warning'});
       } else if (resp.status == 400) {
         showMessage({
           message: str.passValidation,
@@ -97,6 +84,9 @@ export const registerNewMotorcycle = data => async dispatch => {
   })
     .then(respJson => respJson.json())
     .then(resp => {
+      if (resp.status == 'error') {
+        showMessage({message: resp.message, icon: 'danger', type: 'danger'});
+      }
       dispatch({type: types.REGISTER_NEW_MOTORCYCLE_SUCCESS, payload: resp});
     })
     .catch(error => {
@@ -197,5 +187,19 @@ export const fetchProfile = () => async dispatch => {
     dispatch({type: types.FETCH_PROFILE_SUCCESS, payload: data});
   } catch (error) {
     dispatch({type: types.FETCH_PROFILE_FAILURE, payload: error});
+  }
+};
+
+export const setDeviceToken = id => async dispatch => {
+  dispatch({type: types.DEVICE_TOKEN_REQUEST});
+
+  try {
+    const resp = await device_token(id);
+    if (resp.status == 'success') {
+      OneSignal.User.addAlias('external_id', id);
+    }
+    dispatch({type: types.DEVICE_TOKEN_SUCCESS, payload: resp});
+  } catch (error) {
+    dispatch({type: types.DEVICE_TOKEN_FAILURE, payload: error});
   }
 };
