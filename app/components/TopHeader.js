@@ -6,6 +6,7 @@ import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {screen} from '../common/utils';
 import {heightPercentageToDP as hp} from '../common/dimensions';
+import PopoverMenu from './PopoverMenu';
 
 export default function TopHeader({
   label,
@@ -14,6 +15,9 @@ export default function TopHeader({
   paddingH,
   font,
   onLeftPress,
+  rightIcon,
+  onMenu1,
+  onMenu2,
 }) {
   const navigation = useNavigation();
   const iconSize = label ? hp(2.5) : hp(4);
@@ -78,7 +82,11 @@ export default function TopHeader({
 
   const renderRightIcon = () => {
     return label ? (
-      <View style={{height: iconSize, width: iconSize}}></View>
+      rightIcon ? (
+        <PopoverMenu onMenu1={onMenu1} onMenu2={onMenu2} />
+      ) : (
+        <View style={{height: iconSize, width: iconSize}}></View>
+      )
     ) : (
       <Pressable onPress={handleRightPress} disabled={isButtonDisabled}>
         <Image source={images.vRed} style={styles.badge} />

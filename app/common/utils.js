@@ -25,6 +25,7 @@ export const screen = {
   SerachDealers: 'SerachDealers',
   EditProfile: 'EditProfile',
   ScheduleMaintenance: 'ScheduleMaintenance',
+  ChangePassword: 'ChangePassword',
 };
 
 export const bottomStack = [
@@ -90,6 +91,7 @@ export const endpoints = {
   warranty_manual: 'warranty-manual',
   document_types: 'document-types',
   post_sale_reasons: 'post-sale-reasons',
+  logout: 'logout',
 };
 
 export const curousel = [images.img1, images.img2, images.img3];

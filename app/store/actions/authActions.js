@@ -7,6 +7,7 @@ import {
   recover_password,
   change_password,
   device_token,
+  logout,
 } from '../services/Api';
 import {BASEURL, endpoints} from '../../common/utils';
 import {showMessage} from 'react-native-flash-message';
@@ -145,15 +146,39 @@ export const recoverPassword = (rut, code, password) => async dispatch => {
   }
 };
 
-export const changePassword = () => async dispatch => {
+export const changePassword = (password, newPassword) => async dispatch => {
+  const token = await AsyncStorage.getItem('authToken');
   dispatch({type: types.CHANGE_PASSWORD_REQUEST});
 
-  try {
-    const resp = await change_password();
-    dispatch({type: types.CHANGE_PASSWORD_SUCCESS, payload: resp});
-  } catch (error) {
-    dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: error});
-  }
+  fetch(BASEURL + endpoints.change_password, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      password,
+      newPassword,
+    }),
+  })
+    .then(response => response.json())
+    .then(resp => {
+      if (resp.status == 'success') {
+        showMessage({message: resp.message, icon: 'success', type: 'success'});
+      } else if (resp.status == 'error') {
+        showMessage({message: resp.message, icon: 'danger', type: 'danger'});
+      } else {
+        showMessage({
+          message: str.passValidation,
+          icon: 'warning',
+          duration: 5000,
+        });
+      }
+      dispatch({type: types.REGISTER_SUCCESS, payload: resp});
+    })
+    .catch(e =>
+      dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: error}),
+    );
 };
 
 export const updateProfile = data => async dispatch => {
@@ -201,5 +226,19 @@ export const setDeviceToken = id => async dispatch => {
     dispatch({type: types.DEVICE_TOKEN_SUCCESS, payload: resp});
   } catch (error) {
     dispatch({type: types.DEVICE_TOKEN_FAILURE, payload: error});
+  }
+};
+
+export const userLogout = () => async dispatch => {
+  dispatch({type: types.LOGOUT_REQUEST});
+
+  try {
+    const resp = await logout();
+    if (resp.status == 'success') {
+      showMessage({message: resp.message, icon: 'success', type: 'success'});
+    }
+    dispatch({type: types.LOGOUT_SUCCESS, payload: resp});
+  } catch (error) {
+    dispatch({type: types.LOGOUT_FAILURE, payload: error});
   }
 };

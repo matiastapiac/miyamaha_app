@@ -14,6 +14,8 @@ export const strings = {
   changePass: 'CAMBIAR CONTRASEÑA',
   enterPass: 'Ingresa una contraseña',
   retypePass: 'Repetir contraseña',
+  enterNewPass: 'Ingresa nueva contraseña',
+  newPass: 'Nueva contraseña',
   writePassAgain: 'Vuelve a escribir la contraseña',
   codeSent: 'CÓDIGO ENVIADO',
   temporaryCode: 'Hemos enviado un código provisorio a tu correo electrónico.',

@@ -73,7 +73,7 @@ export function change_password(password, newPassword) {
     newPassword,
   };
   return instance
-    .post(endpoints.change_password, data)
+    .put(endpoints.change_password, data)
     .then(response => response.data);
 }
 
@@ -183,4 +183,8 @@ export function post_sale_reasons() {
   return instance
     .get(endpoints.post_sale_reasons)
     .then(response => response.data);
+}
+
+export function logout() {
+  return instance.get(endpoints.logout).then(response => response.data);
 }

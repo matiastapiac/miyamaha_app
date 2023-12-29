@@ -1,6 +1,7 @@
 import {Platform} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {types} from '../types';
 import {
   fetch_news,
@@ -10,6 +11,7 @@ import {
   post_sale_reasons,
   warranty_manual,
 } from '../services/Api';
+import {BASEURL, endpoints} from '../../common/utils';
 
 export const getMaintenanceUrls = () => async dispatch => {
   dispatch({type: types.FETCH_MAINTENANCE_URLS_REQUEST});
@@ -94,12 +96,17 @@ export const getPostSaleReasons = () => async dispatch => {
 };
 
 export const getNews = () => async dispatch => {
+  const token = await AsyncStorage.getItem('authToken');
   dispatch({type: types.FETCH_NEWS_REQUEST});
 
-  try {
-    const resp = await fetch_news();
-    dispatch({type: types.FETCH_NEWS_SUCCESS, payload: resp});
-  } catch (error) {
-    dispatch({type: types.FETCH_NEWS_FAILURE, payload: error});
-  }
+  fetch(BASEURL + endpoints.news, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then(responseJson => responseJson.json())
+    .then(resp => dispatch({type: types.FETCH_NEWS_SUCCESS, payload: resp}))
+    .catch(error => dispatch({type: types.FETCH_NEWS_FAILURE, payload: error}));
 };

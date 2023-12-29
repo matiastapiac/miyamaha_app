@@ -16,6 +16,7 @@ import DocumentList from '../screens/DocumentList';
 import SerachDealers from '../screens/SerachDealers';
 import EditProfile from '../screens/EditProfile';
 import ScheduleMaintenance from '../screens/ScheduleMaintenance';
+import ChangePassword from '../screens/ChangePassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ const screens = [
   {name: screen.Login, component: Login, nav: 'horizontal'},
   {name: screen.Registration, component: Registration, nav: 'horizontal'},
   {name: screen.ForgotPassword, component: ForgotPassword, nav: 'horizontal'},
+  {name: screen.ChangePassword, component: ChangePassword, nav: 'horizontal'},
   {name: screen.DashBoard, component: BottomTab, nav: 'horizontal'},
   {name: screen.Profile, component: Profile, nav: 'vertical'},
   {name: screen.Notification, component: Notification, nav: 'vertical'},

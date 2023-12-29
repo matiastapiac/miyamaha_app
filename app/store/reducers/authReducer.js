@@ -2,6 +2,7 @@ import {types} from '../types';
 
 const initialState = {
   login: null,
+  logout: null,
   authToken: null,
   register: null,
   profile: null,
@@ -36,6 +37,14 @@ const authReducer = (state = initialState, action) => {
     case types.LOGIN_SUCCESS:
       return {...state, loading: false, login: action.payload};
     case types.LOGIN_FAILURE:
+      return {...state, loading: false, error: action.payload};
+
+    // Logout Reducer
+    case types.LOGOUT_REQUEST:
+      return {...state, loading: true, error: null};
+    case types.LOGOUT_SUCCESS:
+      return {...state, loading: false, logout: action.payload};
+    case types.LOGOUT_REQUEST:
       return {...state, loading: false, error: action.payload};
 
     // Signup Reducer

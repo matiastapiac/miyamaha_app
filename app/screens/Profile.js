@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
-import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
 import {screen} from '../common/utils';
+import {images} from '../common/images';
+import {colors} from '../common/colors';
 import {strings as str} from '../common/strings';
-import {fetchProfile} from '../store/actions/authActions';
+import {fetchProfile, userLogout} from '../store/actions/authActions';
 import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import ItemCard from '../components/ItemCard';
+import PopoverMenu from '../components/PopoverMenu';
+import { StackActions } from '@react-navigation/native';
 
 class Profile extends Component {
   constructor(props) {
@@ -37,7 +41,7 @@ class Profile extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {profile} = this.props;
+    const {profile, logout} = this.props;
     if (
       profile &&
       profile.status === 'success' &&
@@ -56,6 +60,10 @@ class Profile extends Component {
         vehicles: motorcycles,
       });
     }
+
+    if (logout && logout.status === 'success' && logout !== prevProps.logout) {
+      this.props.navigation.dispatch(StackActions.replace(screen.Login));
+    }
   }
 
   componentWillUnmount() {
@@ -64,6 +72,14 @@ class Profile extends Component {
 
   handleEditProfile = () => {
     this.props.navigation.push(screen.EditProfile);
+  };
+
+  handleLogout = () => {
+    // this.props.userLogout();
+  };
+
+  handleChangePassword = () => {
+    this.props.navigation.push(screen.ChangePassword);
   };
 
   render() {
@@ -82,7 +98,13 @@ class Profile extends Component {
 
     return (
       <Container style={{paddingHorizontal: 10}}>
-        <TopHeader label={str.userProfile} />
+        <TopHeader
+          label={str.userProfile}
+          rightIcon={images.menu}
+          iColor={colors.red}
+          onMenu1={this.handleChangePassword}
+          onMenu2={this.handleLogout}
+        />
         <View style={[gstyles.listContainer, {marginBottom: '40%'}]}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <AuthInput label={str.name} value={name} editable={false} />
@@ -125,17 +147,19 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-  const {loading, error, profile} = state.auth;
+  const {loading, error, profile, logout} = state.auth;
 
   return {
     loading,
     error,
     profile,
+    logout,
   };
 };
 
 const mapStateToDispatch = {
   fetchProfile,
+  userLogout,
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(Profile);

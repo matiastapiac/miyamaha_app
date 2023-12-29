@@ -38,4 +38,7 @@ export const images = {
   km: require('../assets/images/km.png'),
   vGrey: require('../assets/images/vGrey.png'),
   vRed: require('../assets/images/vRed.png'),
+  menu: require('../assets/images/menu.png'),
+  logout: require('../assets/images/logout.png'),
+  padlock: require('../assets/images/padlock.png'),
 };
