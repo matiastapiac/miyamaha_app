@@ -29,8 +29,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rut: '',
-      password: '',
+      rut: '17402204-6',
+      password: 'Developer@18!',
     };
   }
 
@@ -48,7 +48,14 @@ class Login extends Component {
       setTokenHeader(login?.data?.token);
       this.props.storeAuthToken(login?.data?.token);
       this.props.setDeviceToken(uuid.v4());
-      this.props.navigation.dispatch(StackActions.replace(screen.DashBoard));
+      this.props.navigation.push(screen.DashBoard);
+      // this.props.navigation.dispatch(StackActions.replace(screen.DashBoard));
+
+      // this.props.navigation.dispatch(
+      //   StackActions.replace(screen.DashBoard, {
+      //     screen: screen.News,
+      //   }),
+      // );
     }
   }
 

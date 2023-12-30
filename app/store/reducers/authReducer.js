@@ -30,6 +30,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         authToken: action.payload,
       };
+    case types.REMOVE_AUTH_TOKEN:
+      return {
+        ...state,
+        authToken: action.payload,
+      };
 
     // Login Reducer
     case types.LOGIN_REQUEST:

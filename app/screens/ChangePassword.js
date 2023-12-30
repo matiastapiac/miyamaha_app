@@ -20,7 +20,6 @@ class ChangePassword extends Component {
 
   componentDidUpdate(prevProps) {
     const {changepass} = this.props;
-    console.log(changepass)
     if (
       changepass &&
       changepass.status === 'success' &&

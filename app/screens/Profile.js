@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {gstyles} from '../common/gstyles';
 import {screen} from '../common/utils';
@@ -14,8 +15,7 @@ import TopHeader from '../components/TopHeader';
 import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import ItemCard from '../components/ItemCard';
-import PopoverMenu from '../components/PopoverMenu';
-import { StackActions } from '@react-navigation/native';
+import store from '../store';
 
 class Profile extends Component {
   constructor(props) {
@@ -62,7 +62,7 @@ class Profile extends Component {
     }
 
     if (logout && logout.status === 'success' && logout !== prevProps.logout) {
-      this.props.navigation.dispatch(StackActions.replace(screen.Login));
+      this.handleLogoutAct();
     }
   }
 
@@ -70,12 +70,21 @@ class Profile extends Component {
     this._unsubscribe();
   }
 
+  handleLogoutAct = async () => {
+    await AsyncStorage.removeItem('authToken');
+    store.dispatch({
+      type: 'REMOVE_AUTH_TOKEN',
+      payload: null,
+    });
+    this.props.navigation.push(screen.Login);
+  };
+
   handleEditProfile = () => {
     this.props.navigation.push(screen.EditProfile);
   };
 
   handleLogout = () => {
-    // this.props.userLogout();
+    this.props.userLogout();
   };
 
   handleChangePassword = () => {

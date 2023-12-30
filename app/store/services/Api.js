@@ -186,5 +186,5 @@ export function post_sale_reasons() {
 }
 
 export function logout() {
-  return instance.get(endpoints.logout).then(response => response.data);
+  return instance.post(endpoints.logout).then(response => response.data);
 }
