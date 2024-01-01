@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import {gstyles} from '../common/gstyles';
 import {strings as str} from '../common/strings';
@@ -31,7 +31,7 @@ class SerachDealers extends Component {
       distributors !== prevProps.distributors
     ) {
       const data = distributors.data.filter(
-        item => item.city == city || item.region == region,
+        item => item.city == city && item.region == region,
       );
       this.setState({data});
     }
@@ -57,13 +57,24 @@ class SerachDealers extends Component {
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.searchResults} />
-        <View style={[gstyles.listContainer, {marginBottom: '40%'}]}>
-          <FlatList
-            data={data}
-            keyExtractor={item => item.id}
-            renderItem={this.renderItem}
-            showsVerticalScrollIndicator={false}
-          />
+        <View
+          style={[
+            gstyles.listContainer,
+            {
+              flex: 1,
+              justifyContent: 'center',
+            },
+          ]}>
+          {data.length === 0 ? (
+            <Text style={gstyles.NoText}>Datos no disponibles</Text>
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={item => item.id}
+              renderItem={this.renderItem}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
         </View>
         <AuthButton
           title={str.return}

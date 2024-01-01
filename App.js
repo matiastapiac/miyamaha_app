@@ -11,7 +11,6 @@ import {colors} from './app/common/colors';
 import {ONESIGNAL_APP_ID} from './app/common/utils';
 
 export default class App extends Component {
-  
   componentDidMount() {
     setTimeout(() => {
       SplashScreen.hide();

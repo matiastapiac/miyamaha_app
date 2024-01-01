@@ -134,8 +134,8 @@ class Profile extends Component {
                 {vehicles.map((vehicle, index) => (
                   <ItemCard
                     key={index}
-                    title={vehicle.engineNumber}
-                    subTitle={vehicle.vin}
+                    title={vehicle.modelCode}
+                    subTitle={'VIN: ' + vehicle.vin}
                     icon={vehicle.photoUrl}
                     style={gstyles.vehicleContent}
                   />

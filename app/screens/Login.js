@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet, View, ImageBackground, Image} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ImageBackground,
+  Image,
+  Platform,
+} from 'react-native';
 import {StackActions} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -29,8 +36,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rut: '17402204-6',
-      password: 'Developer@18!',
+      rut: '',
+      password: '',
     };
   }
 
@@ -48,14 +55,12 @@ class Login extends Component {
       setTokenHeader(login?.data?.token);
       this.props.storeAuthToken(login?.data?.token);
       this.props.setDeviceToken(uuid.v4());
-      this.props.navigation.push(screen.DashBoard);
-      // this.props.navigation.dispatch(StackActions.replace(screen.DashBoard));
-
-      // this.props.navigation.dispatch(
-      //   StackActions.replace(screen.DashBoard, {
-      //     screen: screen.News,
-      //   }),
-      // );
+      Platform.select({
+        ios: this.props.navigation.navigate(screen.DashBoard),
+        android: this.props.navigation.dispatch(
+          StackActions.replace(screen.DashBoard),
+        ),
+      });
     }
   }
 

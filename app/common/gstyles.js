@@ -86,4 +86,10 @@ export const gstyles = StyleSheet.create({
     marginTop: Platform.select({android: 10}),
     borderRadius: Platform.select({android: 5}),
   },
+  NoText: {
+    fontFamily: FONTS.OpenSansRegular,
+    color: colors.grey,
+    fontSize: hp(2),
+    textAlign:'center'
+  }
 });
