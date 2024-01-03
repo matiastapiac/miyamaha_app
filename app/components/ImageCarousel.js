@@ -6,6 +6,8 @@ import {
   Animated,
   Dimensions,
   Image,
+  Pressable,
+  Linking,
 } from 'react-native';
 import {colors} from '../common/colors';
 
@@ -45,7 +47,8 @@ const ImageCarousel = ({images}) => {
 
   const renderItem = ({item}) => {
     return (
-      <View
+      <Pressable
+        onPress={() => Linking.openURL(item.targetUrl)}
         style={{
           width,
           height: '100%',
@@ -55,9 +58,14 @@ const ImageCarousel = ({images}) => {
         }}>
         <Image
           source={{uri: item.imageUrl}}
-          style={{width: '95%', height: '90%', resizeMode: 'stretch', borderRadius:10}}
+          style={{
+            width: '95%',
+            height: '90%',
+            resizeMode: 'stretch',
+            borderRadius: 10,
+          }}
         />
-      </View>
+      </Pressable>
     );
   };
 

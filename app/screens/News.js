@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Image, LogBox, Pressable} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Image,
+  LogBox,
+  Pressable,
+  Linking,
+} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {colors} from '../common/colors';
@@ -34,7 +41,10 @@ class News extends Component {
 
   renderImages = () => {
     return this.state.galleryNews.map((item, index) => (
-      <Pressable key={index} style={styles.imageWrapper}>
+      <Pressable
+        key={index}
+        style={styles.imageWrapper}
+        onPress={() => Linking.openURL(item.targetUrl)}>
         <Image source={{uri: item.imageUrl}} style={styles.image} />
       </Pressable>
     ));
