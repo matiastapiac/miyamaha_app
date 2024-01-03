@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2B5919032B3AC403005E35D5 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5919022B3AC403005E35D5 /* NotificationService.swift */; };
 		2B5919072B3AC403005E35D5 /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2B5919002B3AC403005E35D5 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BED6ED42B454F7F00E001B4 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 2BED6ED32B454F7E00E001B4 /* www */; };
 		3E93D6E3F37A4EA8B0D84CEF /* FjallaOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A516EACD897C490681CE64BB /* FjallaOne-Regular.ttf */; };
 		5685D8B54F3FE255F9A3C35A /* libPods-YamahaApp-YamahaAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBD1E932BA365FAD347E11A /* libPods-YamahaApp-YamahaAppTests.a */; };
 		680502A1EE5741C986C408A3 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB063B6F87F447469BC25A51 /* OpenSans-SemiBold.ttf */; };
@@ -73,6 +74,7 @@
 		2B5919022B3AC403005E35D5 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		2B5919042B3AC403005E35D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B59190C2B3AC499005E35D5 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		2BED6ED32B454F7E00E001B4 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../android/app/src/main/assets/www; sourceTree = "<group>"; };
 		3BBD1E932BA365FAD347E11A /* libPods-YamahaApp-YamahaAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YamahaApp-YamahaAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41BA7D1697F9DA668078C9FE /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B72CA46E1E27628DCA243F /* Pods-YamahaApp-YamahaAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YamahaApp-YamahaAppTests.release.xcconfig"; path = "Target Support Files/Pods-YamahaApp-YamahaAppTests/Pods-YamahaApp-YamahaAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 		13B07FAE1A68108700A75B9A /* YamahaApp */ = {
 			isa = PBXGroup;
 			children = (
+				2BED6ED32B454F7E00E001B4 /* www */,
 				2B5918FB2B3AC3D2005E35D5 /* YamahaApp.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -346,6 +349,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BED6ED42B454F7F00E001B4 /* www in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0290CE17C4B54CE3922E6ABC /* OpenSans-Bold.ttf in Resources */,
@@ -855,10 +859,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
@@ -928,10 +929,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
