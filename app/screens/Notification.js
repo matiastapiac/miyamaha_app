@@ -60,7 +60,6 @@ class Notification extends Component {
         'DELETE FROM  Notifications where id=?',
         [this.state.selected],
         (tx, results) => {
-          console.log('Results', results.rowsAffected);
           if (results.rowsAffected > 0) {
             this.setState({loading: false});
             this.fetchNotifications();

@@ -14,6 +14,10 @@ import {ONESIGNAL_APP_ID} from './app/common/utils';
 let db = openDatabase({name: 'MiYamaha.db', createFromLocation: 1});
 
 export default class App extends Component {
+  state = {
+    notificationSaved: false,
+  };
+
   async componentDidMount() {
     setTimeout(() => {
       SplashScreen.hide();
@@ -29,7 +33,10 @@ export default class App extends Component {
       event => {
         event.preventDefault();
         event.getNotification().display();
-        this.saveNotifications(event.notification);
+        if (!this.state.notificationSaved) {
+          this.saveNotifications(event.notification);
+          this.setState({notificationSaved: true});
+        }
       },
     );
 
