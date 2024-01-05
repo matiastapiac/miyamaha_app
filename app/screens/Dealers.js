@@ -19,6 +19,7 @@ class Dealers extends Component {
       city: '',
       cities: [],
       regions: [],
+      data: [],
     };
   }
 
@@ -34,10 +35,9 @@ class Dealers extends Component {
       distributors.status === 'success' &&
       distributors !== prevProps.distributors
     ) {
-      const cities = distributors.data.map(item => item.city);
       const regions = distributors.data.map(item => item.region);
       this.setState({
-        cities: Array.from(new Set(cities)),
+        data: distributors.data,
         regions: Array.from(new Set(regions)),
       });
     }
@@ -45,6 +45,12 @@ class Dealers extends Component {
 
   setRegion = e => {
     this.setState({region: e});
+    const {data} = this.state;
+    const filteredCitiesSet = new Set(
+      data.filter(item => item.region === e).map(item => item.city),
+    );
+    const cities = Array.from(filteredCitiesSet);
+    this.setState({cities});
   };
   setCity = e => {
     this.setState({city: e});

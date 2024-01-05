@@ -84,7 +84,7 @@ export default class App extends Component {
                   }
                 },
                 error => {
-                  console.log(error, '===error');
+                  console.log(error);
                 },
               );
             });

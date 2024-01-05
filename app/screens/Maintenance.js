@@ -56,6 +56,7 @@ class Maintenance extends Component {
   render() {
     const {activeSlide, data} = this.state;
     const {loading} = this.props;
+    ''
     return (
       <Container>
         <TopHeader />
@@ -65,23 +66,22 @@ class Maintenance extends Component {
           onSnapToItem={index => this.setState({activeSlide: index})}
         />
 
-        {data.length > 0 && (
-          <FlatList
-            data={data[activeSlide].maintenance}
-            keyExtractor={item => item}
-            renderItem={({item, index}) => (
-              <ScheduleCard
-                key={index}
-                km={item.maintenanceType}
-                name={item.distributorName}
-                address={item.distritutorAddress}
-                date={item.createdAt}
-              />
-            )}
-            contentContainerStyle={{marginHorizontal: 10}}
-            showsVerticalScrollIndicator={false}
-          />
-        )}
+        <FlatList
+          data={data[activeSlide]?.maintenances}
+          keyExtractor={item => item}
+          renderItem={({item, index}) => (
+            <ScheduleCard
+              key={index}
+              km={item.maintenanceType}
+              name={item.distributorName}
+              address={item.distributorAddress}
+              date={item.createdAt}
+            />
+          )}
+          contentContainerStyle={{marginHorizontal: 10}}
+          showsVerticalScrollIndicator={false}
+        />
+
         <View
           style={{
             flexDirection: 'row',
