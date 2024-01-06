@@ -65,10 +65,9 @@ class Manuals extends Component {
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.manuals} />
-        <View style={{paddingTop: 20}}>
+        <View style={{paddingTop: 20,marginBottom:'40%'}}>
           <FlatList
             data={data}
-            scrollEnabled={false}
             keyExtractor={item => item.id}
             renderItem={this.renderItem}
             showsVerticalScrollIndicator={false}

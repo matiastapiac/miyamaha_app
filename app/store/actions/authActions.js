@@ -5,13 +5,11 @@ import {
   update_profile,
   get_profile,
   recover_password,
-  change_password,
   device_token,
   logout,
 } from '../services/Api';
 import {BASEURL, endpoints} from '../../common/utils';
-import {showMessage} from 'react-native-flash-message';
-import {strings as str} from '../../common/strings';
+import ts from '../../common/translate';
 
 export const userLogin = (rut, password) => async dispatch => {
   dispatch({type: types.LOGIN_REQUEST});
@@ -27,10 +25,10 @@ export const userLogin = (rut, password) => async dispatch => {
     .then(respJson => respJson.json())
     .then(async resp => {
       if (resp.status == 'success') {
-        showMessage({message: resp.message, icon: 'success', type: 'success'});
+        ts(resp.message, 'success');
         await AsyncStorage.setItem('AUTH_TOKEN', resp.data.token);
       } else {
-        showMessage({message: resp.message, icon: 'danger', type: 'danger'});
+        ts(resp.message, 'danger');
       }
       dispatch({type: types.LOGIN_SUCCESS, payload: resp});
     })
@@ -60,13 +58,9 @@ export const userRegistration = data => async dispatch => {
     .then(respJson => respJson.json())
     .then(resp => {
       if (resp.status == 'error') {
-        showMessage({message: resp.message, icon: 'warning'});
+        ts(resp.message, 'warning');
       } else if (resp.status == 400) {
-        showMessage({
-          message: str.passValidation,
-          icon: 'warning',
-          duration: 5000,
-        });
+        ts(resp.message, 'warning');
       }
       dispatch({type: types.REGISTER_SUCCESS, payload: resp});
     })
@@ -86,7 +80,7 @@ export const registerNewMotorcycle = data => async dispatch => {
     .then(respJson => respJson.json())
     .then(resp => {
       if (resp.status == 'error') {
-        showMessage({message: resp.message, icon: 'danger', type: 'danger'});
+        ts(resp.message, 'danger');
       }
       dispatch({type: types.REGISTER_NEW_MOTORCYCLE_SUCCESS, payload: resp});
     })
@@ -138,7 +132,7 @@ export const recoverPassword = (rut, code, password) => async dispatch => {
   try {
     const resp = await recover_password(rut, code, password);
     if (resp.status == 'success') {
-      showMessage({message: resp.message, icon: 'success', type: 'success'});
+      ts(resp.message, 'success');
     }
     dispatch({type: types.RECOVER_PASSWORD_SUCCESS, payload: resp});
   } catch (error) {
@@ -164,21 +158,19 @@ export const changePassword = (password, newPassword) => async dispatch => {
     .then(response => response.json())
     .then(resp => {
       if (resp.status == 'success') {
-        showMessage({message: resp.message, icon: 'success', type: 'success'});
+        ts(resp.message, 'success');
       } else if (resp.status == 'error') {
-        showMessage({message: resp.message, icon: 'danger', type: 'danger'});
+        ts(resp.message, 'danger');
+      } else if (resp.status == 400) {
+        ts(resp.errors.Password[0], 'warning');
       } else {
-        showMessage({
-          message: str.passValidation,
-          icon: 'warning',
-          duration: 5000,
-        });
+        ts(resp.message, 'warning');
       }
       dispatch({type: types.REGISTER_SUCCESS, payload: resp});
     })
-    .catch(e =>
-      dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: error}),
-    );
+    .catch(e => {
+      dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: error});
+    });
 };
 
 export const updateProfile = data => async dispatch => {
@@ -187,19 +179,11 @@ export const updateProfile = data => async dispatch => {
   try {
     const resp = await update_profile(data);
     if (resp.status == 'success') {
-      showMessage({
-        message: resp.message,
-        type: 'success',
-        icon: 'success',
-      });
+      ts(resp.message, 'success');
     }
     dispatch({type: types.UPDATE_PROFILE_SUCCESS, payload: resp});
   } catch (error) {
-    showMessage({
-      message: 'Los campos no pueden estar vacíos',
-      type: 'danger',
-      icon: 'danger',
-    });
+    ts('Los campos no pueden estar vacíos', 'danger');
     dispatch({type: types.UPDATE_PROFILE_FAILURE, payload: error});
   }
 };
@@ -235,7 +219,7 @@ export const userLogout = () => async dispatch => {
   try {
     const resp = await logout();
     if (resp.status == 'success') {
-      showMessage({message: resp.message, icon: 'success', type: 'success'});
+      ts(resp.message, 'success');
     }
     dispatch({type: types.LOGOUT_SUCCESS, payload: resp});
   } catch (error) {

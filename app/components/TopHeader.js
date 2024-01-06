@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     height: hp(1),
     width: hp(1),
     alignSelf: 'flex-end',
+    top: 5,
   },
   container: {
     flexDirection: 'row',

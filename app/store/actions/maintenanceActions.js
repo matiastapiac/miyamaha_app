@@ -1,10 +1,8 @@
 import {Platform} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {types} from '../types';
 import {
-  fetch_news,
   maintenance_certificate,
   maintenance_urls,
   post_sale,
@@ -12,6 +10,7 @@ import {
   warranty_manual,
 } from '../services/Api';
 import {BASEURL, endpoints} from '../../common/utils';
+import ts from '../../common/translate';
 
 export const getMaintenanceUrls = () => async dispatch => {
   dispatch({type: types.FETCH_MAINTENANCE_URLS_REQUEST});
@@ -30,12 +29,7 @@ export const getMaintenanceCertificate = vin => async dispatch => {
   try {
     const resp = await maintenance_certificate(vin);
     if (resp.respInfo.status === 200) {
-      showMessage({
-        message: 'PDF downloaded successfully',
-        type: 'success',
-        icon: 'success',
-      });
-
+      ts('PDF downloaded successfully', 'success');
       Platform.select({
         ios: ReactNativeBlobUtil.ios.openDocument(resp.path()),
         android: ReactNativeBlobUtil.android.actionViewIntent(
@@ -44,19 +38,11 @@ export const getMaintenanceCertificate = vin => async dispatch => {
         ),
       });
     } else {
-      showMessage({
-        message: 'Failed to download PDF',
-        type: 'danger',
-        icon: 'danger',
-      });
+      ts('Failed to download PDF', 'danger');
     }
     dispatch({type: types.MAINTENANCE_CERTIFICATE_SUCCESS, payload: resp});
   } catch (error) {
-    showMessage({
-      message: 'Failed to download PDF',
-      type: 'danger',
-      icon: 'danger',
-    });
+    ts('Failed to download PDF', 'danger');
     dispatch({type: types.MAINTENANCE_CERTIFICATE_FAILURE, payload: error});
   }
 };

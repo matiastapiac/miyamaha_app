@@ -7,7 +7,7 @@ import {
   lost_documents,
   upload_document,
 } from '../services/Api';
-import {showMessage} from 'react-native-flash-message';
+import ts from '../../common/translate';
 
 export const getDocuments = () => async dispatch => {
   dispatch({type: types.FETCH_DOCUMENTS_REQUEST});
@@ -37,7 +37,7 @@ export const uploadDocument = data => async dispatch => {
   try {
     const resp = await upload_document(data);
     if (resp.status == 'success') {
-      showMessage({message: resp.message, icon: 'success', type: 'success'});
+      ts(resp.message, 'success');
     }
     dispatch({type: types.UPLOAD_DOCUMENT_SUCCESS, payload: resp});
   } catch (error) {
@@ -52,11 +52,11 @@ export const deleteDocument = documentId => async dispatch => {
   try {
     const resp = await delete_document(documentId);
     if (resp.status == 'success') {
-      showMessage({message: resp.message, icon: 'success', type: 'success'});
+      ts(resp.message, 'success');
     }
     dispatch({type: types.DELETE_DOCUMENT_SUCCESS, payload: resp});
   } catch (error) {
-    showMessage({message: 'Folder not empty.', icon: 'danger', type: 'danger'});
+    ts('Folder not empty.', 'danger');
     dispatch({type: types.DELETE_DOCUMENT_FAILURE, payload: error});
   }
 };
@@ -67,7 +67,7 @@ export const createFolder = (folderPath, folderName) => async dispatch => {
   try {
     const resp = await create_folder(folderPath, folderName);
     if (resp.status == 'success') {
-      showMessage({message: resp.message, type: 'success', icon: 'success'});
+      ts(resp.message, 'success');
     }
     dispatch({type: types.CREATE_FOLDER_SUCCESS, payload: resp});
   } catch (error) {
@@ -82,7 +82,7 @@ export const lostDocumentRequest =
     try {
       const resp = await lost_documents(typeDocument, distributorId);
       if (resp.status == 'success') {
-        showMessage({message: resp.message, type: 'success', icon: 'success'});
+        ts(resp.message, 'success');
       }
       dispatch({type: types.LOST_DOCUMENTS_SUCCESS, payload: resp});
     } catch (error) {
