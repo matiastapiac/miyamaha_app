@@ -75,8 +75,8 @@ export default class App extends Component {
           if (!foundObject) {
             db.transaction(function (tx) {
               tx.executeSql(
-                'INSERT INTO Notifications(notificationId, title, body, date) VALUES (?,?,?,?)',
-                [i.notificationId, i.title, i.body, new Date()],
+                'INSERT INTO Notifications(notificationId, title, body, date,flag) VALUES (?,?,?,?,?)',
+                [i.notificationId, i.title, i.body, new Date(), 1],
                 (tx, results) => {
                   console.log('Results', results.rowsAffected);
                   if (results.rowsAffected > 0) {

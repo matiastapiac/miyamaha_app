@@ -11,6 +11,7 @@ import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
+import { OneSignal } from 'react-native-onesignal';
 
 let db = openDatabase({name: 'MiYamaha.db', createFromLocation: 1});
 
@@ -27,16 +28,36 @@ class Notification extends Component {
   }
   componentDidMount() {
     this.fetchNotifications();
+    this.updateNotifications();
   }
 
+  updateNotifications = () => {
+    db.transaction(function (tx) {
+      tx.executeSql(
+        'UPDATE Notifications set flag=?',
+        [0],
+        (tx, results) => {
+          console.log('updated');
+          if (results.rowsAffected > 0) {
+            OneSignal.Notifications.clearAll()
+          } else {
+          }
+        },
+        error => {
+          console.log(error);
+        },
+      );
+    });
+  };
+
   fetchNotifications = () => {
-    this.setState({loading:true})
+    this.setState({loading: true});
     db.transaction(tx => {
       tx.executeSql(
         'SELECT * FROM Notifications',
         [],
         (tx, results) => {
-          this.setState({loading:false})
+          this.setState({loading: false});
           const rows = results.rows;
           const data = [];
           for (let i = 0; i < rows.length; i++) {
@@ -46,7 +67,7 @@ class Notification extends Component {
           this.setState({notifications: data.reverse()});
         },
         error => {
-          this.setState({loading:false})
+          this.setState({loading: false});
           console.error('Error fetching users', error);
         },
       );
@@ -101,7 +122,7 @@ class Notification extends Component {
     return (
       <Container style={{paddingHorizontal: 10}}>
         <TopHeader label={str.notifications} />
-        <View style={[gstyles.listContainer, {marginBottom:'40%'}]}>
+        <View style={[gstyles.listContainer, {marginBottom: '40%'}]}>
           <FlatList
             data={notifications}
             keyExtractor={item => item.id}

@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {openDatabase} from 'react-native-sqlite-storage';
 import {images} from '../common/images';
 import {colors} from '../common/colors';
 import {FONTS} from '../common/fonts';
 import {screen} from '../common/utils';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 import PopoverMenu from './PopoverMenu';
+
+let db = openDatabase({name: 'MiYamaha.db', createFromLocation: 1});
 
 export default function TopHeader({
   label,
@@ -22,6 +25,34 @@ export default function TopHeader({
   const navigation = useNavigation();
   const iconSize = label ? hp(2.5) : hp(4);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [flag, setFlag] = useState([]);
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      fetchNotifications();
+    });
+    fetchNotifications();
+  }, [flag]);
+  const fetchNotifications = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Notifications',
+        [],
+        (tx, results) => {
+          const rows = results.rows;
+          const data = [];
+          for (let i = 0; i < rows.length; i++) {
+            const user = rows.item(i);
+            data.push(user);
+          }
+          setFlag(data.map(i => i.flag));
+        },
+        error => {
+          console.error('Error fetching users', error);
+        },
+      );
+    });
+  };
 
   const handleBack = () => {
     if (!isButtonDisabled) {
@@ -89,7 +120,9 @@ export default function TopHeader({
       )
     ) : (
       <Pressable onPress={handleRightPress} disabled={isButtonDisabled}>
-        <Image source={images.vRed} style={styles.badge} />
+        {flag.includes(1) && (
+          <Image source={images.vRed} style={styles.badge} />
+        )}
         <Image
           source={images.bell}
           style={{height: iconSize, width: iconSize}}
