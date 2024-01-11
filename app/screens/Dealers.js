@@ -90,7 +90,7 @@ class Dealers extends Component {
           <AuthButton
             title={str.following}
             style={gstyles.bottomBtn}
-            disabled={!region && !city}
+            disabled={!region || !city}
             onPress={this.handleSubmit}
           />
         </View>

@@ -109,4 +109,6 @@ export const strings = {
     'Indicaciones del fabricante para el mantenimiento de tu motocicleta',
   whatsappNotInstalled: 'WhatsApp no ​​está instalado en tu dispositivo',
   phoneNotValid: 'El número de teléfono no es válido',
+  passNotMatch:
+    'Oops! Passwords do not match. Please ensure both passwords match before proceeding',
 };

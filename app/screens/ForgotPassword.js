@@ -15,6 +15,7 @@ import AuthInput from '../components/AuthInput';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
 import Validation from '../components/Validation';
+import ts from '../common/translate';
 
 const PAGES = {
   RUT: 1,
@@ -95,7 +96,8 @@ class ForgotPassword extends Component {
   }
 
   handleSubmit = () => {
-    const {page, isVisible, status, rut, code, password} = this.state;
+    const {page, isVisible, status, rut, code, password, retypePassword} =
+      this.state;
     if (page == PAGES.RUT && status) {
       this.setState({status: false});
       this.props.navigation.pop();
@@ -104,7 +106,9 @@ class ForgotPassword extends Component {
     } else if (page == PAGES.CODE_VERIFICATION) {
       this.setState({page: 3});
     } else if (page == PAGES.CHANGE_PASSWORD) {
-      this.props.recoverPassword(rut, code, password);
+      password == retypePassword
+        ? this.props.recoverPassword(rut, code, password)
+        : ts(str.passNotMatch, 'warning');
     } else if (page == PAGES.CHANGE_PASSWORD && isVisible) {
       this.props.navigation.pop();
     } else {

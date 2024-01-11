@@ -10,6 +10,7 @@ import {
 } from '../services/Api';
 import {BASEURL, endpoints} from '../../common/utils';
 import ts from '../../common/translate';
+import {strings as str} from '../../common/strings';
 
 export const userLogin = (rut, password) => async dispatch => {
   dispatch({type: types.LOGIN_REQUEST});
@@ -136,6 +137,7 @@ export const recoverPassword = (rut, code, password) => async dispatch => {
     }
     dispatch({type: types.RECOVER_PASSWORD_SUCCESS, payload: resp});
   } catch (error) {
+    ts(str.passValidation, 'warning');
     dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: error});
   }
 };
