@@ -10,6 +10,7 @@ import store from './app/store';
 import {gstyles} from './app/common/gstyles';
 import {colors} from './app/common/colors';
 import {ONESIGNAL_APP_ID} from './app/common/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let db = openDatabase({name: 'MiYamaha.db', createFromLocation: 1});
 
@@ -43,7 +44,9 @@ export default class App extends Component {
     this.clickListner = OneSignal.Notifications.addEventListener(
       'click',
       event => {
-        this.saveNotifications(event.notification);
+        if (!this.state.notificationSaved) {
+          this.saveNotifications(event.notification);
+        }
       },
     );
   }
@@ -62,14 +65,13 @@ export default class App extends Component {
         'SELECT * FROM Notifications',
         [],
         (tx, results) => {
-          this.setState({loading: false});
           const rows = results.rows;
           const data = [];
           for (let i = 0; i < rows.length; i++) {
             const user = rows.item(i);
             data.push(user);
           }
-          const foundObject = data.find(
+          const foundObject = data.some(
             item => item.notificationId === i.notificationId,
           );
           if (!foundObject) {
@@ -77,9 +79,10 @@ export default class App extends Component {
               tx.executeSql(
                 'INSERT INTO Notifications(notificationId, title, body, date,flag) VALUES (?,?,?,?,?)',
                 [i.notificationId, i.title, i.body, new Date(), 1],
-                (tx, results) => {
+                async (tx, results) => {
                   console.log('Results', results.rowsAffected);
                   if (results.rowsAffected > 0) {
+                    await AsyncStorage.setItem('flag', '1');
                   } else {
                   }
                 },

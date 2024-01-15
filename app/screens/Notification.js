@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
 import {connect} from 'react-redux';
 import {openDatabase} from 'react-native-sqlite-storage';
+import {OneSignal} from 'react-native-onesignal';
 import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import {gstyles} from '../common/gstyles';
@@ -11,7 +12,7 @@ import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
-import { OneSignal } from 'react-native-onesignal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let db = openDatabase({name: 'MiYamaha.db', createFromLocation: 1});
 
@@ -26,9 +27,10 @@ class Notification extends Component {
       loading: false,
     };
   }
+
   componentDidMount() {
-    this.fetchNotifications();
     this.updateNotifications();
+    this.fetchNotifications();
   }
 
   updateNotifications = () => {
@@ -36,10 +38,11 @@ class Notification extends Component {
       tx.executeSql(
         'UPDATE Notifications set flag=?',
         [0],
-        (tx, results) => {
+        async (tx, results) => {
           console.log('updated');
           if (results.rowsAffected > 0) {
-            OneSignal.Notifications.clearAll()
+            OneSignal.Notifications.clearAll();
+            await AsyncStorage.removeItem('flag');
           } else {
           }
         },

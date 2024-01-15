@@ -54,6 +54,8 @@ class Registration extends Component {
       distributors: [],
       distributorId: '',
       isPickerVisibile: false,
+      isValidPass: true,
+      isMatchPass: true,
     };
   }
 
@@ -112,6 +114,7 @@ class Registration extends Component {
     //   this.setState({isStatusModal: true});
     // }
     else if ([PAGES.PASSWORD, PAGES.PERSONAL_INFO].includes(page)) {
+      i;
       this.register();
     } else {
       if (rut && vin) {
@@ -263,13 +266,14 @@ class Registration extends Component {
       region,
       address,
       document,
+      isMatchPass,
     } = this.state;
 
     switch (page) {
       case PAGES.RUT_VIN:
         return !(rut && vin);
       case PAGES.PASSWORD:
-        return !(password && retypePassword);
+        return !(password && retypePassword && isMatchPass);
       case PAGES.CONTACT:
         return !(email && distributorId);
       case PAGES.PERSONAL_INFO:
@@ -293,6 +297,27 @@ class Registration extends Component {
     this.setState({birthDate: date, isPickerVisibile: false});
   };
 
+  changePassword = text => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{8,}$/;
+    const isValid = passwordRegex.test(text);
+
+    this.setState({
+      isValidPass: !text || isValid,
+      password: text,
+    });
+  };
+
+  changeConfirmPassword = text => {
+    const {password} = this.state;
+    const isMatchPass = password === text;
+
+    this.setState({
+      isMatchPass: !text || isMatchPass,
+      retypePassword: text,
+    });
+  };
+
   renderScreens = () => {
     const {
       page,
@@ -311,6 +336,8 @@ class Registration extends Component {
       region,
       document,
       distributors,
+      isValidPass,
+      isMatchPass,
     } = this.state;
 
     switch (page) {
@@ -340,15 +367,21 @@ class Registration extends Component {
               placeholder={str.enterPass}
               secureTextEntry={true}
               value={password}
-              onChangeText={e => this.setState({password: e})}
+              onChangeText={this.changePassword}
             />
+            {!isValidPass && (
+              <Text style={gstyles.validation}>* {str.passValidation}</Text>
+            )}
             <AuthInput
               label={str.retypePass}
               placeholder={str.writePassAgain}
               secureTextEntry={true}
               value={retypePassword}
-              onChangeText={e => this.setState({retypePassword: e})}
+              onChangeText={this.changeConfirmPassword}
             />
+            {!isMatchPass && (
+              <Text style={gstyles.validation}>* {str.passDoNotMatch}</Text>
+            )}
           </View>
         );
       case PAGES.PERSONAL_INFO:
@@ -513,3 +546,4 @@ const mapStateToDispatch = {
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(Registration);
+ 

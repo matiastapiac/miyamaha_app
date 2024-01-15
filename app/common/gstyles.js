@@ -91,5 +91,10 @@ export const gstyles = StyleSheet.create({
     color: colors.grey,
     fontSize: hp(2),
     textAlign:'center'
+  },
+  validation:{ 
+    color:colors.red,
+    fontSize:hp(1.5),
+    fontFamily: FONTS.OpenSansRegular,
   }
 });

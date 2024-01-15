@@ -98,7 +98,8 @@ export const strings = {
   filedCantEmpty: 'Fältet får inte vara tomt',
   passDoNotMatch: 'De angivna lösenorden stämmer inte överens',
   passValidation:
-    'The password must be at least 8 characters long. The password must contain at least one lowercase letter, one uppercase letter, one number and one special character.',
+    'La contraseña debe tener un mínimo de 8 caracteres y debe incluir al menos una letra minúscula, una letra mayúscula, un número y un carácter especial.',
+  // 'The password must be a minimum of 8 characters long and must include at least one lowercase letter, one uppercase letter, one number, and one special character.',
   selectRegion: 'Seleccione una región',
   selectCity: 'Selecciona una ciudad',
   maintenanceManual: 'Manual de mantenimiento',
