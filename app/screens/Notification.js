@@ -3,6 +3,7 @@ import {FlatList, View} from 'react-native';
 import {connect} from 'react-redux';
 import {openDatabase} from 'react-native-sqlite-storage';
 import {OneSignal} from 'react-native-onesignal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import {gstyles} from '../common/gstyles';
@@ -12,7 +13,6 @@ import TopHeader from '../components/TopHeader';
 import ItemCard from '../components/ItemCard';
 import AuthButton from '../components/AuthButton';
 import Alert from '../components/Alert';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let db = openDatabase({name: 'MiYamaha.db', createFromLocation: 1});
 

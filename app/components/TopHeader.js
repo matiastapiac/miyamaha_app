@@ -23,7 +23,7 @@ export default function TopHeader({
   const navigation = useNavigation();
   const iconSize = label ? hp(2.5) : hp(4);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [flag, setFlag] = useState(null);
+  const [flag, setFlag] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,7 +35,7 @@ export default function TopHeader({
 
   const getFlag = async () => {
     const flag = await AsyncStorage.getItem('flag');
-    flag && setFlag(flag);
+    flag ? setFlag(flag) : setFlag('');
   };
 
   const handleBack = () => {

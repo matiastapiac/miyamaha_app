@@ -214,7 +214,8 @@ export const setDeviceToken = id => async dispatch => {
   try {
     const resp = await device_token(id);
     if (resp.status == 'success') {
-      OneSignal.User.addAlias('external_id', id);
+      OneSignal.User.addAlias('external_user_id', id);
+      OneSignal.login(id)
     }
     dispatch({ type: types.DEVICE_TOKEN_SUCCESS, payload: resp });
   } catch (error) {

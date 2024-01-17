@@ -3,6 +3,7 @@ import {LogBox, StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {LogLevel, OneSignal} from 'react-native-onesignal';
 import {openDatabase} from 'react-native-sqlite-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import Navigation from './app/navigation';
@@ -10,14 +11,16 @@ import store from './app/store';
 import {gstyles} from './app/common/gstyles';
 import {colors} from './app/common/colors';
 import {ONESIGNAL_APP_ID} from './app/common/utils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let db = openDatabase({name: 'MiYamaha.db', createFromLocation: 1});
 
 export default class App extends Component {
-  state = {
-    notificationSaved: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      notificationSaved: false,
+    };
+  }
 
   async componentDidMount() {
     setTimeout(() => {
@@ -32,6 +35,7 @@ export default class App extends Component {
     this.forgroundListener = OneSignal.Notifications.addEventListener(
       'foregroundWillDisplay',
       event => {
+        this.setState({notificationSaved: false});
         event.preventDefault();
         event.getNotification().display();
         if (!this.state.notificationSaved) {
@@ -44,9 +48,7 @@ export default class App extends Component {
     this.clickListner = OneSignal.Notifications.addEventListener(
       'click',
       event => {
-        if (!this.state.notificationSaved) {
-          this.saveNotifications(event.notification);
-        }
+        this.saveNotifications(event.notification);
       },
     );
   }
