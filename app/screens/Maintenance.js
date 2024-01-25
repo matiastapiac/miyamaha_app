@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, FlatList, PermissionsAndroid} from 'react-native';
+import {View, FlatList, PermissionsAndroid, Platform} from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {screen} from '../common/utils';
@@ -44,19 +44,22 @@ class Maintenance extends Component {
 
   handleDownloadCerti = async () => {
     const {data, activeSlide} = this.state;
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      this.props.getMaintenanceCertificate(data[activeSlide].vin);
+    if (Platform.OS == 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.props.getMaintenanceCertificate(data[activeSlide].vin);
+      }
     } else {
+      this.props.getMaintenanceCertificate(data[activeSlide].vin);
     }
   };
 
   render() {
     const {activeSlide, data} = this.state;
     const {loading} = this.props;
-    ''
+
     return (
       <Container>
         <TopHeader />

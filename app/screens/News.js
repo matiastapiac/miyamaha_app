@@ -9,11 +9,15 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {colors} from '../common/colors';
-import Container from '../components/Container';
 import {getNews} from '../store/actions/maintenanceActions';
+import {screen} from '../common/utils';
+import Container from '../components/Container';
 import TopHeader from '../components/TopHeader';
 import ImageCarousel from '../components/ImageCarousel';
+import store from '../store';
+import ts from '../common/translate';
 
 class News extends Component {
   constructor(props) {
@@ -21,12 +25,14 @@ class News extends Component {
     this.state = {
       carouselNews: [],
       galleryNews: [],
+      logoutHandled: false,
     };
   }
 
   componentDidMount() {
     LogBox.ignoreAllLogs();
     this.props.getNews();
+    Linking.addEventListener('url', this.handleDeepLink);
   }
 
   componentDidUpdate(prevProps) {
@@ -38,6 +44,36 @@ class News extends Component {
       this.setState({carouselNews, galleryNews});
     }
   }
+
+  componentWillUnmount() {
+    Linking.removeAllListeners(this.handleDeepLink);
+  }
+
+  handleDeepLink = ({url}) => {
+    const {logoutHandled} = this.state;
+    if (logoutHandled) {
+      return;
+    }
+    const route = url.replace(/.*?:\/\//g, '');
+    const routeName = route.split('/')[0];
+
+    if (routeName === screen.Notification) {
+      this.props.navigation.push(screen.Notification);
+    } else if (routeName == screen.Login) {
+      this.handleLogoutAct();
+      this.setState({logoutHandled: true});
+    }
+  };
+
+  handleLogoutAct = async () => {
+    await AsyncStorage.removeItem('authToken');
+    store.dispatch({
+      type: 'REMOVE_AUTH_TOKEN',
+      payload: null,
+    });
+    this.props.navigation.push(screen.Login);
+    ts('Your session is expired', 'warning');
+  };
 
   renderImages = () => {
     return this.state.galleryNews.map((item, index) => (

@@ -73,15 +73,16 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.yamahaapp"
+    namespace "com.miyamahaapp"
     defaultConfig {
-        applicationId "com.yamahaapp"
+        applicationId "com.miyamahaapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0"
     }
     signingConfigs {
+
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'

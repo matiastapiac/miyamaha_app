@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Linking, Platform} from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {types} from '../types';
@@ -93,6 +93,12 @@ export const getNews = () => async dispatch => {
     },
   })
     .then(responseJson => responseJson.json())
-    .then(resp => dispatch({type: types.FETCH_NEWS_SUCCESS, payload: resp}))
+    .then(resp => {
+      if(resp.status == 401) {
+        const url = 'myapp://Login';
+        Linking.emit('url', {url});
+      }
+      dispatch({type: types.FETCH_NEWS_SUCCESS, payload: resp});
+    })
     .catch(error => dispatch({type: types.FETCH_NEWS_FAILURE, payload: error}));
 };

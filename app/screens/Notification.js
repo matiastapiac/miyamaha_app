@@ -29,8 +29,8 @@ class Notification extends Component {
   }
 
   componentDidMount() {
-    this.updateNotifications();
     this.fetchNotifications();
+    this.updateNotifications();
   }
 
   updateNotifications = () => {

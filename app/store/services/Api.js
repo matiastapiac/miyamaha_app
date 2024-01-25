@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Linking, Platform} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReactNativeBlobUtil from 'react-native-blob-util';
@@ -19,6 +19,13 @@ export const fmInstance = axios.create({
     'Content-Type': 'multipart/form-data',
   },
 });
+
+function handleError(error) {
+  if (error.response.status == 401) {
+    const url = 'myapp://Login';
+    Linking.emit('url', {url});
+  }
+}
 
 export async function setTokenHeader(token) {
   if (token) {
@@ -82,7 +89,10 @@ export function update_profile(data) {
 }
 
 export function get_profile() {
-  return instance.get(endpoints.profile).then(response => response.data);
+  return instance
+    .get(endpoints.profile)
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function device_token(playerId) {
@@ -95,17 +105,24 @@ export function device_token(playerId) {
 }
 
 export function get_documents() {
-  return instance.get(endpoints.documents).then(response => response.data);
+  return instance
+    .get(endpoints.documents)
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function document_types() {
-  return instance.get(endpoints.document_types).then(response => response.data);
+  return instance
+    .get(endpoints.document_types)
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function upload_document(data) {
   return fmInstance
     .post(endpoints.documents, data)
-    .then(response => response.data);
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function create_folder(folderPath, folderName) {
@@ -113,13 +130,17 @@ export function create_folder(folderPath, folderName) {
     folderPath,
     folderName,
   };
-  return instance.post(endpoints.folders, data).then(response => response.data);
+  return instance
+    .post(endpoints.folders, data)
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function delete_document(documentId) {
   return instance
     .delete(endpoints.documents + `/${documentId}`)
-    .then(response => response.data);
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function lost_documents(typeDocument, distributorId) {
@@ -129,21 +150,29 @@ export function lost_documents(typeDocument, distributorId) {
   };
   return instance
     .post(endpoints.lost_documents, data)
-    .then(response => response.data);
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function fetch_news() {
-  return instance.get(endpoints.news).then(response => response.data);
+  return instance
+    .get(endpoints.news)
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function get_distributors() {
-  return instance.get(endpoints.distributors).then(response => response.data);
+  return instance
+    .get(endpoints.distributors)
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function maintenance_urls() {
   return instance
     .get(endpoints.maintenance_urls)
-    .then(response => response.data);
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export async function maintenance_certificate(vin) {
@@ -165,7 +194,8 @@ export async function maintenance_certificate(vin) {
 export function warranty_manual() {
   return instance
     .get(endpoints.warranty_manual)
-    .then(response => response.data);
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function post_sale(reason, distributorId, query) {
@@ -176,13 +206,15 @@ export function post_sale(reason, distributorId, query) {
   };
   return instance
     .post(endpoints.post_sale, data)
-    .then(response => response.data);
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function post_sale_reasons() {
   return instance
     .get(endpoints.post_sale_reasons)
-    .then(response => response.data);
+    .then(response => response.data)
+    .catch(e => handleError(e));
 }
 
 export function logout() {
