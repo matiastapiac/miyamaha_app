@@ -50,13 +50,14 @@ class Login extends Component {
     if (
       login &&
       login.status === 'success' &&
-      prevProps.login?.status !== 'success'
+      login !== prevProps.login
+      // prevProps.login?.status !== 'success'
     ) {
       setTokenHeader(login?.data?.token);
       this.props.storeAuthToken(login?.data?.token);
       this.props.setDeviceToken(uuid.v4());
       Platform.select({
-        ios: this.props.navigation.navigate(screen.DashBoard),
+        ios: this.props.navigation.push(screen.DashBoard),
         android: this.props.navigation.dispatch(
           StackActions.replace(screen.DashBoard),
         ),

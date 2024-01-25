@@ -76,7 +76,7 @@ class Profile extends Component {
       type: 'REMOVE_AUTH_TOKEN',
       payload: null,
     });
-    this.props.navigation.push(screen.Login);
+    this.props.navigation.navigate(screen.Login);
   };
 
   handleEditProfile = () => {
