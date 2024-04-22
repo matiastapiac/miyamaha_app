@@ -38,18 +38,18 @@ class Dealers extends Component {
       const regions = distributors.data.map(item => item.region);
       this.setState({
         data: distributors.data,
-        regions: Array.from(new Set(regions)),
+        regions: Array.from(new Set(regions)).sort(),
       });
     }
   }
 
   setRegion = e => {
-    this.setState({region: e});
+    this.setState({region: e, city: '', cityKey: Math.random()});
     const {data} = this.state;
     const filteredCitiesSet = new Set(
       data.filter(item => item.region === e).map(item => item.city),
     );
-    const cities = Array.from(filteredCitiesSet);
+    const cities = Array.from(filteredCitiesSet).sort();
     this.setState({cities});
   };
   setCity = e => {
@@ -65,7 +65,7 @@ class Dealers extends Component {
   };
 
   render() {
-    const {region, city, regions, cities} = this.state;
+    const {region, city, regions, cities, cityKey} = this.state;
     return (
       <Container>
         <TopHeader />
@@ -81,6 +81,7 @@ class Dealers extends Component {
               setSelected={this.setRegion}
             />
             <PickerInput
+              key={cityKey}
               label={str.city}
               placeholder={str.selectCity}
               data={cities}
