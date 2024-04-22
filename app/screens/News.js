@@ -143,7 +143,8 @@ const styles = {
     padding: 10,
   },
   image: {
-    height: 150,
+    //height: 150,
+    aspectRatio: 1,
     width: '100%',
     borderRadius: 10,
   },
