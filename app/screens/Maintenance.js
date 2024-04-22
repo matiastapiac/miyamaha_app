@@ -78,7 +78,7 @@ class Maintenance extends Component {
               km={item.maintenanceType}
               name={item.distributorName}
               address={item.distributorAddress}
-              date={item.createdAt}
+              date={item.maintenanceDate}
             />
           )}
           contentContainerStyle={{marginHorizontal: 10}}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {LogBox, StatusBar} from 'react-native';
+import {Linking, LogBox, StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {LogLevel, OneSignal} from 'react-native-onesignal';
 import {openDatabase} from 'react-native-sqlite-storage';
@@ -85,6 +85,8 @@ export default class App extends Component {
                   console.log('Results', results.rowsAffected);
                   if (results.rowsAffected > 0) {
                     await AsyncStorage.setItem('flag', '1');
+                    const url = 'myapp://Notification';
+                    Linking.emit('url', {url});
                   } else {
                   }
                 },
@@ -112,4 +114,3 @@ export default class App extends Component {
     );
   }
 }
-//test

@@ -131,20 +131,97 @@ export const forgotPassword = rut => async dispatch => {
     });
 };
 
-export const recoverPassword = (rut, code, password) => async dispatch => {
+// export const recoverPassword = (rut, code, password) => async dispatch => {
+//   dispatch({type: types.RECOVER_PASSWORD_REQUEST});
+
+//   try {
+//     const resp = await recover_password(rut, code, password);
+//     if (resp.status == 'success') {
+//       ts(resp.message, 'success');
+//     }
+//     dispatch({type: types.RECOVER_PASSWORD_SUCCESS, payload: resp});
+//   } catch (error) {
+//     console.log(error);
+//     ts(str.passValidation, 'warning');
+//     dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: error});
+//   }
+// };
+
+
+export const recoverPassword = (rut, recoveryCode, newPassword) => async dispatch => {
+  const token = await AsyncStorage.getItem('authToken');
   dispatch({type: types.RECOVER_PASSWORD_REQUEST});
 
-  try {
-    const resp = await recover_password(rut, code, password);
-    if (resp.status == 'success') {
-      ts(resp.message, 'success');
-    }
-    dispatch({type: types.RECOVER_PASSWORD_SUCCESS, payload: resp});
-  } catch (error) {
-    ts(str.passValidation, 'warning');
-    dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: error});
-  }
+  fetch(BASEURL + endpoints.recover_password, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      rut,
+      recoveryCode,
+      newPassword,
+    }),
+  })
+    .then(response => response.json())
+    .then(resp => {
+      console.log(resp);
+      const status = resp.status;
+      const message = resp.message || (resp.errors && Object.values(resp.errors)[0][0]);
+
+      if (status === 'success') {
+        ts(message, 'success');
+        dispatch({type: types.RECOVER_PASSWORD_SUCCESS, payload: resp});
+      } else {
+        ts(message, status === 'error' ? 'danger' : 'warning');
+        dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: resp});
+      }
+    })
+    .catch(e => {
+      dispatch({type: types.RECOVER_PASSWORD_FAILURE, payload: e});
+    });
 };
+
+// export const changePassword = (password, newPassword) => async dispatch => {
+//   const token = await AsyncStorage.getItem('authToken');
+//   dispatch({type: types.CHANGE_PASSWORD_REQUEST});
+
+//   fetch(BASEURL + endpoints.change_password, {
+//     method: 'PUT',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       password,
+//       newPassword,
+//     }),
+//   })
+//     .then(response => response.json())
+//     .then(resp => {
+//       console.log(resp);
+//       if (resp.status == 'success') {
+//         ts(resp.message, 'success');
+//       } else if (resp.status == 'error') {
+//         ts(resp.message, 'danger');
+//       } else if (resp.status == 400) {
+//         if (resp.message) {
+//           ts(resp.message, 'warning');
+//         } else if (resp.errors.Password) {
+//           ts(resp.errors.Password[0], 'warning');
+//         } else if (resp.errors.NewPassword) {
+//           ts(resp.errors.NewPassword[0], 'warning');
+//         }
+//       } else {
+//         ts(resp.message, 'warning');
+//       }
+//       dispatch({type: types.REGISTER_SUCCESS, payload: resp});
+//     })
+//     .catch(e => {
+//       dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: error});
+//     });
+// };
 
 export const changePassword = (password, newPassword) => async dispatch => {
   const token = await AsyncStorage.getItem('authToken');
@@ -164,25 +241,19 @@ export const changePassword = (password, newPassword) => async dispatch => {
     .then(response => response.json())
     .then(resp => {
       console.log(resp);
-      if (resp.status == 'success') {
-        ts(resp.message, 'success');
-      } else if (resp.status == 'error') {
-        ts(resp.message, 'danger');
-      } else if (resp.status == 400) {
-        if (resp.message) {
-          ts(resp.message, 'warning');
-        } else if (resp.errors.Password) {
-          ts(resp.errors.Password[0], 'warning');
-        } else if (resp.errors.NewPassword) {
-          ts(resp.errors.NewPassword[0], 'warning');
-        }
+      const status = resp.status;
+      const message = resp.message || (resp.errors && Object.values(resp.errors)[0][0]);
+
+      if (status === 'success') {
+        ts(message, 'success');
+        dispatch({type: types.CHANGE_PASSWORD_SUCCESS, payload: resp});
       } else {
-        ts(resp.message, 'warning');
+        ts(message, status === 'error' ? 'danger' : 'warning');
+        dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: resp});
       }
-      dispatch({type: types.REGISTER_SUCCESS, payload: resp});
     })
     .catch(e => {
-      dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: error});
+      dispatch({type: types.CHANGE_PASSWORD_FAILURE, payload: e});
     });
 };
 

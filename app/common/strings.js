@@ -12,7 +12,7 @@ export const strings = {
   code: 'Código',
   enterCode: 'Ingresa el código enviado a tu correo',
   changePass: 'CAMBIAR CONTRASEÑA',
-  enterPass: 'Ingresa una contraseña',
+  enterPass: 'Ingresa tu contraseña',
   retypePass: 'Repetir contraseña',
   enterNewPass: 'Ingresa nueva contraseña',
   newPass: 'Nueva contraseña',

@@ -5,8 +5,10 @@ import {FONTS} from '../common/fonts';
 import {colors} from '../common/colors';
 import {heightPercentageToDP as hp} from '../common/dimensions';
 import moment from 'moment';
+import 'moment/locale/es';
 
 export default function ScheduleCard({km, name, address, date}) {
+  moment.locale('es');
   const fm = moment(date).format('DD MMM YYYY');
   const e = fm.split(' ');
   return (
