@@ -18,15 +18,15 @@ const ImageCarousel = ({images}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef(null);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const nextIndex = (currentIndex + 1) % images.length;
-  //     setCurrentIndex(nextIndex);
-  //     scrollToIndex(nextIndex);
-  //   }, 3000); // Change the interval duration as needed (in milliseconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = (currentIndex + 1) % images.length;
+      setCurrentIndex(nextIndex);
+      scrollToIndex(nextIndex);
+    }, 3000); // Change the interval duration as needed (in milliseconds)
 
-  //   return () => clearInterval(interval);
-  // }, [currentIndex, images]);
+    return () => clearInterval(interval);
+  }, [currentIndex, images]);
 
   const scrollToIndex = index => {
     if (flatListRef.current) {
