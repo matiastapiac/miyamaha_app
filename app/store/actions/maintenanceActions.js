@@ -94,7 +94,8 @@ export const getNews = () => async dispatch => {
   })
     .then(responseJson => responseJson.json())
     .then(resp => {
-      if(resp.status == 401) {
+      if (resp.status === 401) {
+        AsyncStorage.removeItem('authToken');
         const url = 'myapp://Login';
         Linking.emit('url', {url});
       }

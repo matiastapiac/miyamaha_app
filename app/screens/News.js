@@ -31,7 +31,16 @@ class News extends Component {
 
   componentDidMount() {
     LogBox.ignoreAllLogs();
-    this.props.getNews();
+    AsyncStorage.getItem('authToken').then(token => {
+      if (!token) {
+        this.props.navigation.reset({
+          index: 0,
+          routes: [{name: screen.Login}],
+        });
+        return;
+      }
+      this.props.getNews();
+    });
     Linking.addEventListener('url', this.handleDeepLink);
   }
 
@@ -96,7 +105,9 @@ class News extends Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}>
           <View style={styles.carouselContainer}>
-            <ImageCarousel images={carouselNews} />
+            {carouselNews && carouselNews.length > 0 ? (
+              <ImageCarousel images={carouselNews} />
+            ) : null}
           </View>
           <View
             style={{
